@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const roleOrder: Record<string, number> = {
+  "Professor": 0,
+  "Post Doc Researcher": 1,
+  "PhD Candidate": 2,
+  "Research Scientist": 3,
+};
+
+const members = (await getCollection('team')).sort((a, b) =>
+  (roleOrder[a.data.role ?? ''] ?? 99) - (roleOrder[b.data.role ?? ''] ?? 99)
+);
+---
+
+<BaseLayout title="Team">
+  <div class="page-wrapper">
+    <h1 class="team-page-title">IONIAN Team</h1>
+
+    <div class="team-grid">
+      {members.map(m => {
+        const pic = m.data.image?.thumbnail || m.data.author?.picture;
+        return (
+          <a class="team-member" href={`/team/${m.slug}/`}>
+            {pic && <img class="team-pic" src={pic} alt={m.data.title} loading="lazy" />}
+            <span class="team-name">{m.data.title}</span>
+            {m.data.role && <span class="team-role">{m.data.role}</span>}
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</BaseLayout>

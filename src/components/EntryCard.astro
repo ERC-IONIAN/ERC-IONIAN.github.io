@@ -1,0 +1,22 @@
+---
+interface Props {
+  title: string;
+  href: string;
+  thumbnail?: string;
+  excerpt?: string;
+}
+
+const { title, href, thumbnail, excerpt } = Astro.props;
+---
+
+<div class="entry-card">
+  <a href={href}>
+    <div class="card-thumb">
+      {thumbnail && thumbnail !== '/images/empty_banner.png' && <img src={thumbnail} alt={title} loading="lazy" style="width:100%;height:100%;object-fit:cover;" />}
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">{title}</h3>
+      {excerpt && <p class="card-excerpt">{excerpt}</p>}
+    </div>
+  </a>
+</div>

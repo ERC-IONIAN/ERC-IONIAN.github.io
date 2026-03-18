@@ -1,0 +1,68 @@
+---
+import MemberLayout from '../../../layouts/MemberLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const roleOrder: Record<string, number> = {
+    "Professor": 0, "Post Doc Researcher": 1, "PhD Candidate": 2, "Research Scientist": 3,
+  };
+  const members = (await getCollection('team')).sort((a, b) =>
+    (roleOrder[a.data.role ?? ''] ?? 99) - (roleOrder[b.data.role ?? ''] ?? 99)
+  );
+  return members.map((m, i) => ({
+    params: { slug: m.slug },
+    props: {
+      member: m,
+      prev: members[i - 1] ?? null,
+      next: members[i + 1] ?? null,
+    },
+  }));
+}
+
+const { member, prev, next } = Astro.props;
+const author = member.data.author;
+const pic = author?.picture || member.data.image?.thumbnail;
+---
+
+<MemberLayout
+  title={`Papers — ${member.data.title}`}
+  memberName={member.data.title}
+  memberRole={member.data.role}
+  memberPic={pic}
+  memberAffiliation={member.data.affiliation}
+  slug={member.slug}
+  links={author?.links}
+  activeTab="papers"
+>
+  <h2 class="text-2xl font-bold mb-6 border-b border-base-300 pb-2">Publications</h2>
+
+  <div class="space-y-6">
+    <div class="p-4 rounded-lg border border-base-300">
+      <h3 class="font-semibold text-lg">Paper Title</h3>
+      <p class="text-sm opacity-60 mt-1">Author A, Author B, <span class="font-bold">{member.data.title}</span></p>
+      <p class="text-sm opacity-50 italic mt-1">Journal Name, 2024</p>
+      <p class="mt-2">Abstract or brief description to be filled in.</p>
+    </div>
+    <div class="p-4 rounded-lg border border-base-300">
+      <h3 class="font-semibold text-lg">Paper Title</h3>
+      <p class="text-sm opacity-60 mt-1">Author A, <span class="font-bold">{member.data.title}</span>, Author C</p>
+      <p class="text-sm opacity-50 italic mt-1">Conference Name, 2023</p>
+      <p class="mt-2">Abstract or brief description to be filled in.</p>
+    </div>
+  </div>
+
+  <nav class="flex justify-between pt-6 mt-10 border-t border-base-300 gap-4">
+    {prev && (
+      <a href={`/team/${prev.slug}/papers/`} class="nav-prev-next flex-1 flex flex-col p-4 rounded-lg border border-base-300 transition-all no-underline">
+        <span class="text-xs opacity-50 mb-1">&larr; Previous</span>
+        <span class="font-semibold">{prev.data.title}</span>
+      </a>
+    )}
+    {next && (
+      <a href={`/team/${next.slug}/papers/`} class="nav-prev-next flex-1 flex flex-col items-end p-4 rounded-lg border border-base-300 transition-all text-right no-underline">
+        <span class="text-xs opacity-50 mb-1">Next &rarr;</span>
+        <span class="font-semibold">{next.data.title}</span>
+      </a>
+    )}
+  </nav>
+</MemberLayout>

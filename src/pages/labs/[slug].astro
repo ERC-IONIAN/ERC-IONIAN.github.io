@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const labs = await getCollection('labs');
+  return labs.map(l => ({ params: { slug: l.slug }, props: { lab: l } }));
+}
+
+const { lab } = Astro.props;
+const { Content } = await lab.render();
+const thumb = lab.data.image?.thumbnail;
+---
+
+<BaseLayout title={lab.data.title}>
+  <div class="page-wrapper">
+    <h1 class="page-title">{lab.data.title}</h1>
+    {thumb && <img src={thumb} alt={lab.data.title} style="max-width: 600px; margin-bottom: 1.5rem;" />}
+    <div class="prose max-w-none">
+      <Content />
+    </div>
+  </div>
+</BaseLayout>

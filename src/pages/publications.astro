@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { marked } from 'marked';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const dataDir = path.resolve('src/data');
+const journalHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_journal.md'), 'utf-8'));
+const conferenceHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_conference.md'), 'utf-8'));
+const thesesHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_theses.md'), 'utf-8'));
+---
+
+<BaseLayout title="Publications">
+  <div class="page-wrapper">
+    <h1 class="page-title">Publications</h1>
+    <p class="mb-6 opacity-70 text-sm italic">
+      Note: the archived version of some publications may only become publicly accessible after the publisher's embargo period has ended.
+    </p>
+
+    <div class="pub-tabs">
+      <div class="pub-tab-bar">
+        <button class="pub-tab active" data-tab="journal">Journal Papers</button>
+        <button class="pub-tab" data-tab="conference">Conference Papers</button>
+        <button class="pub-tab" data-tab="theses">PhD Theses</button>
+      </div>
+
+      <div class="pub-panel active" data-panel="journal">
+        <div class="prose max-w-none pub-list" set:html={journalHtml} />
+      </div>
+      <div class="pub-panel" data-panel="conference">
+        <div class="prose max-w-none pub-list" set:html={conferenceHtml} />
+      </div>
+      <div class="pub-panel" data-panel="theses">
+        <div class="prose max-w-none pub-list" set:html={thesesHtml} />
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  document.querySelectorAll('.pub-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.pub-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.pub-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelector(`.pub-panel[data-panel="${btn.dataset.tab}"]`)?.classList.add('active');
+    });
+  });
+</script>
+
+<style is:global>
+  .pub-tab-bar {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid oklch(var(--b3, 0.87 0.02 80));
+    margin-bottom: 1.5rem;
+  }
+  .pub-tab {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.5;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: opacity 0.15s, border-color 0.15s;
+  }
+  .pub-tab:hover {
+    opacity: 0.8;
+  }
+  .pub-tab.active {
+    opacity: 1;
+    border-bottom-color: oklch(var(--p, 0.5 0.2 260));
+  }
+  .pub-panel {
+    display: none;
+  }
+  .pub-panel.active {
+    display: block;
+  }
+  .pub-list ol {
+    list-style: decimal;
+    padding-left: 2em;
+  }
+  .pub-list li {
+    margin-bottom: 1.25em;
+  }
+</style>

@@ -1,0 +1,14 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+const { frontmatter } = Astro.props;
+---
+
+<BaseLayout title={frontmatter.title}>
+  <div class="page-wrapper">
+    {frontmatter.title && <h1 class="page-title">{frontmatter.title}</h1>}
+    <div class="prose max-w-none">
+      <slot />
+    </div>
+  </div>
+</BaseLayout>
