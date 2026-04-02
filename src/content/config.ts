@@ -34,6 +34,7 @@ const team = defineCollection({
     author: authorSchema,
     affiliation: z.string().optional(),
     bio: z.string().optional(),
+    website: z.string().optional(),
     research_areas: z
       .array(
         z.object({

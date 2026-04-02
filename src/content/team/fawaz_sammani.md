@@ -14,6 +14,7 @@ author:
       url: mailto:Fawaz.Sammani@vub.be
       icon: email
 affiliation: 'Vrije Universiteit Brussel — ETRO'
+website: 'https://fawazsammani.github.io/fsammani.github.io/'
 ---
 
 Fawaz Sammani is a **PhD Candidate** in the IONIAN group, supervised by [Nikos Deligiannis](/team/nikos_deligiannis/).

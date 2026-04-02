@@ -29,7 +29,7 @@ const members = (await getCollection('team')).sort(
         members.map((m) => {
           const pic = m.data.image?.thumbnail || m.data.author?.picture;
           return (
-            <a class="team-member" href={`/team/${m.slug}/`}>
+            <a class="team-member" href={m.data.website || `/team/${m.slug}/`}>
               {pic && (
                 <img
                   class="team-pic"
