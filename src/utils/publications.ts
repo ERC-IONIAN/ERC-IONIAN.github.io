@@ -10,10 +10,13 @@ export interface Publication {
   type: 'journal' | 'conference' | 'thesis';
 }
 
-function parseMarkdownPubs(md: string, type: Publication['type']): Publication[] {
+function parseMarkdownPubs(
+  md: string,
+  type: Publication['type'],
+): Publication[] {
   const pubs: Publication[] = [];
   // Split by numbered list items: "1. ...", "2. ...", etc.
-  const entries = md.split(/^\d+\.\s+/m).filter(s => s.trim());
+  const entries = md.split(/^\d+\.\s+/m).filter((s) => s.trim());
 
   for (const entry of entries) {
     // Flatten to single line
@@ -21,7 +24,8 @@ function parseMarkdownPubs(md: string, type: Publication['type']): Publication[]
 
     // Extract links like [ArXiv](url), [Paper](url), [Project](url), [Code](url), [GitHub](url)
     const links: Publication['links'] = {};
-    const linkRegex = /\\\[?\[?(ArXiv|Paper|Project|Code|GitHub)\]\((https?:\/\/[^\s)]+)\)/gi;
+    const linkRegex =
+      /\\\[?\[?(ArXiv|Paper|Project|Code|GitHub)\]\((https?:\/\/[^\s)]+)\)/gi;
     let linkMatch;
     while ((linkMatch = linkRegex.exec(text)) !== null) {
       const label = linkMatch[1].toLowerCase();
@@ -47,7 +51,9 @@ function parseMarkdownPubs(md: string, type: Publication['type']): Publication[]
     let venue = '';
     const afterTitle = text.split('**').slice(2).join('**');
     // Clean out link markup
-    const cleanAfter = afterTitle.replace(/\\\[?\[?(?:ArXiv|Paper|Project|Code|GitHub)\]\([^)]+\)/gi, '').trim();
+    const cleanAfter = afterTitle
+      .replace(/\\\[?\[?(?:ArXiv|Paper|Project|Code|GitHub)\]\([^)]+\)/gi, '')
+      .trim();
     // Extract italic venue *...*
     const venueMatch = cleanAfter.match(/\*(.+?)\*/);
     if (venueMatch) venue = venueMatch[1];
@@ -62,8 +68,14 @@ function parseMarkdownPubs(md: string, type: Publication['type']): Publication[]
 
 export function getAllPublications(): Publication[] {
   const dataDir = path.resolve('src/data');
-  const journal = fs.readFileSync(path.join(dataDir, 'pub_journal.md'), 'utf-8');
-  const conference = fs.readFileSync(path.join(dataDir, 'pub_conference.md'), 'utf-8');
+  const journal = fs.readFileSync(
+    path.join(dataDir, 'pub_journal.md'),
+    'utf-8',
+  );
+  const conference = fs.readFileSync(
+    path.join(dataDir, 'pub_conference.md'),
+    'utf-8',
+  );
   const theses = fs.readFileSync(path.join(dataDir, 'pub_theses.md'), 'utf-8');
 
   return [
@@ -80,7 +92,7 @@ export function getPublicationsForMember(memberName: string): Publication[] {
   const parts = memberName.split(' ');
   const lastName = parts[parts.length - 1].toLowerCase();
 
-  return all.filter(pub => {
+  return all.filter((pub) => {
     const authorsLower = pub.authors.toLowerCase();
     return authorsLower.includes(nameLower) || authorsLower.includes(lastName);
   });

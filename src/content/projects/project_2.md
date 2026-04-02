@@ -1,5 +1,5 @@
 ---
-title: "Project 2"
+title: 'Project 2'
 date: 2024-01-02
 image:
   path: /images/empty_banner.png

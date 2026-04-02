@@ -17,7 +17,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="res-panel active" data-panel="equipments">
         <div class="prose max-w-none">
           <h3>Compute Infrastructure</h3>
-          <p>VUB-ETRO is equipped with a extensive compute infrastructure spanning multiple tiers. The lab has dedicated high-end NVIDIA GPUs at the desktop level for interactive coding and testing, a local GPU cluster (Tier-3) for on-demand computing with state-of-the-art accelerators, and priority access to VUB's Tier-2 infrastructure featuring latest-generation NVIDIA A100 and H200 nodes. Additionally, researchers can access the Flemish Tier-1 supercomputing resources (VSC), as well as VUB's newest Tier-1 system (Sofia) — a major investment operational since 2025.</p>
+          <p>
+            VUB-ETRO is equipped with a extensive compute infrastructure
+            spanning multiple tiers. The lab has dedicated high-end NVIDIA GPUs
+            at the desktop level for interactive coding and testing, a local GPU
+            cluster (Tier-3) for on-demand computing with state-of-the-art
+            accelerators, and priority access to VUB's Tier-2 infrastructure
+            featuring latest-generation NVIDIA A100 and H200 nodes.
+            Additionally, researchers can access the Flemish Tier-1
+            supercomputing resources (VSC), as well as VUB's newest Tier-1
+            system (Sofia) — a major investment operational since 2025.
+          </p>
         </div>
       </div>
       <div class="res-panel" data-panel="software">
@@ -40,12 +50,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <script>
-  document.querySelectorAll('.res-tab').forEach(btn => {
+  document.querySelectorAll('.res-tab').forEach((btn) => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.res-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.res-panel').forEach(p => p.classList.remove('active'));
+      document
+        .querySelectorAll('.res-tab')
+        .forEach((t) => t.classList.remove('active'));
+      document
+        .querySelectorAll('.res-panel')
+        .forEach((p) => p.classList.remove('active'));
       btn.classList.add('active');
-      document.querySelector(`.res-panel[data-panel="${btn.dataset.tab}"]`)?.classList.add('active');
+      document
+        .querySelector(`.res-panel[data-panel="${btn.dataset.tab}"]`)
+        ?.classList.add('active');
     });
   });
 </script>
@@ -67,7 +83,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     opacity: 0.5;
     border-bottom: 3px solid transparent;
     margin-bottom: -2px;
-    transition: opacity 0.15s, border-color 0.15s;
+    transition:
+      opacity 0.15s,
+      border-color 0.15s;
   }
   .res-tab:hover {
     opacity: 0.8;

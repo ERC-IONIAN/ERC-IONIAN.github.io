@@ -1,5 +1,5 @@
 ---
-title: "Topic 1"
+title: 'Topic 1'
 date: 2024-01-01
 image:
   path: /images/empty_banner.png

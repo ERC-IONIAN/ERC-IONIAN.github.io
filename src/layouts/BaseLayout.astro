@@ -6,38 +6,51 @@ interface Props {
 }
 
 const { title } = Astro.props;
-const siteTitle = "IONIAN";
+const siteTitle = 'IONIAN';
 const pageTitle = title ? `${title} | ${siteTitle}` : siteTitle;
 ---
 
 <!doctype html>
 <html lang="en" data-theme="light">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{pageTitle}</title>
-  <meta name="description" content="IONIAN — ETRO, Vrije Universiteit Brussel" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23ccc'/></svg>" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta
+      name="description"
+      content="IONIAN — ETRO, Vrije Universiteit Brussel"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23ccc'/></svg>"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
 
-  <script is:inline>
-    const theme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', theme);
-  </script>
-</head>
-<body class="bg-base-100 text-base-content font-sans min-h-screen flex flex-col">
-  <SiteNavbar />
+    <script is:inline>
+      const theme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    </script>
+  </head>
+  <body
+    class="bg-base-100 text-base-content font-sans min-h-screen flex flex-col"
+  >
+    <SiteNavbar />
 
-  <main class="flex-1">
-    <slot />
-  </main>
+    <main class="flex-1">
+      <slot />
+    </main>
 
-  <footer class="footer footer-center p-4 bg-base-200 text-base-content mt-12">
-    <p class="text-sm">&copy; {new Date().getFullYear()} {siteTitle}</p>
-  </footer>
-</body>
+    <footer
+      class="footer footer-center p-4 bg-base-200 text-base-content mt-12"
+    >
+      <p class="text-sm">&copy; {new Date().getFullYear()} {siteTitle}</p>
+    </footer>
+  </body>
 </html>
 
 <script>

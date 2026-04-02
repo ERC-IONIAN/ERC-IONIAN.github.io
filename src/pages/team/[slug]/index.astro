@@ -4,10 +4,15 @@ import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
   const roleOrder: Record<string, number> = {
-    "Professor": 0, "Post Doc Researcher": 1, "PhD Candidate": 2, "Research Scientist": 3,
+    Professor: 0,
+    'Post Doc Researcher': 1,
+    'PhD Candidate': 2,
+    'Research Scientist': 3,
   };
-  const members = (await getCollection('team')).sort((a, b) =>
-    (roleOrder[a.data.role ?? ''] ?? 99) - (roleOrder[b.data.role ?? ''] ?? 99)
+  const members = (await getCollection('team')).sort(
+    (a, b) =>
+      (roleOrder[a.data.role ?? ''] ?? 99) -
+      (roleOrder[b.data.role ?? ''] ?? 99),
   );
   return members.map((m, i) => ({
     params: { slug: m.slug },
@@ -46,43 +51,62 @@ const iconSvgs: Record<string, string> = {
   activeTab="home"
 >
   <!-- Hero -->
-  <section class="flex flex-col md:flex-row items-center gap-10 border-b border-base-300 pb-10 mb-10">
+  <section
+    class="flex flex-col md:flex-row items-center gap-10 border-b border-base-300 pb-10 mb-10"
+  >
     <div class="flex-1">
       <h1 class="text-4xl font-bold mb-3">
         Hi, I'm <span class="text-secondary">{member.data.title}</span>
       </h1>
-      {member.data.role && (
-        <p class="text-xl opacity-60 mb-2">{member.data.role} at IONIAN, ETRO, VUB</p>
-      )}
-      {member.data.affiliation && (
-        <p class="text-base opacity-50 mb-4">{member.data.affiliation}</p>
-      )}
-      {member.data.bio && (
-        <p class="text-lg mb-5 italic opacity-80">"{member.data.bio}"</p>
-      )}
-      {author?.links && (
-        <div class="flex gap-3 flex-wrap">
-          {author.links.map(link => (
-            <a
-              href={link.url}
-              target="_blank"
-              title={link.title}
-              class="size-10 inline-flex items-center justify-center rounded-xl hover:bg-primary/20 transition-all duration-300"
-            >
-              {link.icon && iconSvgs[link.icon]
-                ? <Fragment set:html={iconSvgs[link.icon]} />
-                : link.title
-              }
-            </a>
-          ))}
-        </div>
-      )}
+      {
+        member.data.role && (
+          <p class="text-xl opacity-60 mb-2">
+            {member.data.role} at IONIAN, ETRO, VUB
+          </p>
+        )
+      }
+      {
+        member.data.affiliation && (
+          <p class="text-base opacity-50 mb-4">{member.data.affiliation}</p>
+        )
+      }
+      {
+        member.data.bio && (
+          <p class="text-lg mb-5 italic opacity-80">"{member.data.bio}"</p>
+        )
+      }
+      {
+        author?.links && (
+          <div class="flex gap-3 flex-wrap">
+            {author.links.map((link) => (
+              <a
+                href={link.url}
+                target="_blank"
+                title={link.title}
+                class="size-10 inline-flex items-center justify-center rounded-xl hover:bg-primary/20 transition-all duration-300"
+              >
+                {link.icon && iconSvgs[link.icon] ? (
+                  <Fragment set:html={iconSvgs[link.icon]} />
+                ) : (
+                  link.title
+                )}
+              </a>
+            ))}
+          </div>
+        )
+      }
     </div>
-    {pic && (
-      <div class="size-56 lg:block hidden flex-shrink-0">
-        <img src={pic} alt={member.data.title} class="w-full h-full mask mask-circle object-cover" />
-      </div>
-    )}
+    {
+      pic && (
+        <div class="size-56 lg:block hidden flex-shrink-0">
+          <img
+            src={pic}
+            alt={member.data.title}
+            class="w-full h-full mask mask-circle object-cover"
+          />
+        </div>
+      )
+    }
   </section>
 
   <!-- About -->
@@ -91,33 +115,47 @@ const iconSvgs: Record<string, string> = {
   </section>
 
   <!-- News & Highlights -->
-  {news.length > 0 && (
-    <section class="py-10">
-      <h2 class="text-2xl font-bold mb-6">News & Highlights</h2>
-      <ul class="space-y-4">
-        {news.map(item => (
-          <li class="flex gap-4 items-baseline">
-            <span class="font-mono text-sm opacity-50 flex-shrink-0">{item.year}</span>
-            <span>{item.text}</span>
-          </li>
-        ))}
-      </ul>
-    </section>
-  )}
+  {
+    news.length > 0 && (
+      <section class="py-10">
+        <h2 class="text-2xl font-bold mb-6">News & Highlights</h2>
+        <ul class="space-y-4">
+          {news.map((item) => (
+            <li class="flex gap-4 items-baseline">
+              <span class="font-mono text-sm opacity-50 flex-shrink-0">
+                {item.year}
+              </span>
+              <span>{item.text}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
 
   <!-- Prev / Next -->
   <nav class="flex justify-between pt-6 border-t border-base-300 gap-4">
-    {prev && (
-      <a href={`/team/${prev.slug}/`} class="nav-prev-next flex-1 flex flex-col p-4 rounded-lg border border-base-300 transition-all no-underline">
-        <span class="text-xs opacity-50 mb-1">&larr; Previous</span>
-        <span class="font-semibold">{prev.data.title}</span>
-      </a>
-    )}
-    {next && (
-      <a href={`/team/${next.slug}/`} class="nav-prev-next flex-1 flex flex-col items-end p-4 rounded-lg border border-base-300 transition-all text-right no-underline">
-        <span class="text-xs opacity-50 mb-1">Next &rarr;</span>
-        <span class="font-semibold">{next.data.title}</span>
-      </a>
-    )}
+    {
+      prev && (
+        <a
+          href={`/team/${prev.slug}/`}
+          class="nav-prev-next flex-1 flex flex-col p-4 rounded-lg border border-base-300 transition-all no-underline"
+        >
+          <span class="text-xs opacity-50 mb-1">&larr; Previous</span>
+          <span class="font-semibold">{prev.data.title}</span>
+        </a>
+      )
+    }
+    {
+      next && (
+        <a
+          href={`/team/${next.slug}/`}
+          class="nav-prev-next flex-1 flex flex-col items-end p-4 rounded-lg border border-base-300 transition-all text-right no-underline"
+        >
+          <span class="text-xs opacity-50 mb-1">Next &rarr;</span>
+          <span class="font-semibold">{next.data.title}</span>
+        </a>
+      )
+    }
   </nav>
 </MemberLayout>

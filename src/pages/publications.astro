@@ -5,21 +5,33 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const dataDir = path.resolve('src/data');
-const journalHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_journal.md'), 'utf-8'));
-const conferenceHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_conference.md'), 'utf-8'));
-const thesesHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_theses.md'), 'utf-8'));
+const journalHtml = marked.parse(
+  fs.readFileSync(path.join(dataDir, 'pub_journal.md'), 'utf-8'),
+);
+const conferenceHtml = marked.parse(
+  fs.readFileSync(path.join(dataDir, 'pub_conference.md'), 'utf-8'),
+);
+const thesesHtml = marked.parse(
+  fs.readFileSync(path.join(dataDir, 'pub_theses.md'), 'utf-8'),
+);
 ---
 
 <BaseLayout title="Publications">
   <div class="page-wrapper">
     <h1 class="page-title">Publications</h1>
     <p class="mb-6 opacity-70 text-sm italic">
-      Note: the archived version of some publications may only become publicly accessible after the publisher's embargo period has ended.
+      Note: the archived version of some publications may only become publicly
+      accessible after the publisher's embargo period has ended.
     </p>
 
     <!-- Search & Filter -->
     <div class="pub-filters">
-      <input type="text" id="pub-search" class="pub-search" placeholder="Search by author or title..." />
+      <input
+        type="text"
+        id="pub-search"
+        class="pub-search"
+        placeholder="Search by author or title..."
+      />
       <select id="pub-year-filter" class="pub-year-select">
         <option value="">All Years</option>
       </select>
@@ -27,7 +39,9 @@ const thesesHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_theses.m
 
     <div class="pub-tabs">
       <div class="pub-tab-bar">
-        <button class="pub-tab active" data-tab="conference">Conference Papers</button>
+        <button class="pub-tab active" data-tab="conference"
+          >Conference Papers</button
+        >
         <button class="pub-tab" data-tab="journal">Journal Papers</button>
         <button class="pub-tab" data-tab="theses">PhD Theses</button>
       </div>
@@ -50,27 +64,35 @@ const thesesHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_theses.m
 
 <script>
   // Tabs
-  document.querySelectorAll('.pub-tab').forEach(btn => {
+  document.querySelectorAll('.pub-tab').forEach((btn) => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.pub-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.pub-panel').forEach(p => p.classList.remove('active'));
+      document
+        .querySelectorAll('.pub-tab')
+        .forEach((t) => t.classList.remove('active'));
+      document
+        .querySelectorAll('.pub-panel')
+        .forEach((p) => p.classList.remove('active'));
       btn.classList.add('active');
-      document.querySelector(`.pub-panel[data-panel="${btn.dataset.tab}"]`)?.classList.add('active');
+      document
+        .querySelector(`.pub-panel[data-panel="${btn.dataset.tab}"]`)
+        ?.classList.add('active');
       applyFilters();
     });
   });
 
   // Extract year from a list item
   function getYear(li: Element): string | null {
-    const matches = li.textContent?.match(/(?:,\s*|')\s*((?:19|20)\d{2})\s*[.\s)]*$/m);
+    const matches = li.textContent?.match(
+      /(?:,\s*|')\s*((?:19|20)\d{2})\s*[.\s)]*$/m,
+    );
     return matches ? matches[1] : null;
   }
 
   // Turn each <li> into a card with buttons
-  document.querySelectorAll('.pub-list li').forEach(li => {
+  document.querySelectorAll('.pub-list li').forEach((li) => {
     // Extract links from anchors inside the li
     const links: Record<string, string> = {};
-    li.querySelectorAll('a').forEach(a => {
+    li.querySelectorAll('a').forEach((a) => {
       const text = a.textContent?.trim().toLowerCase() ?? '';
       if (text === 'arxiv' || text === 'paper') links.paper = a.href;
       else if (text === 'project') links.project = a.href;
@@ -78,7 +100,7 @@ const thesesHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_theses.m
     });
 
     // Remove the bracket-wrapped links from text (e.g. [ArXiv] [Project] [Code])
-    li.querySelectorAll('a').forEach(a => {
+    li.querySelectorAll('a').forEach((a) => {
       const text = a.textContent?.trim().toLowerCase() ?? '';
       if (['arxiv', 'paper', 'project', 'code', 'github'].includes(text)) {
         // Remove the anchor and surrounding brackets
@@ -86,7 +108,9 @@ const thesesHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_theses.m
         if (parent) {
           const html = parent.innerHTML;
           // Remove patterns like [<a...>ArXiv</a>] including surrounding whitespace
-          parent.innerHTML = html.replace(/\s*\[<a[^>]*>[^<]*<\/a>\]\s*/gi, ' ').trim();
+          parent.innerHTML = html
+            .replace(/\s*\[<a[^>]*>[^<]*<\/a>\]\s*/gi, ' ')
+            .trim();
         }
       }
     });
@@ -128,30 +152,43 @@ const thesesHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_theses.m
   // Collect years
   const allItems = document.querySelectorAll('.pub-list li');
   const years = new Set<string>();
-  allItems.forEach(li => {
+  allItems.forEach((li) => {
     const y = getYear(li);
     if (y) years.add(y);
   });
 
-  const yearSelect = document.getElementById('pub-year-filter') as HTMLSelectElement;
-  [...years].sort((a, b) => Number(b) - Number(a)).forEach(y => {
-    const opt = document.createElement('option');
-    opt.value = y;
-    opt.textContent = y;
-    yearSelect.appendChild(opt);
-  });
+  const yearSelect = document.getElementById(
+    'pub-year-filter',
+  ) as HTMLSelectElement;
+  [...years]
+    .sort((a, b) => Number(b) - Number(a))
+    .forEach((y) => {
+      const opt = document.createElement('option');
+      opt.value = y;
+      opt.textContent = y;
+      yearSelect.appendChild(opt);
+    });
 
   // Pagination state per panel
   const PER_PAGE = 10;
-  const currentPage: Record<string, number> = { journal: 1, conference: 1, theses: 1 };
+  const currentPage: Record<string, number> = {
+    journal: 1,
+    conference: 1,
+    theses: 1,
+  };
 
   function getActivePanel(): string {
-    return document.querySelector('.pub-tab.active')?.getAttribute('data-tab') ?? 'journal';
+    return (
+      document.querySelector('.pub-tab.active')?.getAttribute('data-tab') ??
+      'journal'
+    );
   }
 
   // Filter + paginate
   function applyFilters() {
-    const query = (document.getElementById('pub-search') as HTMLInputElement).value.toLowerCase();
+    const query = (
+      document.getElementById('pub-search') as HTMLInputElement
+    ).value.toLowerCase();
     const year = yearSelect.value;
     const panel = getActivePanel();
 
@@ -168,7 +205,7 @@ const thesesHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_theses.m
     const items = panelEl.querySelectorAll('.pub-list li');
     const filtered: HTMLElement[] = [];
 
-    items.forEach(li => {
+    items.forEach((li) => {
       const el = li as HTMLElement;
       const text = el.textContent?.toLowerCase() ?? '';
       const matchesSearch = !query || text.includes(query);
@@ -186,7 +223,7 @@ const thesesHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_theses.m
     const start = (page - 1) * PER_PAGE;
     const end = start + PER_PAGE;
 
-    filtered.slice(start, end).forEach(el => {
+    filtered.slice(start, end).forEach((el) => {
       el.style.display = '';
     });
 
@@ -194,7 +231,9 @@ const thesesHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_theses.m
   }
 
   function renderPagination(panel: string, page: number, totalPages: number) {
-    const container = document.querySelector(`.pub-pagination[data-pag="${panel}"]`);
+    const container = document.querySelector(
+      `.pub-pagination[data-pag="${panel}"]`,
+    );
     if (!container) return;
     container.innerHTML = '';
 
@@ -204,14 +243,20 @@ const thesesHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_theses.m
     prev.textContent = 'Prev';
     prev.className = 'pub-page-btn';
     prev.disabled = page <= 1;
-    prev.addEventListener('click', () => { currentPage[panel]--; rerun(); });
+    prev.addEventListener('click', () => {
+      currentPage[panel]--;
+      rerun();
+    });
     container.appendChild(prev);
 
     for (let i = 1; i <= totalPages; i++) {
       const btn = document.createElement('button');
       btn.textContent = String(i);
       btn.className = 'pub-page-btn' + (i === page ? ' active' : '');
-      btn.addEventListener('click', () => { currentPage[panel] = i; rerun(); });
+      btn.addEventListener('click', () => {
+        currentPage[panel] = i;
+        rerun();
+      });
       container.appendChild(btn);
     }
 
@@ -219,17 +264,24 @@ const thesesHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_theses.m
     next.textContent = 'Next';
     next.className = 'pub-page-btn';
     next.disabled = page >= totalPages;
-    next.addEventListener('click', () => { currentPage[panel]++; rerun(); });
+    next.addEventListener('click', () => {
+      currentPage[panel]++;
+      rerun();
+    });
     container.appendChild(next);
   }
 
   function rerun() {
-    const query = (document.getElementById('pub-search') as HTMLInputElement).value.toLowerCase();
+    const query = (
+      document.getElementById('pub-search') as HTMLInputElement
+    ).value.toLowerCase();
     const year = yearSelect.value;
     paginate(getActivePanel(), query, year);
   }
 
-  document.getElementById('pub-search')?.addEventListener('input', applyFilters);
+  document
+    .getElementById('pub-search')
+    ?.addEventListener('input', applyFilters);
   yearSelect.addEventListener('change', applyFilters);
 
   // Initial pagination
@@ -287,7 +339,9 @@ const thesesHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_theses.m
     opacity: 0.5;
     border-bottom: 3px solid transparent;
     margin-bottom: -2px;
-    transition: opacity 0.15s, border-color 0.15s;
+    transition:
+      opacity 0.15s,
+      border-color 0.15s;
   }
   .pub-tab:hover {
     opacity: 0.8;
@@ -315,7 +369,7 @@ const thesesHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_theses.m
     transition: box-shadow 0.2s;
   }
   .pub-list li.pub-card:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
   .pub-card-btns {
     display: flex;
@@ -378,42 +432,42 @@ const thesesHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_theses.m
   }
 
   /* Dark mode overrides */
-  [data-theme="dark"] .pub-search {
+  [data-theme='dark'] .pub-search {
     border-color: #444;
     background: #1a1a1a;
   }
-  [data-theme="dark"] .pub-search:focus {
+  [data-theme='dark'] .pub-search:focus {
     border-color: #6b8afd;
   }
-  [data-theme="dark"] .pub-year-select {
+  [data-theme='dark'] .pub-year-select {
     border-color: #444;
     background: #1a1a1a;
   }
-  [data-theme="dark"] .pub-year-select:focus {
+  [data-theme='dark'] .pub-year-select:focus {
     border-color: #6b8afd;
   }
-  [data-theme="dark"] .pub-tab-bar {
+  [data-theme='dark'] .pub-tab-bar {
     border-bottom-color: #333;
   }
-  [data-theme="dark"] .pub-tab {
+  [data-theme='dark'] .pub-tab {
     color: #ccc;
   }
-  [data-theme="dark"] .pub-list li.pub-card {
+  [data-theme='dark'] .pub-list li.pub-card {
     background: #1a1a1a;
     border-color: #333;
   }
-  [data-theme="dark"] .pub-list li.pub-card:hover {
-    box-shadow: 0 4px 12px rgba(255,255,255,0.06);
+  [data-theme='dark'] .pub-list li.pub-card:hover {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.06);
   }
-  [data-theme="dark"] .pub-btn-disabled {
+  [data-theme='dark'] .pub-btn-disabled {
     background: #2a2a2a;
     color: #555;
   }
-  [data-theme="dark"] .pub-page-btn {
+  [data-theme='dark'] .pub-page-btn {
     border-color: #444;
     background: #1a1a1a;
   }
-  [data-theme="dark"] .pub-page-btn:hover:not(:disabled) {
+  [data-theme='dark'] .pub-page-btn:hover:not(:disabled) {
     background: #2a2a2a;
   }
 </style>

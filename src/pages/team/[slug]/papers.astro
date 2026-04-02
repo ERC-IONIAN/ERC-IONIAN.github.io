@@ -5,10 +5,15 @@ import { getPublicationsForMember } from '../../../utils/publications';
 
 export async function getStaticPaths() {
   const roleOrder: Record<string, number> = {
-    "Professor": 0, "Post Doc Researcher": 1, "PhD Candidate": 2, "Research Scientist": 3,
+    Professor: 0,
+    'Post Doc Researcher': 1,
+    'PhD Candidate': 2,
+    'Research Scientist': 3,
   };
-  const members = (await getCollection('team')).sort((a, b) =>
-    (roleOrder[a.data.role ?? ''] ?? 99) - (roleOrder[b.data.role ?? ''] ?? 99)
+  const members = (await getCollection('team')).sort(
+    (a, b) =>
+      (roleOrder[a.data.role ?? ''] ?? 99) -
+      (roleOrder[b.data.role ?? ''] ?? 99),
   );
   return members.map((m, i) => ({
     params: { slug: m.slug },
@@ -37,55 +42,100 @@ const pubs = getPublicationsForMember(member.data.title);
   links={author?.links}
   activeTab="papers"
 >
-  <h2 class="text-2xl font-bold mb-6 border-b border-base-300 pb-2">Publications</h2>
+  <h2 class="text-2xl font-bold mb-6 border-b border-base-300 pb-2">
+    Publications
+  </h2>
 
-  {pubs.length === 0 ? (
-    <p class="opacity-60">No publications found.</p>
-  ) : (
-    <div class="member-pub-list">
-      {pubs.map(pub => (
-        <div class="member-pub-card p-5 rounded-lg border border-base-300 transition-all hover:shadow-md">
-          <h3 class="font-semibold text-lg">{pub.title}</h3>
-          <p class="text-sm opacity-60 mt-1">{pub.authors}</p>
-          <p class="text-sm opacity-50 italic mt-1">
-            {pub.venue}{pub.venue && pub.year ? ', ' : ''}{pub.year}
-          </p>
-          <div class="flex gap-2 mt-3">
-            {pub.links.project ? (
-              <a href={pub.links.project} target="_blank" rel="noopener noreferrer" class="pub-member-btn pub-member-btn-active">Project</a>
-            ) : (
-              <span class="pub-member-btn pub-member-btn-disabled">Project</span>
-            )}
-            {pub.links.paper ? (
-              <a href={pub.links.paper} target="_blank" rel="noopener noreferrer" class="pub-member-btn pub-member-btn-active">Paper</a>
-            ) : (
-              <span class="pub-member-btn pub-member-btn-disabled">Paper</span>
-            )}
-            {pub.links.code ? (
-              <a href={pub.links.code} target="_blank" rel="noopener noreferrer" class="pub-member-btn pub-member-btn-active">Code</a>
-            ) : (
-              <span class="pub-member-btn pub-member-btn-disabled">Code</span>
-            )}
-          </div>
+  {
+    pubs.length === 0 ? (
+      <p class="opacity-60">No publications found.</p>
+    ) : (
+      <>
+        <div class="member-pub-list">
+          {pubs.map((pub) => (
+            <div class="member-pub-card p-5 rounded-lg border border-base-300 transition-all hover:shadow-md">
+              <h3 class="font-semibold text-lg">{pub.title}</h3>
+              <p class="text-sm opacity-60 mt-1">{pub.authors}</p>
+              <p class="text-sm opacity-50 italic mt-1">
+                {pub.venue}
+                {pub.venue && pub.year ? ', ' : ''}
+                {pub.year}
+              </p>
+              <div class="flex gap-2 mt-3">
+                {pub.links.project ? (
+                  <a
+                    href={pub.links.project}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="pub-member-btn pub-member-btn-active"
+                  >
+                    Project
+                  </a>
+                ) : (
+                  <span class="pub-member-btn pub-member-btn-disabled">
+                    Project
+                  </span>
+                )}
+                {pub.links.paper ? (
+                  <a
+                    href={pub.links.paper}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="pub-member-btn pub-member-btn-active"
+                  >
+                    Paper
+                  </a>
+                ) : (
+                  <span class="pub-member-btn pub-member-btn-disabled">
+                    Paper
+                  </span>
+                )}
+                {pub.links.code ? (
+                  <a
+                    href={pub.links.code}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="pub-member-btn pub-member-btn-active"
+                  >
+                    Code
+                  </a>
+                ) : (
+                  <span class="pub-member-btn pub-member-btn-disabled">
+                    Code
+                  </span>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-    <div class="member-pub-pagination"></div>
-  )}
+        <div class="member-pub-pagination" />
+      </>
+    )
+  }
 
   <nav class="flex justify-between pt-6 mt-10 border-t border-base-300 gap-4">
-    {prev && (
-      <a href={`/team/${prev.slug}/papers/`} class="nav-prev-next flex-1 flex flex-col p-4 rounded-lg border border-base-300 transition-all no-underline">
-        <span class="text-xs opacity-50 mb-1">&larr; Previous</span>
-        <span class="font-semibold">{prev.data.title}</span>
-      </a>
-    )}
-    {next && (
-      <a href={`/team/${next.slug}/papers/`} class="nav-prev-next flex-1 flex flex-col items-end p-4 rounded-lg border border-base-300 transition-all text-right no-underline">
-        <span class="text-xs opacity-50 mb-1">Next &rarr;</span>
-        <span class="font-semibold">{next.data.title}</span>
-      </a>
-    )}
+    {
+      prev && (
+        <a
+          href={`/team/${prev.slug}/papers/`}
+          class="nav-prev-next flex-1 flex flex-col p-4 rounded-lg border border-base-300 transition-all no-underline"
+        >
+          <span class="text-xs opacity-50 mb-1">&larr; Previous</span>
+          <span class="font-semibold">{prev.data.title}</span>
+        </a>
+      )
+    }
+    {
+      next && (
+        <a
+          href={`/team/${next.slug}/papers/`}
+          class="nav-prev-next flex-1 flex flex-col items-end p-4 rounded-lg border border-base-300 transition-all text-right no-underline"
+        >
+          <span class="text-xs opacity-50 mb-1">Next &rarr;</span>
+          <span class="font-semibold">{next.data.title}</span>
+        </a>
+      )
+    }
   </nav>
 </MemberLayout>
 
@@ -114,14 +164,20 @@ const pubs = getPublicationsForMember(member.data.title);
     prev.textContent = 'Prev';
     prev.className = 'pub-page-btn';
     prev.disabled = currentPage <= 1;
-    prev.addEventListener('click', () => { currentPage--; render(); });
+    prev.addEventListener('click', () => {
+      currentPage--;
+      render();
+    });
     container.appendChild(prev);
 
     for (let i = 1; i <= totalPages; i++) {
       const btn = document.createElement('button');
       btn.textContent = String(i);
       btn.className = 'pub-page-btn' + (i === currentPage ? ' active' : '');
-      btn.addEventListener('click', () => { currentPage = i; render(); });
+      btn.addEventListener('click', () => {
+        currentPage = i;
+        render();
+      });
       container.appendChild(btn);
     }
 
@@ -129,7 +185,10 @@ const pubs = getPublicationsForMember(member.data.title);
     next.textContent = 'Next';
     next.className = 'pub-page-btn';
     next.disabled = currentPage >= totalPages;
-    next.addEventListener('click', () => { currentPage++; render(); });
+    next.addEventListener('click', () => {
+      currentPage++;
+      render();
+    });
     container.appendChild(next);
   }
 
@@ -198,22 +257,22 @@ const pubs = getPublicationsForMember(member.data.title);
   }
 
   /* Dark mode overrides */
-  [data-theme="dark"] .member-pub-card {
+  [data-theme='dark'] .member-pub-card {
     background: #1a1a1a;
     border-color: #333;
   }
-  [data-theme="dark"] .member-pub-card:hover {
-    box-shadow: 0 4px 12px rgba(255,255,255,0.06);
+  [data-theme='dark'] .member-pub-card:hover {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.06);
   }
-  [data-theme="dark"] .pub-member-btn-disabled {
+  [data-theme='dark'] .pub-member-btn-disabled {
     background: #2a2a2a;
     color: #555;
   }
-  [data-theme="dark"] .pub-page-btn {
+  [data-theme='dark'] .pub-page-btn {
     border-color: #444;
     background: #1a1a1a;
   }
-  [data-theme="dark"] .pub-page-btn:hover:not(:disabled) {
+  [data-theme='dark'] .pub-page-btn:hover:not(:disabled) {
     background: #2a2a2a;
   }
 </style>

@@ -1,20 +1,28 @@
 import { defineCollection, z } from 'astro:content';
 
-const imageSchema = z.object({
-  path: z.string().optional(),
-  thumbnail: z.string().optional(),
-}).optional();
+const imageSchema = z
+  .object({
+    path: z.string().optional(),
+    thumbnail: z.string().optional(),
+  })
+  .optional();
 
-const authorSchema = z.object({
-  name: z.string().optional(),
-  picture: z.string().optional(),
-  email: z.string().optional(),
-  links: z.array(z.object({
-    title: z.string(),
-    url: z.string(),
-    icon: z.string().optional(),
-  })).optional(),
-}).optional();
+const authorSchema = z
+  .object({
+    name: z.string().optional(),
+    picture: z.string().optional(),
+    email: z.string().optional(),
+    links: z
+      .array(
+        z.object({
+          title: z.string(),
+          url: z.string(),
+          icon: z.string().optional(),
+        }),
+      )
+      .optional(),
+  })
+  .optional();
 
 const team = defineCollection({
   type: 'content',
@@ -26,31 +34,51 @@ const team = defineCollection({
     author: authorSchema,
     affiliation: z.string().optional(),
     bio: z.string().optional(),
-    research_areas: z.array(z.object({
-      name: z.string(),
-      description: z.string(),
-    })).optional(),
-    education: z.array(z.object({
-      degree: z.string(),
-      institution: z.string(),
-      location: z.string(),
-      years: z.string(),
-    })).optional(),
-    experience: z.array(z.object({
-      title: z.string(),
-      institution: z.string(),
-      location: z.string(),
-      years: z.string(),
-    })).optional(),
-    current_projects: z.array(z.object({
-      name: z.string(),
-      description: z.string(),
-    })).optional(),
+    research_areas: z
+      .array(
+        z.object({
+          name: z.string(),
+          description: z.string(),
+        }),
+      )
+      .optional(),
+    education: z
+      .array(
+        z.object({
+          degree: z.string(),
+          institution: z.string(),
+          location: z.string(),
+          years: z.string(),
+        }),
+      )
+      .optional(),
+    experience: z
+      .array(
+        z.object({
+          title: z.string(),
+          institution: z.string(),
+          location: z.string(),
+          years: z.string(),
+        }),
+      )
+      .optional(),
+    current_projects: z
+      .array(
+        z.object({
+          name: z.string(),
+          description: z.string(),
+        }),
+      )
+      .optional(),
     service: z.array(z.string()).optional(),
-    news: z.array(z.object({
-      year: z.string(),
-      text: z.string(),
-    })).optional(),
+    news: z
+      .array(
+        z.object({
+          year: z.string(),
+          text: z.string(),
+        }),
+      )
+      .optional(),
   }),
 });
 

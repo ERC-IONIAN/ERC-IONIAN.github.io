@@ -1,6 +1,6 @@
 ---
-title: "Pourya Behmandpoor"
-role: "Research Scientist"
+title: 'Pourya Behmandpoor'
+role: 'Research Scientist'
 date: 2001-02-01
 image:
   path: /images/empty_banner.png
@@ -13,7 +13,7 @@ author:
     - title: Email
       url: mailto:Pourya.Behmandpoor@vub.be
       icon: email
-affiliation: "Vrije Universiteit Brussel — ETRO · Office PL9.2.34"
+affiliation: 'Vrije Universiteit Brussel — ETRO · Office PL9.2.34'
 ---
 
 Pourya Behmandpoor is a **Research Scientist** in the IONIAN group, supervised by [Nikos Deligiannis](/team/nikos_deligiannis/).

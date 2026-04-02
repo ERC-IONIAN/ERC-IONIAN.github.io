@@ -3,13 +3,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import EntryCard from '../components/EntryCard.astro';
 import { getCollection } from 'astro:content';
 
-const topics = (await getCollection('topics')).sort((a, b) =>
-  (a.data.date?.getTime() ?? 0) - (b.data.date?.getTime() ?? 0)
+const topics = (await getCollection('topics')).sort(
+  (a, b) => (a.data.date?.getTime() ?? 0) - (b.data.date?.getTime() ?? 0),
 );
 
 const author = {
-  name: "Nikos Deligiannis",
-  picture: "/images/nikos_circle.jpg",
+  name: 'Nikos Deligiannis',
+  picture: '/images/nikos_circle.jpg',
 };
 ---
 
@@ -29,15 +29,30 @@ const author = {
     </div>
     <!-- Scroll Indicator -->
     <div class="banner-scroll">
-      <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+      <svg
+        width="24"
+        height="24"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
       </svg>
     </div>
   </div>
 
   <div class="page-wrapper">
     <div class="flex flex-col items-center mb-6">
-      <h1 class="text-3xl font-bold mt-4" style="font-family: 'Lora', Georgia, serif;">IONIAN Team</h1>
+      <h1
+        class="text-3xl font-bold mt-4"
+        style="font-family: 'Lora', Georgia, serif;"
+      >
+        IONIAN Team
+      </h1>
     </div>
 
     <div class="home-author-card">
@@ -45,53 +60,116 @@ const author = {
         <img class="home-author-pic" src={author.picture} alt={author.name} />
       </a>
       <div class="home-author-name">
-        <em>by</em> <a href="/team/nikos_deligiannis/">{author.name}</a>
+        <em>by</em>
+        <a href="/team/nikos_deligiannis/">{author.name}</a>
       </div>
       <ul class="home-author-links">
         <li>
-          <a href="mailto:Nikos.Deligiannis@vub.be" target="_blank" title="Email">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          <a
+            href="mailto:Nikos.Deligiannis@vub.be"
+            target="_blank"
+            title="Email"
+          >
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"
+              ><path
+                d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+              ></path></svg
+            >
           </a>
         </li>
         <li>
-          <a href="https://twitter.com/prof_ndeligia" target="_blank" title="Twitter">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M22.46 6c-.77.35-1.6.58-2.46.69a4.3 4.3 0 001.88-2.38 8.59 8.59 0 01-2.72 1.04 4.28 4.28 0 00-7.32 3.91A12.16 12.16 0 013.16 4.86a4.28 4.28 0 001.32 5.71 4.24 4.24 0 01-1.94-.53v.05a4.28 4.28 0 003.43 4.19 4.28 4.28 0 01-1.93.07 4.29 4.29 0 004 2.97A8.59 8.59 0 012 19.54a12.13 12.13 0 006.56 1.92c7.88 0 12.2-6.53 12.2-12.2 0-.19 0-.37-.01-.56A8.72 8.72 0 0024 5.06a8.57 8.57 0 01-2.54.7z"/></svg>
+          <a
+            href="https://twitter.com/prof_ndeligia"
+            target="_blank"
+            title="Twitter"
+          >
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"
+              ><path
+                d="M22.46 6c-.77.35-1.6.58-2.46.69a4.3 4.3 0 001.88-2.38 8.59 8.59 0 01-2.72 1.04 4.28 4.28 0 00-7.32 3.91A12.16 12.16 0 013.16 4.86a4.28 4.28 0 001.32 5.71 4.24 4.24 0 01-1.94-.53v.05a4.28 4.28 0 003.43 4.19 4.28 4.28 0 01-1.93.07 4.29 4.29 0 004 2.97A8.59 8.59 0 012 19.54a12.13 12.13 0 006.56 1.92c7.88 0 12.2-6.53 12.2-12.2 0-.19 0-.37-.01-.56A8.72 8.72 0 0024 5.06a8.57 8.57 0 01-2.54.7z"
+              ></path></svg
+            >
           </a>
         </li>
         <li>
-          <a href="https://linkedin.com/in/nikos-deligiannis-a3b70a18" target="_blank" title="LinkedIn">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14m-.5 15.5v-5.3a3.26 3.26 0 00-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 011.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 001.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 00-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+          <a
+            href="https://linkedin.com/in/nikos-deligiannis-a3b70a18"
+            target="_blank"
+            title="LinkedIn"
+          >
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"
+              ><path
+                d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14m-.5 15.5v-5.3a3.26 3.26 0 00-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 011.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 001.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 00-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"
+              ></path></svg
+            >
           </a>
         </li>
       </ul>
     </div>
 
     <div class="prose max-w-none mx-auto text-center">
-          <p>
-            The IONIAN group at <a href="https://www.etrovub.be" target="_blank">ETRO</a>, <a href="https://www.vub.be" target="_blank">Vrije Universiteit Brussel (VUB)</a> carries out research in <strong>interpretable machine learning, signal processing, and explainable AI</strong>. The group is headed by <a href="/team/nikos_deligiannis/">Nikos Deligiannis</a> and is part of the Department of Electronics and Informatics (ETRO) at VUB, and affiliated to <a href="https://www.imec.be" target="_blank">imec</a>, Belgium.
-          </p>
+      <p>
+        The IONIAN group at <a href="https://www.etrovub.be" target="_blank"
+          >ETRO</a
+        >, <a href="https://www.vub.be" target="_blank"
+          >Vrije Universiteit Brussel (VUB)</a
+        > carries out research in <strong
+          >interpretable machine learning, signal processing, and explainable AI</strong
+        >. The group is headed by <a href="/team/nikos_deligiannis/"
+          >Nikos Deligiannis</a
+        > and is part of the Department of Electronics and Informatics (ETRO) at VUB,
+        and affiliated to <a href="https://www.imec.be" target="_blank">imec</a
+        >, Belgium.
+      </p>
 
-          <h2>Nikos Deligiannis</h2>
-          <p>
-            <a href="/team/nikos_deligiannis/">Nikos Deligiannis</a> is a Professor at <a href="https://www.etrovub.be" target="_blank">ETRO</a>, <a href="https://www.vub.be" target="_blank">VUB</a>, the holder of the 2024–2025 Francqui Research Professorship on Trustworthy AI, and a Principal Investigator at <a href="https://www.imec.be" target="_blank">imec</a>, Belgium. He received a <strong>2024 ERC Consolidator Grant</strong> to conduct research at the intersection between interpretable/explainable AI and multiterminal compression for autonomous vehicles. His current research focuses on interpretable and explainable AI, multidimensional signal processing, computer vision, and distributed/federated AI for automotive and healthcare applications.
-          </p>
-          <p>
-            He received his Diploma in Electrical and Computer Engineering from the <a href="https://www.upatras.gr/en/" target="_blank">University of Patras</a>, Greece (2006) and his Ph.D. in Engineering Sciences from <a href="https://www.vub.be" target="_blank">VUB</a> (2012). From 2013 to 2015, he was a Senior Researcher at <a href="https://www.ucl.ac.uk" target="_blank">University College London</a>, UK. He is a member of IEEE and EURASIP, served as Chair of the EURASIP Technical Area Committee on Signal and Data Analytics for Machine Learning (2021–2023), and serves as an Associate Editor for the IEEE Transactions on Image Processing.
-          </p>
+      <h2>Nikos Deligiannis</h2>
+      <p>
+        <a href="/team/nikos_deligiannis/">Nikos Deligiannis</a> is a Professor at
+        <a href="https://www.etrovub.be" target="_blank">ETRO</a>, <a
+          href="https://www.vub.be"
+          target="_blank">VUB</a
+        >, the holder of the 2024–2025 Francqui Research Professorship on
+        Trustworthy AI, and a Principal Investigator at <a
+          href="https://www.imec.be"
+          target="_blank">imec</a
+        >, Belgium. He received a <strong>2024 ERC Consolidator Grant</strong> to
+        conduct research at the intersection between interpretable/explainable AI
+        and multiterminal compression for autonomous vehicles. His current research
+        focuses on interpretable and explainable AI, multidimensional signal processing,
+        computer vision, and distributed/federated AI for automotive and healthcare
+        applications.
+      </p>
+      <p>
+        He received his Diploma in Electrical and Computer Engineering from the <a
+          href="https://www.upatras.gr/en/"
+          target="_blank">University of Patras</a
+        >, Greece (2006) and his Ph.D. in Engineering Sciences from <a
+          href="https://www.vub.be"
+          target="_blank">VUB</a
+        > (2012). From 2013 to 2015, he was a Senior Researcher at <a
+          href="https://www.ucl.ac.uk"
+          target="_blank">University College London</a
+        >, UK. He is a member of IEEE and EURASIP, served as Chair of the
+        EURASIP Technical Area Committee on Signal and Data Analytics for
+        Machine Learning (2021–2023), and serves as an Associate Editor for the
+        IEEE Transactions on Image Processing.
+      </p>
 
-          <h2>Research Topics</h2>
-          <p>The IONIAN group engages in research activities on the following topics:</p>
-        </div>
+      <h2>Research Topics</h2>
+      <p>
+        The IONIAN group engages in research activities on the following topics:
+      </p>
+    </div>
 
-        <div class="entry-grid mt-6">
-          {topics.map(topic => (
-            <EntryCard
-              title={topic.data.title}
-              href={`/topics/${topic.slug}/`}
-              thumbnail={topic.data.image?.thumbnail}
-            />
-          ))}
-        </div>
-      </div>
+    <div class="entry-grid mt-6">
+      {
+        topics.map((topic) => (
+          <EntryCard
+            title={topic.data.title}
+            href={`/topics/${topic.slug}/`}
+            thumbnail={topic.data.image?.thumbnail}
+          />
+        ))
+      }
+    </div>
   </div>
 </BaseLayout>

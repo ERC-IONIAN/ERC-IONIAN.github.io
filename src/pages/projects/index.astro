@@ -3,8 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import EntryCard from '../../components/EntryCard.astro';
 import { getCollection } from 'astro:content';
 
-const projects = (await getCollection('projects')).sort((a, b) =>
-  (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0)
+const projects = (await getCollection('projects')).sort(
+  (a, b) => (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0),
 );
 ---
 
@@ -13,14 +13,16 @@ const projects = (await getCollection('projects')).sort((a, b) =>
     <h1 class="page-title">Selected Projects</h1>
 
     <div class="entry-grid">
-      {projects.map(p => (
-        <EntryCard
-          title={p.data.title}
-          href={p.data.link || `/projects/${p.slug}/`}
-          thumbnail={p.data.image?.thumbnail}
-          isLogo={!!p.data.link}
-        />
-      ))}
+      {
+        projects.map((p) => (
+          <EntryCard
+            title={p.data.title}
+            href={p.data.link || `/projects/${p.slug}/`}
+            thumbnail={p.data.image?.thumbnail}
+            isLogo={!!p.data.link}
+          />
+        ))
+      }
     </div>
   </div>
 </BaseLayout>
