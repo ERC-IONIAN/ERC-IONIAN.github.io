@@ -1,11 +1,48 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import EntryCard from '../components/EntryCard.astro';
-import { getCollection } from 'astro:content';
 
-const topics = (await getCollection('topics')).sort(
-  (a, b) => (a.data.date?.getTime() ?? 0) - (b.data.date?.getTime() ?? 0),
-);
+const newsItems = [
+  {
+    date: 'Mar 2025',
+    tag: 'Publication',
+    title: '2 papers accepted at CVPR 2025',
+    description:
+      'One paper at CVPR Findings and one at the CVPR Workshop on Distillation of Foundation Models for Autonomous Driving.',
+    link: '/publications/',
+  },
+  {
+    date: 'Jan 2025',
+    tag: 'Project',
+    title: 'ENACT Horizon Europe project kicks off',
+    description:
+      'IONIAN joins the ENACT consortium on explainable AI for health applications (2025–2028).',
+    link: 'https://enact-he.eu/',
+  },
+  {
+    date: 'Oct 2024',
+    tag: 'Grant',
+    title: 'ERC Consolidator Grant awarded',
+    description:
+      'Nikos Deligiannis receives a 2024 ERC Consolidator Grant for research on interpretable AI and multiterminal compression for autonomous vehicles.',
+    link: 'https://www.vub.be/en/news/two-vub-researchers-receive-prestigious-erc-consolidator-grant-for-pioneering-research',
+  },
+  {
+    date: 'Aug 2024',
+    tag: 'Award',
+    title: 'Best Student Paper at EUSIPCO 2024',
+    description:
+      'Esther Rodrigo Bonet wins the Best Student Paper Award for "Physics-Guided Graph Convolutional Deep Equilibrium Networks for Environmental Data".',
+    link: '/team/esther_rodrigo/',
+  },
+];
+
+const tagColors: Record<string, string> = {
+  Publication: 'badge-primary',
+  Talk: 'badge-secondary',
+  Project: 'badge-accent',
+  Grant: 'badge-warning',
+  Award: 'badge-success',
+};
 
 const author = {
   name: 'Nikos Deligiannis',
@@ -153,23 +190,92 @@ const author = {
         Machine Learning (2021–2023), and serves as an Associate Editor for the
         IEEE Transactions on Image Processing.
       </p>
-
-      <h2>Research Topics</h2>
-      <p>
-        The IONIAN group engages in research activities on the following topics:
-      </p>
     </div>
 
-    <div class="entry-grid mt-6">
-      {
-        topics.map((topic) => (
-          <EntryCard
-            title={topic.data.title}
-            href={`/topics/${topic.slug}/`}
-            thumbnail={topic.data.image?.thumbnail}
-          />
-        ))
-      }
+    <!-- News Feed -->
+    <div class="mt-12 mb-6">
+      <h2
+        class="text-3xl font-bold text-center mb-8"
+        style="font-family: 'Lora', Georgia, serif;"
+      >
+        Latest News
+      </h2>
+      <div class="news-feed" id="news-feed">
+        {
+          newsItems.map((item, i) => (
+            <div class="news-item" data-news-index={i}>
+              <div class="news-date">
+                <span class="font-mono text-sm opacity-50">{item.date}</span>
+                <span
+                  class={`badge ${tagColors[item.tag] || 'badge-ghost'} badge-sm`}
+                >
+                  {item.tag}
+                </span>
+              </div>
+              <div class="news-content">
+                {item.link ? (
+                  <a href={item.link} class="news-title">
+                    {item.title}
+                  </a>
+                ) : (
+                  <span class="news-title">{item.title}</span>
+                )}
+                <p class="news-desc">{item.description}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+      <div class="news-pagination" id="news-pagination"></div>
     </div>
   </div>
 </BaseLayout>
+
+<script>
+  const PER_PAGE = 3;
+  let currentPage = 1;
+  const items = document.querySelectorAll('.news-item');
+  const totalPages = Math.max(1, Math.ceil(items.length / PER_PAGE));
+  const pagination = document.getElementById('news-pagination');
+
+  function render() {
+    const start = (currentPage - 1) * PER_PAGE;
+    const end = start + PER_PAGE;
+    items.forEach((el, i) => {
+      (el as HTMLElement).style.display = i >= start && i < end ? '' : 'none';
+    });
+    renderPagination();
+  }
+
+  function renderPagination() {
+    if (!pagination || totalPages <= 1) return;
+    pagination.innerHTML = '';
+
+    const prev = document.createElement('button');
+    prev.textContent = '\u2190 Newer';
+    prev.className = 'news-page-btn';
+    prev.disabled = currentPage <= 1;
+    prev.addEventListener('click', () => {
+      currentPage--;
+      render();
+    });
+    pagination.appendChild(prev);
+
+    const info = document.createElement('span');
+    info.className = 'news-page-info';
+    info.textContent = `${currentPage} / ${totalPages}`;
+    pagination.appendChild(info);
+
+    const next = document.createElement('button');
+    next.textContent = 'Older \u2192';
+    next.className = 'news-page-btn';
+    next.disabled = currentPage >= totalPages;
+    next.addEventListener('click', () => {
+      currentPage++;
+      render();
+    });
+    pagination.appendChild(next);
+  }
+
+  render();
+</script>
