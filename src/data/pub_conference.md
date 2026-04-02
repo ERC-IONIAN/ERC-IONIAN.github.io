@@ -1,5 +1,5 @@
-1. Tzoulio Chamiti, Leandro Di Bella, Adrian Munteanu, and Nikos Deligiannis, **ReferGPT: Towards Zero-Shot Referring Expression Comprehension and Production with Large Vision-Language Models**, in *Proc. CVPR 2025 Workshop on Distillation of Foundation Models for Autonomous Driving*, Nashville, USA, Jun. 2025.
-\[[ArXiv](https://arxiv.org/abs/2504.09195)\]
+1. Tzoulio Chamiti, Leandro Di Bella, Adrian Munteanu, and Nikos Deligiannis, **ReferGPT: Towards Zero-Shot Referring Multi-Object Tracking**, in *Proc. CVPR 2025 Workshop on Distillation of Foundation Models for Autonomous Driving*, Nashville, USA, Jun. 2025.
+\[[ArXiv](https://arxiv.org/abs/2504.09195)\] \[[Code](https://github.com/Tzoulio/ReferGPT)\]
 
 2. Tzoulio Chamiti, Rebecca Leygonie, Fawaz Sammani, and Nikos Deligiannis, **Solve the World Medical Problem: A Unified Vision-Language Framework for Global Health Diagnostics**, in *Proc. IEEE/CVF Conf. Comput. Vision Pattern Recognit. (CVPR '27)*, Barcelona, Spain, Jun. 2027, pp. 1-10.
 

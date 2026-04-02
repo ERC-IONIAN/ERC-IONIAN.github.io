@@ -5,19 +5,81 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <BaseLayout title="Resources">
   <div class="page-wrapper">
     <h1 class="page-title">Resources</h1>
-    <div class="prose max-w-none">
-      <h2>Equipments</h2>
-      <h3>Compute Infrastructure</h3>
-      <p>VUB-ETRO is equipped with a extensive compute infrastructure spanning multiple tiers. The lab has dedicated high-end NVIDIA GPUs at the desktop level for interactive coding and testing, a local GPU cluster (Tier-3) for on-demand computing with state-of-the-art accelerators, and priority access to VUB's Tier-2 infrastructure featuring latest-generation NVIDIA A100 and H200 nodes. Additionally, researchers can access the Flemish Tier-1 supercomputing resources (VSC), as well as VUB's newest Tier-1 system (Sofia) — a major investment operational since 2025.</p>
 
-      <h2>Software</h2>
-      <p>Software and code repositories to be added.</p>
+    <div class="res-tabs">
+      <div class="res-tab-bar">
+        <button class="res-tab active" data-tab="equipments">Equipments</button>
+        <button class="res-tab" data-tab="software">Software</button>
+        <button class="res-tab" data-tab="datasets">Datasets</button>
+        <button class="res-tab" data-tab="tutorials">Tutorials</button>
+      </div>
 
-      <h2>Datasets</h2>
-      <p>Datasets and benchmarks to be added.</p>
-
-      <h2>Tutorials</h2>
-      <p>Tutorials and learning materials to be added.</p>
+      <div class="res-panel active" data-panel="equipments">
+        <div class="prose max-w-none">
+          <h3>Compute Infrastructure</h3>
+          <p>VUB-ETRO is equipped with a extensive compute infrastructure spanning multiple tiers. The lab has dedicated high-end NVIDIA GPUs at the desktop level for interactive coding and testing, a local GPU cluster (Tier-3) for on-demand computing with state-of-the-art accelerators, and priority access to VUB's Tier-2 infrastructure featuring latest-generation NVIDIA A100 and H200 nodes. Additionally, researchers can access the Flemish Tier-1 supercomputing resources (VSC), as well as VUB's newest Tier-1 system (Sofia) — a major investment operational since 2025.</p>
+        </div>
+      </div>
+      <div class="res-panel" data-panel="software">
+        <div class="prose max-w-none">
+          <p>Software and code repositories to be added.</p>
+        </div>
+      </div>
+      <div class="res-panel" data-panel="datasets">
+        <div class="prose max-w-none">
+          <p>Datasets and benchmarks to be added.</p>
+        </div>
+      </div>
+      <div class="res-panel" data-panel="tutorials">
+        <div class="prose max-w-none">
+          <p>Tutorials and learning materials to be added.</p>
+        </div>
+      </div>
     </div>
   </div>
 </BaseLayout>
+
+<script>
+  document.querySelectorAll('.res-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.res-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.res-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelector(`.res-panel[data-panel="${btn.dataset.tab}"]`)?.classList.add('active');
+    });
+  });
+</script>
+
+<style is:global>
+  .res-tab-bar {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid oklch(var(--b3, 0.87 0.02 80));
+    margin-bottom: 1.5rem;
+  }
+  .res-tab {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.5;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: opacity 0.15s, border-color 0.15s;
+  }
+  .res-tab:hover {
+    opacity: 0.8;
+  }
+  .res-tab.active {
+    opacity: 1;
+    border-bottom-color: oklch(var(--p, 0.5 0.2 260));
+  }
+  .res-panel {
+    display: none;
+  }
+  .res-panel.active {
+    display: block;
+  }
+</style>

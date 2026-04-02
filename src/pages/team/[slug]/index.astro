@@ -22,6 +22,8 @@ export async function getStaticPaths() {
 const { member, prev, next } = Astro.props;
 const author = member.data.author;
 const pic = author?.picture || member.data.image?.thumbnail;
+const { Content } = await member.render();
+const news = member.data.news ?? [];
 
 const iconSvgs: Record<string, string> = {
   email: `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`,
@@ -55,10 +57,9 @@ const iconSvgs: Record<string, string> = {
       {member.data.affiliation && (
         <p class="text-base opacity-50 mb-4">{member.data.affiliation}</p>
       )}
-      <p class="text-lg mb-5">
-        Brief impactful description of research focus and academic mission.
-        Highlight key contributions and areas of expertise.
-      </p>
+      {member.data.bio && (
+        <p class="text-lg mb-5 italic opacity-80">"{member.data.bio}"</p>
+      )}
       {author?.links && (
         <div class="flex gap-3 flex-wrap">
           {author.links.map(link => (
@@ -84,26 +85,25 @@ const iconSvgs: Record<string, string> = {
     )}
   </section>
 
-  <!-- Research Areas -->
-  <section class="py-10 border-b border-base-300">
-    <h2 class="text-3xl font-bold mb-8">Research Areas</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div class="p-6 rounded-lg member-card">
-        <h3 class="text-xl font-semibold mb-3">Area 1</h3>
-        <p>Brief description of the research interest</p>
-      </div>
-      <div class="p-6 rounded-lg member-card">
-        <h3 class="text-xl font-semibold mb-3">Area 2</h3>
-        <p>Brief description of the research interest</p>
-      </div>
-    </div>
+  <!-- About -->
+  <section class="py-10 prose max-w-none border-b border-base-300">
+    <Content />
   </section>
 
-  <!-- Recent Publications -->
-  <section class="py-10">
-    <h2 class="text-3xl font-bold mb-8">Recent Publications</h2>
-    <p class="opacity-60">Publications to be added.</p>
-  </section>
+  <!-- News & Highlights -->
+  {news.length > 0 && (
+    <section class="py-10">
+      <h2 class="text-2xl font-bold mb-6">News & Highlights</h2>
+      <ul class="space-y-4">
+        {news.map(item => (
+          <li class="flex gap-4 items-baseline">
+            <span class="font-mono text-sm opacity-50 flex-shrink-0">{item.year}</span>
+            <span>{item.text}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
 
   <!-- Prev / Next -->
   <nav class="flex justify-between pt-6 border-t border-base-300 gap-4">

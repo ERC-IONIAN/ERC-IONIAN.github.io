@@ -1,6 +1,7 @@
 ---
 import MemberLayout from '../../../layouts/MemberLayout.astro';
 import { getCollection } from 'astro:content';
+import { getPublicationsForMember } from '../../../utils/publications';
 
 export async function getStaticPaths() {
   const roleOrder: Record<string, number> = {
@@ -22,6 +23,8 @@ export async function getStaticPaths() {
 const { member, prev, next } = Astro.props;
 const author = member.data.author;
 const pic = author?.picture || member.data.image?.thumbnail;
+
+const pubs = getPublicationsForMember(member.data.title);
 ---
 
 <MemberLayout
@@ -36,20 +39,39 @@ const pic = author?.picture || member.data.image?.thumbnail;
 >
   <h2 class="text-2xl font-bold mb-6 border-b border-base-300 pb-2">Publications</h2>
 
-  <div class="space-y-6">
-    <div class="p-4 rounded-lg border border-base-300">
-      <h3 class="font-semibold text-lg">Paper Title</h3>
-      <p class="text-sm opacity-60 mt-1">Author A, Author B, <span class="font-bold">{member.data.title}</span></p>
-      <p class="text-sm opacity-50 italic mt-1">Journal Name, 2024</p>
-      <p class="mt-2">Abstract or brief description to be filled in.</p>
+  {pubs.length === 0 ? (
+    <p class="opacity-60">No publications found.</p>
+  ) : (
+    <div class="member-pub-list">
+      {pubs.map(pub => (
+        <div class="member-pub-card p-5 rounded-lg border border-base-300 transition-all hover:shadow-md">
+          <h3 class="font-semibold text-lg">{pub.title}</h3>
+          <p class="text-sm opacity-60 mt-1">{pub.authors}</p>
+          <p class="text-sm opacity-50 italic mt-1">
+            {pub.venue}{pub.venue && pub.year ? ', ' : ''}{pub.year}
+          </p>
+          <div class="flex gap-2 mt-3">
+            {pub.links.project ? (
+              <a href={pub.links.project} target="_blank" rel="noopener noreferrer" class="pub-member-btn pub-member-btn-active">Project</a>
+            ) : (
+              <span class="pub-member-btn pub-member-btn-disabled">Project</span>
+            )}
+            {pub.links.paper ? (
+              <a href={pub.links.paper} target="_blank" rel="noopener noreferrer" class="pub-member-btn pub-member-btn-active">Paper</a>
+            ) : (
+              <span class="pub-member-btn pub-member-btn-disabled">Paper</span>
+            )}
+            {pub.links.code ? (
+              <a href={pub.links.code} target="_blank" rel="noopener noreferrer" class="pub-member-btn pub-member-btn-active">Code</a>
+            ) : (
+              <span class="pub-member-btn pub-member-btn-disabled">Code</span>
+            )}
+          </div>
+        </div>
+      ))}
     </div>
-    <div class="p-4 rounded-lg border border-base-300">
-      <h3 class="font-semibold text-lg">Paper Title</h3>
-      <p class="text-sm opacity-60 mt-1">Author A, <span class="font-bold">{member.data.title}</span>, Author C</p>
-      <p class="text-sm opacity-50 italic mt-1">Conference Name, 2023</p>
-      <p class="mt-2">Abstract or brief description to be filled in.</p>
-    </div>
-  </div>
+    <div class="member-pub-pagination"></div>
+  )}
 
   <nav class="flex justify-between pt-6 mt-10 border-t border-base-300 gap-4">
     {prev && (
@@ -66,3 +88,132 @@ const pic = author?.picture || member.data.image?.thumbnail;
     )}
   </nav>
 </MemberLayout>
+
+<script>
+  const PER_PAGE = 10;
+  let currentPage = 1;
+  const cards = document.querySelectorAll('.member-pub-card');
+  const totalPages = Math.max(1, Math.ceil(cards.length / PER_PAGE));
+
+  function render() {
+    const start = (currentPage - 1) * PER_PAGE;
+    const end = start + PER_PAGE;
+    cards.forEach((c, i) => {
+      (c as HTMLElement).style.display = i >= start && i < end ? '' : 'none';
+    });
+    renderPagination();
+  }
+
+  function renderPagination() {
+    const container = document.querySelector('.member-pub-pagination');
+    if (!container) return;
+    container.innerHTML = '';
+    if (totalPages <= 1) return;
+
+    const prev = document.createElement('button');
+    prev.textContent = 'Prev';
+    prev.className = 'pub-page-btn';
+    prev.disabled = currentPage <= 1;
+    prev.addEventListener('click', () => { currentPage--; render(); });
+    container.appendChild(prev);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = String(i);
+      btn.className = 'pub-page-btn' + (i === currentPage ? ' active' : '');
+      btn.addEventListener('click', () => { currentPage = i; render(); });
+      container.appendChild(btn);
+    }
+
+    const next = document.createElement('button');
+    next.textContent = 'Next';
+    next.className = 'pub-page-btn';
+    next.disabled = currentPage >= totalPages;
+    next.addEventListener('click', () => { currentPage++; render(); });
+    container.appendChild(next);
+  }
+
+  render();
+</script>
+
+<style is:global>
+  .pub-member-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .pub-member-btn-active {
+    background: oklch(var(--p, 0.5 0.2 260));
+    color: oklch(var(--pc, 1 0 0));
+    cursor: pointer;
+  }
+  .pub-member-btn-active:hover {
+    opacity: 0.85;
+    text-decoration: none;
+  }
+  .pub-member-btn-disabled {
+    background: oklch(var(--b3, 0.87 0.02 80));
+    color: oklch(var(--bc, 0.3 0 0) / 0.35);
+    cursor: default;
+  }
+  .member-pub-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .member-pub-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .pub-page-btn {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid oklch(var(--b3, 0.87 0.02 80));
+    border-radius: 6px;
+    background: oklch(var(--b1, 1 0 0));
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .pub-page-btn:hover:not(:disabled) {
+    background: oklch(var(--b2, 0.93 0.03 80));
+  }
+  .pub-page-btn.active {
+    background: oklch(var(--p, 0.5 0.2 260));
+    color: oklch(var(--pc, 1 0 0));
+    border-color: oklch(var(--p, 0.5 0.2 260));
+  }
+  .pub-page-btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  /* Dark mode overrides */
+  [data-theme="dark"] .member-pub-card {
+    background: #1a1a1a;
+    border-color: #333;
+  }
+  [data-theme="dark"] .member-pub-card:hover {
+    box-shadow: 0 4px 12px rgba(255,255,255,0.06);
+  }
+  [data-theme="dark"] .pub-member-btn-disabled {
+    background: #2a2a2a;
+    color: #555;
+  }
+  [data-theme="dark"] .pub-page-btn {
+    border-color: #444;
+    background: #1a1a1a;
+  }
+  [data-theme="dark"] .pub-page-btn:hover:not(:disabled) {
+    background: #2a2a2a;
+  }
+</style>

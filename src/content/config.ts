@@ -25,6 +25,32 @@ const team = defineCollection({
     image: imageSchema,
     author: authorSchema,
     affiliation: z.string().optional(),
+    bio: z.string().optional(),
+    research_areas: z.array(z.object({
+      name: z.string(),
+      description: z.string(),
+    })).optional(),
+    education: z.array(z.object({
+      degree: z.string(),
+      institution: z.string(),
+      location: z.string(),
+      years: z.string(),
+    })).optional(),
+    experience: z.array(z.object({
+      title: z.string(),
+      institution: z.string(),
+      location: z.string(),
+      years: z.string(),
+    })).optional(),
+    current_projects: z.array(z.object({
+      name: z.string(),
+      description: z.string(),
+    })).optional(),
+    service: z.array(z.string()).optional(),
+    news: z.array(z.object({
+      year: z.string(),
+      text: z.string(),
+    })).optional(),
   }),
 });
 
@@ -34,6 +60,7 @@ const projects = defineCollection({
     title: z.string(),
     date: z.coerce.date().optional(),
     image: imageSchema,
+    link: z.string().optional(),
   }),
 });
 

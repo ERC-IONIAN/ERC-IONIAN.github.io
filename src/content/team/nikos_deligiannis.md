@@ -29,64 +29,52 @@ author:
       url: https://orcid.org/0000-0001-9300-5860
       icon: orcid
 affiliation: "Vrije Universiteit Brussel — ETRO · Office PL9.2.29"
+bio: "My current research focuses on interpretable and explainable AI, multidimensional signal processing, computer vision, and distributed/federated AI for automotive and healthcare applications."
+research_areas:
+  - name: "Interpretable & Explainable AI"
+    description: "Designing AI models that are transparent, interpretable by design, and trustworthy — with a 2024 ERC Consolidator Grant on XAI for autonomous vehicles."
+  - name: "Multidimensional Signal Processing"
+    description: "Multiterminal compression and signal processing methods for distributed sensing and communication systems."
+  - name: "Computer Vision"
+    description: "Visual computing with deep learning for automotive, surveillance, and non-destructive testing applications."
+  - name: "Distributed & Federated AI"
+    description: "Privacy-preserving distributed and federated learning for automotive and healthcare applications."
+education:
+  - degree: "Ph.D. in Engineering Sciences"
+    institution: "Vrije Universiteit Brussel"
+    location: "Brussels, Belgium"
+    years: "2006 – 2012"
+  - degree: "Diploma in Electrical & Computer Engineering"
+    institution: "University of Patras"
+    location: "Patras, Greece"
+    years: "2000 – 2006"
+experience:
+  - title: "Professor & Francqui Research Professor (Trustworthy AI)"
+    institution: "Vrije Universiteit Brussel (VUB)"
+    location: "Brussels, Belgium"
+    years: "2015 – Present"
+  - title: "Principal Investigator"
+    institution: "imec"
+    location: "Leuven, Belgium"
+    years: "2015 – Present"
+  - title: "Senior Researcher"
+    institution: "University College London (UCL)"
+    location: "London, UK"
+    years: "2013 – 2015"
+current_projects:
+  - name: "ERC Consolidator Grant (2024)"
+    description: "Research at the intersection of interpretable/explainable AI and multiterminal compression for autonomous vehicles."
+service:
+  - "Associate Editor, IEEE Transactions on Image Processing"
+  - "Chair, EURASIP TAC on Signal and Data Analytics for Machine Learning (2021–2023)"
+  - "Guest Editor, EURASIP JASP and Signal Processing"
+  - "Member, IEEE and EURASIP"
+news:
+  - year: "2024"
+    text: "Received an ERC Consolidator Grant for research on interpretable/explainable AI and multiterminal compression for autonomous vehicles."
+  - year: "2024"
+    text: "Awarded the Francqui Research Professorship on Trustworthy AI at VUB."
 ---
 
-Nikos Deligiannis is a **Professor** (Hoogleraar) at the Department of Electronics and Informatics (ETRO), Vrije Universiteit Brussel (VUB), and a Senior AI Scientist at imec, Belgium. He is also Programme Director of the Master in Applied Computer Science at VUB.
-
-> "My work focuses on making AI models and systems transparent, explainable and trustworthy."
-
-## Biography
-
-Nikos Deligiannis received his Diploma in Electrical and Computer Engineering from the [University of Patras](https://www.upatras.gr/en/), Greece (2006) and his Ph.D. (with honors) in Engineering Sciences from [Vrije Universiteit Brussel](https://www.vub.be) (2012). From 2013 to 2015, he served as a senior researcher at the Department of Electronic and Electrical Engineering, [University College London](https://www.ucl.ac.uk), UK.
-
-His research encompasses interpretable machine learning, signal processing, distributed learning for computer vision, explainable AI architectures, multimodal visual computing, big data analytics, and natural language processing applications. He has over 130 journal and conference publications, 5 book chapters, and 5 international patent applications.
-
-## Research Interests
-
-**Machine Learning & Signal Processing:**
-- Explainable AI (XAI) with interpretable CNNs, RNNs, and deep multimodal networks
-- Sparse signal processing
-
-**Big Data Sensing, Processing & Analysis:**
-- Social media data analytics (fake news detection)
-- Smart city data analytics (hyperlocal air-pollution estimation, traffic event detection)
-
-**Multimodal Visual Computing:**
-- Processing diverse imaging modalities
-- Applications in entertainment, surveillance, non-destructive testing
-
-**Natural Language Processing:**
-- Fact verification
-- Automated clinical coding
-
-## Awards & Honors
-
-- **2023** — Honorable Mention Award, ICCVW Challenge on Vision and Language Algorithmic Reasoning (VLAR 2023)
-- **2019** — Best Paper Award, IEEE International Conference on Image Processing (interpretable-by-design deep RNN for video)
-- **2019** — Best Paper Award, EAI International Conference on Sensor Systems and Software (S-CUBE'19) for urban air quality analysis
-- **2018** — Young Scientist Best Paper Award, NATO IST-160 Specialist's Meeting on Big Data and AI for Military Decision Making (fake news detection)
-- **2017** — EURASIP Best PhD Award (highest impact doctoral thesis 2012–2017)
-- **2013** — Scientific Prize FWO-IBM Belgium (best doctoral thesis in informatics)
-- **2011** — Best Paper Award, ACM/IEEE International Conference on Distributed Smart Cameras (ICDSC'11), Ghent
-
-## Academic CV
-
-### Degrees
-- Ph.D. in Engineering Sciences (with honors), *Vrije Universiteit Brussel, Belgium*, 2012
-- Diploma in Electrical and Computer Engineering, *University of Patras, Greece*, 2006
-
-### Academic Positions
-- Professor (Hoogleraar), *Vrije Universiteit Brussel, Belgium* (current)
-- Senior AI Scientist, *imec, Belgium* (current)
-- Programme Director, Master in Applied Computer Science, *VUB* (current)
-- Senior Researcher, *University College London, UK* (2013–2015)
-
-### Professional Service
-- Associate Editor, *IEEE Transactions on Image Processing* (Apr. 2021 – Apr. 2024)
-- Chair, EURASIP Technical Area Committee on "Signal and Data Analytics for Machine Learning" (Jan. 2021 – Dec. 2023)
-- Vice-Chair, EURASIP Technical Area Committee on "Signal and Data Analytics for Machine Learning" (Jan. 2018 – Dec. 2020)
-
-### Memberships
-- Member, Institute of Electrical and Electronics Engineers (IEEE)
-- Member, European Association for Signal Processing (EURASIP)
+Nikos Deligiannis is a **Professor** at the Department of Electronics and Informatics (ETRO), Vrije Universiteit Brussel (VUB), the holder of the **2024–2025 Francqui Research Professorship** on Trustworthy AI at VUB, and a **Principal Investigator** at imec, Belgium.
 

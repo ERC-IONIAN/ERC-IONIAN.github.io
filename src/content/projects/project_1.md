@@ -1,9 +1,10 @@
 ---
-title: "Project 1"
-date: 2024-01-01
+title: "ENACT"
+date: 2024-01-10
+link: "https://enact-he.eu/"
 image:
-  path: /images/empty_banner.png
-  thumbnail: /images/empty_banner.png
+  path: /images/enact_logo.svg
+  thumbnail: /images/enact_logo.svg
 ---
 
 Project description to be filled in.

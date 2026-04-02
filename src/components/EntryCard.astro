@@ -4,15 +4,16 @@ interface Props {
   href: string;
   thumbnail?: string;
   excerpt?: string;
+  isLogo?: boolean;
 }
 
-const { title, href, thumbnail, excerpt } = Astro.props;
+const { title, href, thumbnail, excerpt, isLogo } = Astro.props;
 ---
 
 <div class="entry-card">
   <a href={href}>
     <div class="card-thumb">
-      {thumbnail && thumbnail !== '/images/empty_banner.png' && <img src={thumbnail} alt={title} loading="lazy" style="width:100%;height:100%;object-fit:cover;" />}
+      {thumbnail && thumbnail !== '/images/empty_banner.png' && <img src={thumbnail} alt={title} loading="lazy" style={`width:100%;height:100%;object-fit:${isLogo ? 'contain' : 'cover'};${isLogo ? 'padding:1rem;' : ''}`} />}
     </div>
     <div class="card-body">
       <h3 class="card-title">{title}</h3>

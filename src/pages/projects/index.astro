@@ -10,14 +10,15 @@ const projects = (await getCollection('projects')).sort((a, b) =>
 
 <BaseLayout title="Projects">
   <div class="page-wrapper">
-    <h1 class="page-title">Projects</h1>
+    <h1 class="page-title">Selected Projects</h1>
 
     <div class="entry-grid">
       {projects.map(p => (
         <EntryCard
           title={p.data.title}
-          href={`/projects/${p.slug}/`}
+          href={p.data.link || `/projects/${p.slug}/`}
           thumbnail={p.data.image?.thumbnail}
+          isLogo={!!p.data.link}
         />
       ))}
     </div>

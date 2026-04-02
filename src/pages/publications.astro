@@ -17,38 +17,260 @@ const thesesHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_theses.m
       Note: the archived version of some publications may only become publicly accessible after the publisher's embargo period has ended.
     </p>
 
+    <!-- Search & Filter -->
+    <div class="pub-filters">
+      <input type="text" id="pub-search" class="pub-search" placeholder="Search by author or title..." />
+      <select id="pub-year-filter" class="pub-year-select">
+        <option value="">All Years</option>
+      </select>
+    </div>
+
     <div class="pub-tabs">
       <div class="pub-tab-bar">
-        <button class="pub-tab active" data-tab="journal">Journal Papers</button>
-        <button class="pub-tab" data-tab="conference">Conference Papers</button>
+        <button class="pub-tab active" data-tab="conference">Conference Papers</button>
+        <button class="pub-tab" data-tab="journal">Journal Papers</button>
         <button class="pub-tab" data-tab="theses">PhD Theses</button>
       </div>
 
-      <div class="pub-panel active" data-panel="journal">
-        <div class="prose max-w-none pub-list" set:html={journalHtml} />
-      </div>
-      <div class="pub-panel" data-panel="conference">
+      <div class="pub-panel active" data-panel="conference">
         <div class="prose max-w-none pub-list" set:html={conferenceHtml} />
+        <div class="pub-pagination" data-pag="conference"></div>
+      </div>
+      <div class="pub-panel" data-panel="journal">
+        <div class="prose max-w-none pub-list" set:html={journalHtml} />
+        <div class="pub-pagination" data-pag="journal"></div>
       </div>
       <div class="pub-panel" data-panel="theses">
         <div class="prose max-w-none pub-list" set:html={thesesHtml} />
+        <div class="pub-pagination" data-pag="theses"></div>
       </div>
     </div>
   </div>
 </BaseLayout>
 
 <script>
+  // Tabs
   document.querySelectorAll('.pub-tab').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.pub-tab').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.pub-panel').forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
       document.querySelector(`.pub-panel[data-panel="${btn.dataset.tab}"]`)?.classList.add('active');
+      applyFilters();
     });
   });
+
+  // Extract year from a list item
+  function getYear(li: Element): string | null {
+    const matches = li.textContent?.match(/(?:,\s*|')\s*((?:19|20)\d{2})\s*[.\s)]*$/m);
+    return matches ? matches[1] : null;
+  }
+
+  // Turn each <li> into a card with buttons
+  document.querySelectorAll('.pub-list li').forEach(li => {
+    // Extract links from anchors inside the li
+    const links: Record<string, string> = {};
+    li.querySelectorAll('a').forEach(a => {
+      const text = a.textContent?.trim().toLowerCase() ?? '';
+      if (text === 'arxiv' || text === 'paper') links.paper = a.href;
+      else if (text === 'project') links.project = a.href;
+      else if (text === 'code' || text === 'github') links.code = a.href;
+    });
+
+    // Remove the bracket-wrapped links from text (e.g. [ArXiv] [Project] [Code])
+    li.querySelectorAll('a').forEach(a => {
+      const text = a.textContent?.trim().toLowerCase() ?? '';
+      if (['arxiv', 'paper', 'project', 'code', 'github'].includes(text)) {
+        // Remove the anchor and surrounding brackets
+        const parent = a.parentNode;
+        if (parent) {
+          const html = parent.innerHTML;
+          // Remove patterns like [<a...>ArXiv</a>] including surrounding whitespace
+          parent.innerHTML = html.replace(/\s*\[<a[^>]*>[^<]*<\/a>\]\s*/gi, ' ').trim();
+        }
+      }
+    });
+
+    // Add card class
+    li.classList.add('pub-card');
+
+    // Create buttons container
+    const btns = document.createElement('div');
+    btns.className = 'pub-card-btns';
+
+    const btnDefs = [
+      { key: 'project', label: 'Project' },
+      { key: 'paper', label: 'Paper' },
+      { key: 'code', label: 'Code' },
+    ];
+
+    btnDefs.forEach(({ key, label }) => {
+      const url = links[key];
+      if (url) {
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.className = 'pub-btn pub-btn-active';
+        a.textContent = label;
+        btns.appendChild(a);
+      } else {
+        const span = document.createElement('span');
+        span.className = 'pub-btn pub-btn-disabled';
+        span.textContent = label;
+        btns.appendChild(span);
+      }
+    });
+
+    li.appendChild(btns);
+  });
+
+  // Collect years
+  const allItems = document.querySelectorAll('.pub-list li');
+  const years = new Set<string>();
+  allItems.forEach(li => {
+    const y = getYear(li);
+    if (y) years.add(y);
+  });
+
+  const yearSelect = document.getElementById('pub-year-filter') as HTMLSelectElement;
+  [...years].sort((a, b) => Number(b) - Number(a)).forEach(y => {
+    const opt = document.createElement('option');
+    opt.value = y;
+    opt.textContent = y;
+    yearSelect.appendChild(opt);
+  });
+
+  // Pagination state per panel
+  const PER_PAGE = 10;
+  const currentPage: Record<string, number> = { journal: 1, conference: 1, theses: 1 };
+
+  function getActivePanel(): string {
+    return document.querySelector('.pub-tab.active')?.getAttribute('data-tab') ?? 'journal';
+  }
+
+  // Filter + paginate
+  function applyFilters() {
+    const query = (document.getElementById('pub-search') as HTMLInputElement).value.toLowerCase();
+    const year = yearSelect.value;
+    const panel = getActivePanel();
+
+    // Reset to page 1 on filter change
+    currentPage[panel] = 1;
+
+    paginate(panel, query, year);
+  }
+
+  function paginate(panel: string, query: string, year: string) {
+    const panelEl = document.querySelector(`.pub-panel[data-panel="${panel}"]`);
+    if (!panelEl) return;
+
+    const items = panelEl.querySelectorAll('.pub-list li');
+    const filtered: HTMLElement[] = [];
+
+    items.forEach(li => {
+      const el = li as HTMLElement;
+      const text = el.textContent?.toLowerCase() ?? '';
+      const matchesSearch = !query || text.includes(query);
+      const itemYear = getYear(el);
+      const matchesYear = !year || itemYear === year;
+
+      if (matchesSearch && matchesYear) {
+        filtered.push(el);
+      }
+      el.style.display = 'none';
+    });
+
+    const page = currentPage[panel];
+    const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+    const start = (page - 1) * PER_PAGE;
+    const end = start + PER_PAGE;
+
+    filtered.slice(start, end).forEach(el => {
+      el.style.display = '';
+    });
+
+    renderPagination(panel, page, totalPages);
+  }
+
+  function renderPagination(panel: string, page: number, totalPages: number) {
+    const container = document.querySelector(`.pub-pagination[data-pag="${panel}"]`);
+    if (!container) return;
+    container.innerHTML = '';
+
+    if (totalPages <= 1) return;
+
+    const prev = document.createElement('button');
+    prev.textContent = 'Prev';
+    prev.className = 'pub-page-btn';
+    prev.disabled = page <= 1;
+    prev.addEventListener('click', () => { currentPage[panel]--; rerun(); });
+    container.appendChild(prev);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = String(i);
+      btn.className = 'pub-page-btn' + (i === page ? ' active' : '');
+      btn.addEventListener('click', () => { currentPage[panel] = i; rerun(); });
+      container.appendChild(btn);
+    }
+
+    const next = document.createElement('button');
+    next.textContent = 'Next';
+    next.className = 'pub-page-btn';
+    next.disabled = page >= totalPages;
+    next.addEventListener('click', () => { currentPage[panel]++; rerun(); });
+    container.appendChild(next);
+  }
+
+  function rerun() {
+    const query = (document.getElementById('pub-search') as HTMLInputElement).value.toLowerCase();
+    const year = yearSelect.value;
+    paginate(getActivePanel(), query, year);
+  }
+
+  document.getElementById('pub-search')?.addEventListener('input', applyFilters);
+  yearSelect.addEventListener('change', applyFilters);
+
+  // Initial pagination
+  applyFilters();
 </script>
 
 <style is:global>
+  .pub-filters {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .pub-search {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+    border: 1px solid oklch(var(--b3, 0.87 0.02 80));
+    border-radius: 8px;
+    background: oklch(var(--b1, 1 0 0));
+    color: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .pub-search:focus {
+    border-color: oklch(var(--p, 0.5 0.2 260));
+  }
+  .pub-year-select {
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+    border: 1px solid oklch(var(--b3, 0.87 0.02 80));
+    border-radius: 8px;
+    background: oklch(var(--b1, 1 0 0));
+    color: inherit;
+    cursor: pointer;
+    outline: none;
+  }
+  .pub-year-select:focus {
+    border-color: oklch(var(--p, 0.5 0.2 260));
+  }
   .pub-tab-bar {
     display: flex;
     gap: 0;
@@ -81,10 +303,117 @@ const thesesHtml = marked.parse(fs.readFileSync(path.join(dataDir, 'pub_theses.m
     display: block;
   }
   .pub-list ol {
-    list-style: decimal;
-    padding-left: 2em;
+    list-style: none;
+    padding-left: 0;
   }
-  .pub-list li {
-    margin-bottom: 1.25em;
+  .pub-list li.pub-card {
+    background: oklch(var(--b1, 1 0 0));
+    border: 1px solid oklch(var(--b3, 0.87 0.02 80));
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+    transition: box-shadow 0.2s;
+  }
+  .pub-list li.pub-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .pub-card-btns {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+  .pub-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .pub-btn-active {
+    background: oklch(var(--p, 0.5 0.2 260));
+    color: oklch(var(--pc, 1 0 0));
+    cursor: pointer;
+  }
+  .pub-btn-active:hover {
+    opacity: 0.85;
+    text-decoration: none;
+  }
+  .pub-btn-disabled {
+    background: oklch(var(--b3, 0.87 0.02 80));
+    color: oklch(var(--bc, 0.3 0 0) / 0.35);
+    cursor: default;
+  }
+  .pub-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .pub-page-btn {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid oklch(var(--b3, 0.87 0.02 80));
+    border-radius: 6px;
+    background: oklch(var(--b1, 1 0 0));
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .pub-page-btn:hover:not(:disabled) {
+    background: oklch(var(--b2, 0.93 0.03 80));
+  }
+  .pub-page-btn.active {
+    background: oklch(var(--p, 0.5 0.2 260));
+    color: oklch(var(--pc, 1 0 0));
+    border-color: oklch(var(--p, 0.5 0.2 260));
+  }
+  .pub-page-btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  /* Dark mode overrides */
+  [data-theme="dark"] .pub-search {
+    border-color: #444;
+    background: #1a1a1a;
+  }
+  [data-theme="dark"] .pub-search:focus {
+    border-color: #6b8afd;
+  }
+  [data-theme="dark"] .pub-year-select {
+    border-color: #444;
+    background: #1a1a1a;
+  }
+  [data-theme="dark"] .pub-year-select:focus {
+    border-color: #6b8afd;
+  }
+  [data-theme="dark"] .pub-tab-bar {
+    border-bottom-color: #333;
+  }
+  [data-theme="dark"] .pub-tab {
+    color: #ccc;
+  }
+  [data-theme="dark"] .pub-list li.pub-card {
+    background: #1a1a1a;
+    border-color: #333;
+  }
+  [data-theme="dark"] .pub-list li.pub-card:hover {
+    box-shadow: 0 4px 12px rgba(255,255,255,0.06);
+  }
+  [data-theme="dark"] .pub-btn-disabled {
+    background: #2a2a2a;
+    color: #555;
+  }
+  [data-theme="dark"] .pub-page-btn {
+    border-color: #444;
+    background: #1a1a1a;
+  }
+  [data-theme="dark"] .pub-page-btn:hover:not(:disabled) {
+    background: #2a2a2a;
   }
 </style>

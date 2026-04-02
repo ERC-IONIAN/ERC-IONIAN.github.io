@@ -22,6 +22,8 @@ export async function getStaticPaths() {
 const { member, prev, next } = Astro.props;
 const author = member.data.author;
 const pic = author?.picture || member.data.image?.thumbnail;
+const researchAreas = member.data.research_areas ?? [];
+const currentProjects = member.data.current_projects ?? [];
 ---
 
 <MemberLayout
@@ -35,49 +37,46 @@ const pic = author?.picture || member.data.image?.thumbnail;
   activeTab="research"
 >
   <div class="prose max-w-none">
-    <h1 class="text-3xl font-bold mb-8">Research Statement</h1>
+    <h1 class="text-3xl font-bold mb-8">Research</h1>
 
-    <div class="mb-12">
-      <p class="text-lg mb-6">
-        Brief impactful description of research focus and academic mission.
-        Highlight key contributions and areas of expertise.
-      </p>
-      <p class="text-lg mb-6">
-        This interdisciplinary approach has led to significant discoveries,
-        contributing to advancements in the field.
-      </p>
-    </div>
+    {researchAreas.length > 0 && (
+      <>
+        <h2 class="text-2xl font-bold mb-6">Research Areas</h2>
+        <div class="grid gap-8 mb-12 not-prose">
+          {researchAreas.map(area => (
+            <div class="flex gap-6 items-start">
+              <div class="size-12 rounded-xl flex items-center justify-center flex-shrink-0 member-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" class="size-6 stroke-accent">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold mb-2">{area.name}</h3>
+                <p class="text-base">{area.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </>
+    )}
 
-    <h2 class="text-2xl font-bold mb-6">Research Areas</h2>
-    <div class="grid gap-8 mb-12 not-prose">
-      <div class="flex gap-6 items-start">
-        <div class="size-12 rounded-xl flex items-center justify-center flex-shrink-0 member-card">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" class="size-6 stroke-accent">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
-          </svg>
+    {currentProjects.length > 0 && (
+      <>
+        <h2 class="text-2xl font-bold mb-6">Current Projects</h2>
+        <div class="grid gap-6 mb-12 not-prose">
+          {currentProjects.map(proj => (
+            <div class="p-6 rounded-lg member-card">
+              <h3 class="text-xl font-semibold mb-2">{proj.name}</h3>
+              <p class="text-base">{proj.description}</p>
+            </div>
+          ))}
         </div>
-        <div>
-          <h3 class="text-xl font-semibold mb-2">Area 1</h3>
-          <p class="text-base">Description of research area to be filled in.</p>
-        </div>
-      </div>
-      <div class="flex gap-6 items-start">
-        <div class="size-12 rounded-xl flex items-center justify-center flex-shrink-0 member-card">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" class="size-6 stroke-accent">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 0 0 2.25-2.25V6.75a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25Z" />
-          </svg>
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold mb-2">Area 2</h3>
-          <p class="text-base">Description of research area to be filled in.</p>
-        </div>
-      </div>
-    </div>
+      </>
+    )}
 
-    <h2 class="text-2xl font-bold mb-6">Current Projects</h2>
-    <p class="text-lg mb-6">
-      Current projects and collaborations to be filled in.
-    </p>
+    {researchAreas.length === 0 && currentProjects.length === 0 && (
+      <p class="opacity-60">Research information to be added.</p>
+    )}
   </div>
 
   <nav class="flex justify-between pt-6 border-t border-base-300 gap-4 not-prose">
