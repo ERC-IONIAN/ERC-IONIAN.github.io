@@ -1,6 +1,6 @@
 ---
 title: 'Pourya Behmandpoor'
-role: 'Research Scientist'
+role: 'Post Doc Researcher'
 date: 2001-02-01
 image:
   path: /images/empty_banner.png
@@ -16,4 +16,4 @@ author:
 affiliation: 'Vrije Universiteit Brussel — ETRO · Office PL9.2.34'
 ---
 
-Pourya Behmandpoor is a **Research Scientist** in the IONIAN group, supervised by [Nikos Deligiannis](/team/nikos_deligiannis/).
+Pourya Behmandpoor is a **Post Doc Researcher** in the IONIAN group, supervised by [Nikos Deligiannis](/team/nikos_deligiannis/).
