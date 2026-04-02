@@ -8,3 +8,15 @@
 4. Brent De Weerdt, Tzoulio Chamiti, and Nikos Deligiannis, **Graph-based semi-supervised learning for multi-sensor data fusion**, in _Proc. 32nd European Signal Process. Conf. (EUSIPCO '24)_, Lyon, France, Aug. 2024, pp. 1-5.
 
 5. Alexandre Stenger, William Martis, Evangelia Tsiligianni, and Nikos Deligiannis, **Efficient neural architecture search for resource-constrained edge computing**, in _Proc. IEEE/CVF Conf. Comput. Vision Pattern Recognit. Workshops (CVPRW '24)_, Seattle, USA, Jun. 2024, pp. 1-8.
+
+6. Esther Rodrigo Bonet and Nikos Deligiannis, **Physics-Guided Graph Convolutional Deep Equilibrium Network for Environmental Data**, in _Proc. 32nd European Signal Process. Conf. (EUSIPCO '24)_, Lyon, France, Aug. 2024, pp. 987-991. **Best Student Paper Award.**
+   \[[Paper](https://ieeexplore.ieee.org/document/10715398/)\]
+
+7. Esther Rodrigo Bonet and Nikos Deligiannis, **Physics-Guided Variational Graph Autoencoder for Air Quality Inference**, in _Proc. IEEE Int. Conf. Acoust. Speech Signal Process. (ICASSP '24)_, Seoul, Korea, Apr. 2024, pp. 6940-6944.
+   \[[Paper](https://ieeexplore.ieee.org/document/10448194/)\]
+
+8. Esther Rodrigo Bonet, Tien Huu Do, Xuening Qin, Jelle Hofman, Valerio Panzica La Manna, Wilfried Philips, and Nikos Deligiannis, **Conditional Variational Graph Autoencoder for Air Pollution Forecasting**, in _Proc. 30th European Signal Process. Conf. (EUSIPCO '22)_, Belgrade, Serbia, Aug. 2022, pp. 1442-1446.
+   \[[Paper](https://ieeexplore.ieee.org/document/9909725/)\]
+
+9. Esther Rodrigo Bonet, Duc Minh Nguyen, and Nikos Deligiannis, **Temporal Collaborative Filtering with Graph Convolutional Neural Networks**, in _Proc. 25th Int. Conf. Pattern Recognit. (ICPR '20)_, Milan, Italy, Jan. 2021, pp. 4736-4742.
+   \[[Paper](https://ieeexplore.ieee.org/document/9413200/)\] \[[ArXiv](https://arxiv.org/abs/2010.06425)\]

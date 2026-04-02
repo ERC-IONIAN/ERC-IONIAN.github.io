@@ -14,35 +14,917 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <button class="res-tab" data-tab="tutorials">Tutorials</button>
       </div>
 
+      <!-- ==================== EQUIPMENTS ==================== -->
       <div class="res-panel active" data-panel="equipments">
-        <div class="prose max-w-none">
-          <h3>Compute Infrastructure</h3>
-          <p>
-            VUB-ETRO is equipped with a extensive compute infrastructure
-            spanning multiple tiers. The lab has dedicated high-end NVIDIA GPUs
-            at the desktop level for interactive coding and testing, a local GPU
-            cluster (Tier-3) for on-demand computing with state-of-the-art
-            accelerators, and priority access to VUB's Tier-2 infrastructure
-            featuring latest-generation NVIDIA A100 and H200 nodes.
-            Additionally, researchers can access the Flemish Tier-1
-            supercomputing resources (VSC), as well as VUB's newest Tier-1
-            system (Sofia) — a major investment operational since 2025.
+        <!-- Stats banner -->
+        <div
+          class="stats stats-vertical lg:stats-horizontal w-full mb-10 border border-base-300"
+        >
+          <div class="stat">
+            <div class="stat-title">GPU Tiers</div>
+            <div class="stat-value text-primary">4</div>
+            <div class="stat-desc">Desktop to Tier-1 supercompute</div>
+          </div>
+          <div class="stat">
+            <div class="stat-title">Desktop GPUs</div>
+            <div class="stat-value text-secondary">24+</div>
+            <div class="stat-desc">RTX 3090, 2080 Ti, 1080 Ti</div>
+          </div>
+          <div class="stat">
+            <div class="stat-title">AV Testbed Nodes</div>
+            <div class="stat-value text-accent">3</div>
+            <div class="stat-desc">Vehicle, RSU, Aerial drone</div>
+          </div>
+          <div class="stat">
+            <div class="stat-title">Sensors</div>
+            <div class="stat-value">15+</div>
+            <div class="stat-desc">Cameras, LiDAR, event, IMU</div>
+          </div>
+        </div>
+
+        <!-- Sub-category tabs -->
+        <div class="eq-tab-bar">
+          <button class="eq-tab active" data-eqtab="compute"
+            >Compute Infrastructure</button
+          >
+          <button class="eq-tab" data-eqtab="testbed">IONIAN Testbed</button>
+          <button class="eq-tab" data-eqtab="sensing">Sensing Equipment</button>
+        </div>
+
+        <!-- ---- Compute Infrastructure ---- -->
+        <div class="eq-panel active" data-eqpanel="compute">
+          <p class="text-base opacity-70 mb-8 max-w-3xl">
+            VUB-ETRO provides a multi-tier compute infrastructure — from desktop
+            GPUs for interactive development, through local and institutional
+            GPU clusters, up to Flemish supercomputing resources.
           </p>
+
+          <div class="grid gap-6">
+            <!-- Desktop GPUs -->
+            <div class="eq-card">
+              <div class="eq-card-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-8"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25A2.25 2.25 0 0 1 5.25 3h13.5A2.25 2.25 0 0 1 21 5.25Z"
+                  ></path>
+                </svg>
+              </div>
+              <div class="eq-card-body">
+                <div class="flex items-center gap-3 mb-2">
+                  <h3 class="text-xl font-bold">Desktop GPUs</h3>
+                  <span class="badge badge-ghost">Interactive</span>
+                </div>
+                <p class="opacity-70 mb-4">
+                  Dedicated workstations for interactive coding, prototyping,
+                  and testing.
+                </p>
+                <div class="overflow-x-auto">
+                  <table class="table table-xs">
+                    <thead><tr><th>GPU</th><th>Qty</th><th>VRAM</th></tr></thead
+                    >
+                    <tbody>
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3090-3090ti/"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/rtx-3090.jpg"
+                            >NVIDIA RTX 3090</a
+                          ></td
+                        ><td>14</td><td>24 GB</td></tr
+                      >
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.nvidia.com/nl-nl/geforce/20-series/"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/rtx-2080ti.png"
+                            >NVIDIA RTX 2080 Ti</a
+                          ></td
+                        ><td>7</td><td>11 GB</td></tr
+                      >
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.nvidia.com/en-us/geforce/products/10series/ultimate-4k/"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/gtx-1080ti.png"
+                            >NVIDIA GeForce GTX 1080 Ti</a
+                          ></td
+                        ><td>2</td><td>11 GB</td></tr
+                      >
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lambda Servers -->
+            <div class="eq-card">
+              <div class="eq-card-icon eq-icon-secondary">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-8"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M5.25 14.25h13.5m-13.5 0a3 3 0 0 1-3-3m3 3a3 3 0 1 0 0 6h13.5a3 3 0 1 0 0-6m-16.5-3a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3m-19.5 0a4.5 4.5 0 0 1 .9-2.7L5.737 5.1a3.375 3.375 0 0 1 2.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 0 1 .9 2.7m0 0a3 3 0 0 1-3 3m0 3h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Zm-3 6h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Z"
+                  ></path>
+                </svg>
+              </div>
+              <div class="eq-card-body">
+                <div class="flex items-center gap-3 mb-2">
+                  <h3 class="text-xl font-bold">Lambda Servers</h3>
+                  <span class="badge badge-ghost">Dedicated</span>
+                </div>
+                <p class="opacity-70 mb-4">
+                  Multi-GPU deep learning servers for training workloads.
+                </p>
+                <div class="overflow-x-auto">
+                  <table class="table table-xs">
+                    <thead><tr><th>Configuration</th><th>Qty</th></tr></thead>
+                    <tbody>
+                      <tr><td>Lambda Server (4x RTX 2080 Ti)</td><td>3</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tier-3 Cluster -->
+            <div class="eq-card">
+              <div class="eq-card-icon eq-icon-accent">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-8"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v.878m-18-3A2.25 2.25 0 0 0 1.5 12v.878m0 0c.235-.083.487-.128.75-.128h19.5c.263 0 .515.045.75.128m-21 0A2.25 2.25 0 0 0 0 15v3a2.25 2.25 0 0 0 2.25 2.25h19.5A2.25 2.25 0 0 0 24 18v-3a2.25 2.25 0 0 0-1.5-2.122"
+                  ></path>
+                </svg>
+              </div>
+              <div class="eq-card-body">
+                <div class="flex items-center gap-3 mb-2">
+                  <h3 class="text-xl font-bold">ETRO GPU Cluster</h3>
+                  <span class="badge badge-primary">Tier-3</span>
+                </div>
+                <p class="opacity-70 mb-4">
+                  On-demand computing cluster managed by VUB-ETRO for research
+                  workloads.
+                </p>
+                <div class="overflow-x-auto">
+                  <table class="table table-xs">
+                    <thead><tr><th>GPU</th><th>Qty</th><th>VRAM</th></tr></thead
+                    >
+                    <tbody>
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.nvidia.com/en-us/data-center/a100/"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/a100.png"
+                            >NVIDIA A100 Tensor Core</a
+                          ></td
+                        ><td>4</td><td>40 / 80 GB</td></tr
+                      >
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.nvidia.com/nl-nl/geforce/graphics-cards/40-series/rtx-4090/"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/rtx-4090.png"
+                            >NVIDIA GeForce RTX 4090</a
+                          ></td
+                        ><td>4</td><td>24 GB</td></tr
+                      >
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tier-2 -->
+            <div class="eq-card">
+              <div class="eq-card-logo">
+                <a href="https://hpc.vub.be/" target="_blank"
+                  ><img src="/images/vub-hpc-logo.png" alt="VUB HPC" /></a
+                >
+              </div>
+              <div class="eq-card-body">
+                <div class="flex items-center gap-3 mb-2">
+                  <h3 class="text-xl font-bold">
+                    <a
+                      href="https://hpc.vub.be/"
+                      target="_blank"
+                      class="link link-hover"
+                      >VUB Institutional Cluster (Hydra)</a>
+                  </h3>
+                  <span class="badge badge-secondary">Tier-2</span>
+                </div>
+                <p class="opacity-70 mb-4">
+                  Maintained by the <a
+                    href="https://www.vscentrum.be/"
+                    target="_blank"
+                    class="link link-hover"
+                    >Flemish Supercomputer Centre (VSC)</a
+                  >. 95% of jobs start within 8 hours. VUB-ETRO has priority
+                  access to 2 H200 nodes.
+                </p>
+                <div class="overflow-x-auto">
+                  <table class="table table-xs">
+                    <thead
+                      ><tr><th>GPU</th><th>Nodes</th><th>VRAM</th></tr></thead
+                    >
+                    <tbody>
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.nvidia.com/en-us/data-center/a100/"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/a100.png"
+                            >NVIDIA A100</a
+                          ></td
+                        ><td>15</td><td>40 GB</td></tr
+                      >
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.nvidia.com/en-us/data-center/a100/"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/a100.png"
+                            >NVIDIA A100</a
+                          ></td
+                        ><td>5</td><td>80 GB</td></tr
+                      >
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.nvidia.com/en-us/data-center/h200/"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/h200.png"
+                            >NVIDIA H200</a
+                          ></td
+                        ><td>10</td><td>141 GB</td></tr
+                      >
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tier-1 -->
+            <div class="eq-card">
+              <div class="eq-card-logo">
+                <div class="flex flex-col gap-2">
+                  <a href="https://www.vscentrum.be/" target="_blank"
+                    ><img src="/images/vsc-logo.png" alt="VSC" /></a
+                  >
+                  <a
+                    href="https://press.vub.ac.be/press-release-vub-inaugurates-new-flemish-tier-1-supercomputer-sofia"
+                    target="_blank"
+                    ><img
+                      src="/images/sofia-supercomputer.png"
+                      alt="Sofia Supercomputer"
+                    /></a
+                  >
+                </div>
+              </div>
+              <div class="eq-card-body">
+                <div class="flex items-center gap-3 mb-2">
+                  <h3 class="text-xl font-bold">
+                    <a
+                      href="https://docs.vscentrum.be/gent/tier1_hortense.html"
+                      target="_blank"
+                      class="link link-hover">Flemish Tier-1 (Hortense)</a
+                    > & <a
+                      href="https://press.vub.ac.be/press-release-vub-inaugurates-new-flemish-tier-1-supercomputer-sofia"
+                      target="_blank"
+                      class="link link-hover">Sofia</a>
+                  </h3>
+                  <span class="badge badge-accent">Tier-1</span>
+                </div>
+                <p class="opacity-70 mb-4">
+                  Free access to Flemish Tier-1 via compute project submission. <a
+                    href="https://press.vub.ac.be/press-release-vub-inaugurates-new-flemish-tier-1-supercomputer-sofia"
+                    target="_blank"
+                    class="link link-hover">Sofia</a
+                  >, VUB's new Tier-1 supercomputer, has been operational since
+                  November 2025.
+                </p>
+                <div class="overflow-x-auto">
+                  <table class="table table-xs">
+                    <thead><tr><th>GPU</th><th>Qty</th><th>VRAM</th></tr></thead
+                    >
+                    <tbody>
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.nvidia.com/en-us/data-center/a100/"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/a100.png"
+                            >NVIDIA A100</a
+                          > (Hortense)</td
+                        ><td>80</td><td>40 GB</td></tr
+                      >
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.nvidia.com/en-us/data-center/a100/"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/a100.png"
+                            >NVIDIA A100</a
+                          > (Hortense)</td
+                        ><td>80</td><td>80 GB</td></tr
+                      >
+                      <tr
+                        ><td colspan="3" class="italic opacity-60"
+                          >Sofia specs TBA</td
+                        ></tr
+                      >
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---- IONIAN Testbed ---- -->
+        <div class="eq-panel" data-eqpanel="testbed">
+          <p class="text-base opacity-70 mb-8 max-w-3xl">
+            The ERC IONIAN testbed is a cooperative perception platform
+            combining an instrumented vehicle, a roadside unit (RSU), and an
+            aerial drone node for research on cooperative sensing, multimodal
+            fusion, and intelligent machine perception.
+          </p>
+
+          <!-- Vehicle -->
+          <div class="eq-card mb-6">
+            <div class="eq-card-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-8"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0H21M3.375 14.25h17.25M3.375 14.25V6.375c0-.621.504-1.125 1.125-1.125h9.75c.621 0 1.125.504 1.125 1.125v7.875m-13.5 0h6.375"
+                ></path>
+              </svg>
+            </div>
+            <div class="eq-card-body">
+              <div class="flex items-center gap-3 mb-2">
+                <h3 class="text-xl font-bold">Instrumented Vehicle</h3>
+                <span class="badge badge-primary">Mobile</span>
+              </div>
+              <p class="opacity-70 mb-4">
+                The instrumented car is equipped with multimodal sensors and
+                on-board edge AI for real-time perception.
+              </p>
+              <div class="overflow-x-auto">
+                <table class="table table-xs">
+                  <thead
+                    ><tr><th>Component</th><th>Model</th><th>Details</th></tr
+                    ></thead
+                  >
+                  <tbody>
+                    <tr
+                      ><td>Cameras</td><td
+                        >4x <a
+                          href="https://www.baslerweb.com/en/shop/aca1920-50gc/"
+                          target="_blank"
+                          class="link link-hover eq-preview"
+                          data-preview="/images/equipment/basler-ace.jpg"
+                          >Basler ace acA1920-50gc</a
+                        ></td
+                      ><td>Multi-view RGB</td></tr
+                    >
+                    <tr
+                      ><td>LiDAR</td><td
+                        ><a
+                          href="https://www.robosense.ai/en/rslidar/Helios"
+                          target="_blank"
+                          class="link link-hover eq-preview"
+                          data-preview="/images/equipment/robosense-helios.png"
+                          >RoboSense Helios</a
+                        ></td
+                      ><td>32-beam spinning</td></tr
+                    >
+                    <tr
+                      ><td>IMU</td><td
+                        ><a
+                          href="https://www.xsens.com/products/sensor-modules/xsens-mti-600-series-flexible-reliable-imus-for-all-design-needs"
+                          target="_blank"
+                          class="link link-hover eq-preview"
+                          data-preview="/images/equipment/xsens-imu.jpg"
+                          >Xsens AHRS/IMU</a
+                        ></td
+                      ><td>Automotive-grade</td></tr
+                    >
+                    <tr
+                      ><td>Edge Compute</td><td
+                        ><a
+                          href="https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-thor/"
+                          target="_blank"
+                          class="link link-hover eq-preview"
+                          data-preview="/images/equipment/jetson-thor.jpg"
+                          >NVIDIA Jetson Thor</a
+                        ></td
+                      ><td>Dev kit</td></tr
+                    >
+                    <tr
+                      ><td>Networking</td><td>PoE++</td><td
+                        >+ dedicated power + NVMe storage</td
+                      ></tr
+                    >
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- RSU -->
+          <div class="eq-card mb-6">
+            <div class="eq-card-icon eq-icon-secondary">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-8"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M8.288 15.038a5.25 5.25 0 0 1 7.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 0 1 1.06 0Z"
+                ></path>
+              </svg>
+            </div>
+            <div class="eq-card-body">
+              <div class="flex items-center gap-3 mb-2">
+                <h3 class="text-xl font-bold">Roadside Unit (RSU)</h3>
+                <span class="badge badge-secondary">Static</span>
+              </div>
+              <p class="opacity-70 mb-4">
+                A fixed multimodal sensing setup for infrastructure-side
+                perception, including a neuromorphic event camera.
+              </p>
+              <div class="overflow-x-auto">
+                <table class="table table-xs">
+                  <thead
+                    ><tr><th>Component</th><th>Model</th><th>Details</th></tr
+                    ></thead
+                  >
+                  <tbody>
+                    <tr
+                      ><td>Cameras</td><td
+                        >4x <a
+                          href="https://www.baslerweb.com/en/shop/aca1920-40gc/"
+                          target="_blank"
+                          class="link link-hover eq-preview"
+                          data-preview="/images/equipment/basler-ace.jpg"
+                          >Basler ace acA1920-40gc</a
+                        ></td
+                      ><td>With C11-0824-12M-P lenses</td></tr
+                    >
+                    <tr
+                      ><td>LiDAR</td><td
+                        ><a
+                          href="https://ouster.com/products/hardware/os1-lidar-sensor"
+                          target="_blank"
+                          class="link link-hover eq-preview"
+                          data-preview="/images/equipment/ouster-os1.jpg"
+                          >Ouster OS1-64 Gen 2</a
+                        ></td
+                      ><td>64-channel digital</td></tr
+                    >
+                    <tr
+                      ><td>Event Camera</td><td
+                        ><a
+                          href="https://www.prophesee.ai/event-camera-evk4/"
+                          target="_blank"
+                          class="link link-hover eq-preview"
+                          data-preview="/images/equipment/prophesee-evk4.jpg"
+                          >Prophesee EVK4 HD</a
+                        ></td
+                      ><td>Neuromorphic, high-res</td></tr
+                    >
+                    <tr
+                      ><td>Edge Compute</td><td
+                        ><a
+                          href="https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-thor/"
+                          target="_blank"
+                          class="link link-hover eq-preview"
+                          data-preview="/images/equipment/jetson-thor.jpg"
+                          >NVIDIA Jetson AGX Thor</a
+                        ></td
+                      ><td>Edge processing</td></tr
+                    >
+                    <tr
+                      ><td>Infrastructure</td><td>Outdoor cabinet</td><td
+                        >Mounting + power supply</td
+                      ></tr
+                    >
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Drone -->
+          <div class="eq-card mb-10">
+            <div class="eq-card-icon eq-icon-accent">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-8"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+                ></path>
+              </svg>
+            </div>
+            <div class="eq-card-body">
+              <div class="flex items-center gap-3 mb-2">
+                <h3 class="text-xl font-bold">Aerial Drone Node</h3>
+                <span class="badge badge-accent">Aerial</span>
+              </div>
+              <p class="opacity-70 mb-4">
+                A T650 drone platform equipped with LiDAR, camera, RTK
+                positioning, and on-board AI for aerial perception.
+              </p>
+              <div class="overflow-x-auto">
+                <table class="table table-xs">
+                  <thead
+                    ><tr><th>Component</th><th>Model</th><th>Details</th></tr
+                    ></thead
+                  >
+                  <tbody>
+                    <tr
+                      ><td>Edge Compute</td><td
+                        ><a
+                          href="https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/"
+                          target="_blank"
+                          class="link link-hover eq-preview"
+                          data-preview="/images/equipment/jetson-orin.jpg"
+                          >NVIDIA Jetson AGX Orin</a
+                        ></td
+                      ><td>32 GB, 1 TB SSD</td></tr
+                    >
+                    <tr
+                      ><td>LiDAR</td><td
+                        ><a
+                          href="https://ouster.com/products/hardware/os0-lidar-sensor"
+                          target="_blank"
+                          class="link link-hover eq-preview"
+                          data-preview="/images/equipment/ouster-os0.png"
+                          >Ouster OS0-32 Rev7</a
+                        ></td
+                      ><td>Wide-FOV, short-range</td></tr
+                    >
+                    <tr
+                      ><td>Camera</td><td
+                        ><a
+                          href="https://www.teledynevisionsolutions.com/en-150/products/blackfly-s-gige/?model=BFS-PGE-31S4C-C&vertical=machine%20vision&segment=iis"
+                          target="_blank"
+                          class="link link-hover eq-preview"
+                          data-preview="/images/equipment/blackfly-s.png"
+                          >Blackfly S 3.2 MP PoE GigE</a
+                        ></td
+                      ><td>3.5 / 4.5 mm lenses</td></tr
+                    >
+                    <tr
+                      ><td>Positioning</td><td>RTK module + base station</td><td
+                        >LoRa long-range comms</td
+                      ></tr
+                    >
+                    <tr
+                      ><td>Flight Controller</td><td
+                        ><a
+                          href="https://holybro.com/products/pixhawk-6c"
+                          target="_blank"
+                          class="link link-hover eq-preview"
+                          data-preview="/images/equipment/pixhawk-6c.jpg"
+                          >Pixhawk 6C</a
+                        ></td
+                      ><td>FPV + remote control</td></tr
+                    >
+                    <tr
+                      ><td>Power</td><td>Dual 6S 15 Ah Li-ion</td><td
+                        >Extended flight time</td
+                      ></tr
+                    >
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert border border-base-300">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              class="stroke-primary shrink-0 w-6 h-6"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path></svg
+            >
+            <span
+              >This multi-platform setup supports synchronized sensing and
+              distributed real-time perception across mobile, static, and aerial
+              agents — providing a realistic experimental environment for
+              cooperative perception research.</span
+            >
+          </div>
+        </div>
+
+        <!-- ---- Sensing Equipment ---- -->
+        <div class="eq-panel" data-eqpanel="sensing">
+          <p class="text-base opacity-70 mb-8 max-w-3xl">
+            The ERC IONIAN testbed includes a rich multimodal sensor suite
+            spanning visual, event-based, 3D ranging, inertial, and positioning
+            modalities.
+          </p>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <!-- Cameras -->
+            <div class="card bg-base-100 shadow-md border border-base-300">
+              <div class="card-body">
+                <h3 class="card-title">Cameras</h3>
+                <div class="overflow-x-auto">
+                  <table class="table table-xs">
+                    <thead
+                      ><tr><th>Model</th><th>Qty</th><th>Notes</th></tr></thead
+                    >
+                    <tbody>
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.baslerweb.com/en/shop/aca1920-50gc/"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/basler-ace.jpg"
+                            >Basler ace acA1920-50gc</a
+                          ></td
+                        ><td>4</td><td>Multi-view RGB</td></tr
+                      >
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.baslerweb.com/en/shop/aca1920-40gc/"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/basler-ace.jpg"
+                            >Basler ace acA1920-40gc</a
+                          ></td
+                        ><td>4</td><td>With C11-0824-12M-P lenses</td></tr
+                      >
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.teledynevisionsolutions.com/en-150/products/blackfly-s-gige/?model=BFS-PGE-31S4C-C&vertical=machine%20vision&segment=iis"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/blackfly-s.png"
+                            >Blackfly S 3.2 MP PoE GigE</a
+                          ></td
+                        ><td>1</td><td>Interchangeable 3.5/4.5 mm lenses</td
+                        ></tr
+                      >
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Event Camera -->
+            <div class="card bg-base-100 shadow-md border border-base-300">
+              <div class="card-body">
+                <h3 class="card-title">Event Camera</h3>
+                <div class="overflow-x-auto">
+                  <table class="table table-xs">
+                    <thead
+                      ><tr><th>Model</th><th>Qty</th><th>Notes</th></tr></thead
+                    >
+                    <tbody>
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.prophesee.ai/event-camera-evk4/"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/prophesee-evk4.jpg"
+                            >Prophesee EVK4 HD</a
+                          ></td
+                        ><td>1</td><td>High-res neuromorphic sensor</td></tr
+                      >
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- LiDARs -->
+            <div class="card bg-base-100 shadow-md border border-base-300">
+              <div class="card-body">
+                <h3 class="card-title">LiDAR Sensors</h3>
+                <div class="overflow-x-auto">
+                  <table class="table table-xs">
+                    <thead
+                      ><tr><th>Model</th><th>Qty</th><th>Platform</th></tr
+                      ></thead
+                    >
+                    <tbody>
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.robosense.ai/en/rslidar/Helios"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/robosense-helios.png"
+                            >RoboSense Helios (32-beam)</a
+                          ></td
+                        ><td>1</td><td>Vehicle</td></tr
+                      >
+                      <tr
+                        ><td
+                          ><a
+                            href="https://ouster.com/products/hardware/os1-lidar-sensor"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/ouster-os1.jpg"
+                            >Ouster OS1-64 Gen 2</a
+                          ></td
+                        ><td>1</td><td>RSU</td></tr
+                      >
+                      <tr
+                        ><td
+                          ><a
+                            href="https://ouster.com/products/hardware/os0-lidar-sensor"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/ouster-os0.png"
+                            >Ouster OS0-32 Rev7</a
+                          ></td
+                        ><td>1</td><td>Drone</td></tr
+                      >
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- IMU / Positioning -->
+            <div class="card bg-base-100 shadow-md border border-base-300">
+              <div class="card-body">
+                <h3 class="card-title">IMU & Positioning</h3>
+                <div class="overflow-x-auto">
+                  <table class="table table-xs">
+                    <thead
+                      ><tr><th>Model</th><th>Qty</th><th>Notes</th></tr></thead
+                    >
+                    <tbody>
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.xsens.com/products/sensor-modules/xsens-mti-600-series-flexible-reliable-imus-for-all-design-needs"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/xsens-imu.jpg"
+                            >Xsens AHRS/IMU</a
+                          ></td
+                        ><td>1</td><td>Automotive-grade</td></tr
+                      >
+                      <tr
+                        ><td>RTK module + base station</td><td>1</td><td
+                          >LoRa long-range comms</td
+                        ></tr
+                      >
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Edge Compute -->
+            <div
+              class="card bg-base-100 shadow-md border border-base-300 md:col-span-2"
+            >
+              <div class="card-body">
+                <h3 class="card-title">Edge Computing</h3>
+                <div class="overflow-x-auto">
+                  <table class="table table-xs">
+                    <thead
+                      ><tr><th>Model</th><th>Qty</th><th>Platform</th></tr
+                      ></thead
+                    >
+                    <tbody>
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-thor/"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/jetson-thor.jpg"
+                            >NVIDIA Jetson Thor Dev Kit</a
+                          ></td
+                        ><td>1</td><td>Vehicle</td></tr
+                      >
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-thor/"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/jetson-thor.jpg"
+                            >NVIDIA Jetson AGX Thor</a
+                          ></td
+                        ><td>1</td><td>RSU</td></tr
+                      >
+                      <tr
+                        ><td
+                          ><a
+                            href="https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/"
+                            target="_blank"
+                            class="link link-hover eq-preview"
+                            data-preview="/images/equipment/jetson-orin.jpg"
+                            >NVIDIA Jetson AGX Orin (32 GB, 1 TB SSD)</a
+                          ></td
+                        ><td>1</td><td>Drone</td></tr
+                      >
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
+      <!-- ==================== SOFTWARE ==================== -->
       <div class="res-panel" data-panel="software">
         <div class="prose max-w-none">
-          <p>Software and code repositories to be added.</p>
+          <p class="opacity-60">Software and code repositories to be added.</p>
         </div>
       </div>
+
+      <!-- ==================== DATASETS ==================== -->
       <div class="res-panel" data-panel="datasets">
         <div class="prose max-w-none">
-          <p>Datasets and benchmarks to be added.</p>
+          <p class="opacity-60">Datasets and benchmarks to be added.</p>
         </div>
       </div>
+
+      <!-- ==================== TUTORIALS ==================== -->
       <div class="res-panel" data-panel="tutorials">
         <div class="prose max-w-none">
-          <p>Tutorials and learning materials to be added.</p>
+          <p class="opacity-60">
+            Tutorials and learning materials to be added.
+          </p>
         </div>
       </div>
     </div>
@@ -50,6 +932,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <script>
+  // Main resource tabs
   document.querySelectorAll('.res-tab').forEach((btn) => {
     btn.addEventListener('click', () => {
       document
@@ -61,6 +944,46 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       btn.classList.add('active');
       document
         .querySelector(`.res-panel[data-panel="${btn.dataset.tab}"]`)
+        ?.classList.add('active');
+    });
+  });
+
+  // Equipment image hover preview
+  const preview = document.createElement('div');
+  preview.className = 'eq-img-preview';
+  document.body.appendChild(preview);
+
+  document.querySelectorAll('.eq-preview').forEach((link) => {
+    link.addEventListener('mouseenter', (e) => {
+      const src = link.dataset.preview;
+      if (!src) return;
+      preview.innerHTML = `<img src="${src}" alt="" />`;
+      preview.classList.add('visible');
+    });
+    link.addEventListener('mousemove', (e) => {
+      const x = Math.min(e.clientX + 16, window.innerWidth - 220);
+      const y = Math.min(e.clientY + 16, window.innerHeight - 180);
+      preview.style.left = x + 'px';
+      preview.style.top = y + 'px';
+    });
+    link.addEventListener('mouseleave', () => {
+      preview.classList.remove('visible');
+      preview.innerHTML = '';
+    });
+  });
+
+  // Equipment sub-tabs
+  document.querySelectorAll('.eq-tab').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document
+        .querySelectorAll('.eq-tab')
+        .forEach((t) => t.classList.remove('active'));
+      document
+        .querySelectorAll('.eq-panel')
+        .forEach((p) => p.classList.remove('active'));
+      btn.classList.add('active');
+      document
+        .querySelector(`.eq-panel[data-eqpanel="${btn.dataset.eqtab}"]`)
         ?.classList.add('active');
     });
   });
@@ -99,5 +1022,161 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
   .res-panel.active {
     display: block;
+  }
+
+  /* Equipment sub-tabs */
+  .eq-tab-bar {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .eq-tab {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background: oklch(var(--b2, 0.93 0.03 80));
+    border: 1px solid oklch(var(--b3, 0.87 0.02 80));
+    border-radius: 0.5rem;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.15s;
+  }
+  .eq-tab:hover {
+    opacity: 0.85;
+  }
+  .eq-tab.active {
+    opacity: 1;
+    background: oklch(var(--p, 0.5 0.2 260));
+    color: oklch(var(--pc, 1 0 0));
+    border-color: oklch(var(--p, 0.5 0.2 260));
+  }
+  .eq-panel {
+    display: none;
+  }
+  .eq-panel.active {
+    display: block;
+  }
+
+  /* Equipment cards */
+  .eq-card {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid oklch(var(--b3, 0.87 0.02 80));
+    background: oklch(var(--b1, 1 0 0));
+    transition: box-shadow 0.2s;
+  }
+  .eq-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  }
+  .eq-card-icon {
+    flex-shrink: 0;
+    width: 3.5rem;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    background: oklch(var(--p, 0.5 0.2 260) / 0.12);
+    color: oklch(var(--p, 0.5 0.2 260));
+  }
+  .eq-card-icon.eq-icon-secondary {
+    background: oklch(var(--s, 0.5 0.2 260) / 0.12);
+    color: oklch(var(--s, 0.5 0.2 260));
+  }
+  .eq-card-icon.eq-icon-accent {
+    background: oklch(var(--a, 0.5 0.2 260) / 0.12);
+    color: oklch(var(--a, 0.5 0.2 260));
+  }
+  .eq-card-logo {
+    flex-shrink: 0;
+    width: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .eq-card-logo img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.375rem;
+    object-fit: contain;
+  }
+  .eq-card-body {
+    flex: 1;
+    min-width: 0;
+  }
+  .eq-card-icon-sm {
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    background: oklch(var(--p, 0.5 0.2 260) / 0.12);
+    color: oklch(var(--p, 0.5 0.2 260));
+  }
+  .eq-card-icon-sm.eq-icon-secondary {
+    background: oklch(var(--s, 0.5 0.2 260) / 0.12);
+    color: oklch(var(--s, 0.5 0.2 260));
+  }
+  .eq-card-icon-sm.eq-icon-accent {
+    background: oklch(var(--a, 0.5 0.2 260) / 0.12);
+    color: oklch(var(--a, 0.5 0.2 260));
+  }
+
+  /* Dark mode */
+  [data-theme='dark'] .eq-card {
+    background: #1a1a1a;
+    border-color: #333;
+  }
+  [data-theme='dark'] .eq-card:hover {
+    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.04);
+  }
+
+  /* Hover image preview */
+  .eq-img-preview {
+    position: fixed;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.95);
+    transition:
+      opacity 0.15s,
+      transform 0.15s;
+    background: oklch(var(--b1, 1 0 0));
+    border: 1px solid oklch(var(--b3, 0.87 0.02 80));
+    border-radius: 0.75rem;
+    padding: 0.5rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    max-width: 200px;
+  }
+  .eq-img-preview.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .eq-img-preview img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    object-fit: contain;
+  }
+  .eq-preview {
+    cursor: pointer;
+    border-bottom: 1px dashed currentColor;
+  }
+
+  @media (max-width: 640px) {
+    .eq-card {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .eq-img-preview {
+      display: none;
+    }
   }
 </style>
