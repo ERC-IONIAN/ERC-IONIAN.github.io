@@ -1,6 +1,7 @@
 ---
 import MemberLayout from '../../../layouts/MemberLayout.astro';
 import { getCollection } from 'astro:content';
+import { getPublicationsForMember } from '../../../utils/publications';
 
 export async function getStaticPaths() {
   const roleOrder: Record<string, number> = {
@@ -28,15 +29,37 @@ const { member, prev, next } = Astro.props;
 const author = member.data.author;
 const pic = author?.picture || member.data.image?.thumbnail;
 const { Content } = await member.render();
+
+const researchAreas = member.data.research_areas ?? [];
+const currentProjects = member.data.current_projects ?? [];
+const education = member.data.education ?? [];
+const experience = member.data.experience ?? [];
+const service = member.data.service ?? [];
 const news = member.data.news ?? [];
+const preIonian = member.data.pre_ionian_work ?? [];
+const pubs = getPublicationsForMember(member.data.title);
+
+const hasResearch = researchAreas.length > 0 || currentProjects.length > 0;
+const hasPublications = pubs.length > 0 || preIonian.length > 0;
+const hasCV =
+  education.length > 0 || experience.length > 0 || service.length > 0;
+const hasNews = news.length > 0;
+
+const sections: { id: string; label: string }[] = [
+  { id: 'about', label: 'About' },
+  ...(hasResearch ? [{ id: 'research', label: 'Research' }] : []),
+  ...(hasPublications ? [{ id: 'publications', label: 'Publications' }] : []),
+  ...(hasCV ? [{ id: 'cv', label: 'CV' }] : []),
+  ...(hasNews ? [{ id: 'news', label: 'News' }] : []),
+];
 
 const iconSvgs: Record<string, string> = {
-  email: `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`,
-  twitter: `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M22.46 6c-.77.35-1.6.58-2.46.69a4.3 4.3 0 001.88-2.38 8.59 8.59 0 01-2.72 1.04 4.28 4.28 0 00-7.32 3.91A12.16 12.16 0 013.16 4.86a4.28 4.28 0 001.32 5.71 4.24 4.24 0 01-1.94-.53v.05a4.28 4.28 0 003.43 4.19 4.28 4.28 0 01-1.93.07 4.29 4.29 0 004 2.97A8.59 8.59 0 012 19.54a12.13 12.13 0 006.56 1.92c7.88 0 12.2-6.53 12.2-12.2 0-.19 0-.37-.01-.56A8.72 8.72 0 0024 5.06a8.57 8.57 0 01-2.54.7z"/></svg>`,
-  linkedin: `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14m-.5 15.5v-5.3a3.26 3.26 0 00-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 011.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 001.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 00-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>`,
-  facebook: `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>`,
-  scholar: `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 100 14 7 7 0 000-14z"/></svg>`,
-  orcid: `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 01-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.025-5.325 5.025h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-2.016-1.284-3.722-3.919-3.722h-2.4z"/></svg>`,
+  email: `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`,
+  twitter: `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M22.46 6c-.77.35-1.6.58-2.46.69a4.3 4.3 0 001.88-2.38 8.59 8.59 0 01-2.72 1.04 4.28 4.28 0 00-7.32 3.91A12.16 12.16 0 013.16 4.86a4.28 4.28 0 001.32 5.71 4.24 4.24 0 01-1.94-.53v.05a4.28 4.28 0 003.43 4.19 4.28 4.28 0 01-1.93.07 4.29 4.29 0 004 2.97A8.59 8.59 0 012 19.54a12.13 12.13 0 006.56 1.92c7.88 0 12.2-6.53 12.2-12.2 0-.19 0-.37-.01-.56A8.72 8.72 0 0024 5.06a8.57 8.57 0 01-2.54.7z"/></svg>`,
+  linkedin: `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14m-.5 15.5v-5.3a3.26 3.26 0 00-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 011.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 001.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 00-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>`,
+  facebook: `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>`,
+  scholar: `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 100 14 7 7 0 000-14z"/></svg>`,
+  orcid: `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 01-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.025-5.325 5.025h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-2.016-1.284-3.722-3.919-3.722h-2.4z"/></svg>`,
 };
 ---
 
@@ -48,42 +71,42 @@ const iconSvgs: Record<string, string> = {
   memberAffiliation={member.data.affiliation}
   slug={member.slug}
   links={author?.links}
-  activeTab="home"
+  sections={sections}
 >
-  <!-- Hero -->
-  <section
-    class="flex flex-col md:flex-row items-center gap-10 border-b border-base-300 pb-10 mb-10"
-  >
-    <div class="flex-1">
-      <h1 class="text-4xl font-bold mb-3">
-        Hi, I'm <span class="text-secondary">{member.data.title}</span>
-      </h1>
+  <!-- ─── Hero ─── -->
+  <section class="profile-hero">
+    <div>
+      <div class="profile-eyebrow">
+        <span>Member Profile</span>
+      </div>
+      <h1 class="profile-name">{member.data.title}</h1>
       {
         member.data.role && (
-          <p class="text-xl opacity-60 mb-2">
-            {member.data.role} at IONIAN, ETRO, VUB
+          <p class="profile-role">
+            {member.data.role}, IONIAN — ETRO, VUB
           </p>
         )
       }
       {
         member.data.affiliation && (
-          <p class="text-base opacity-50 mb-4">{member.data.affiliation}</p>
+          <p class="profile-affiliation">{member.data.affiliation}</p>
         )
       }
       {
         member.data.bio && (
-          <p class="text-lg mb-5 italic opacity-80">"{member.data.bio}"</p>
+          <blockquote class="profile-quote">{member.data.bio}</blockquote>
         )
       }
       {
         author?.links && (
-          <div class="flex gap-3 flex-wrap">
+          <div class="profile-socials">
             {author.links.map((link) => (
               <a
                 href={link.url}
                 target="_blank"
+                rel="noopener noreferrer"
                 title={link.title}
-                class="size-10 inline-flex items-center justify-center rounded-xl hover:bg-primary/20 transition-all duration-300"
+                class="profile-social"
               >
                 {link.icon && iconSvgs[link.icon] ? (
                   <Fragment set:html={iconSvgs[link.icon]} />
@@ -98,34 +121,331 @@ const iconSvgs: Record<string, string> = {
     </div>
     {
       pic && (
-        <div class="size-56 lg:block hidden flex-shrink-0">
-          <img
-            src={pic}
-            alt={member.data.title}
-            class="w-full h-full mask mask-circle object-cover"
-          />
+        <div class="profile-photo-frame">
+          <img src={pic} alt={member.data.title} class="profile-photo" />
         </div>
       )
     }
   </section>
 
-  <!-- About -->
-  <section class="py-10 prose max-w-none border-b border-base-300">
-    <Content />
+  <!-- ─── About ─── -->
+  <section id="about" class="profile-section">
+    <header class="profile-section-header">
+      <h2 class="profile-section-title">About</h2>
+    </header>
+    <div class="profile-about prose max-w-none prose-a:no-underline">
+      <Content />
+    </div>
   </section>
 
-  <!-- News & Highlights -->
+  <!-- ─── Research ─── -->
   {
-    news.length > 0 && (
-      <section class="py-10">
-        <h2 class="text-2xl font-bold mb-6">News & Highlights</h2>
-        <ul class="space-y-4">
-          {news.map((item) => (
-            <li class="flex gap-4 items-baseline">
-              <span class="font-mono text-sm opacity-50 flex-shrink-0">
-                {item.year}
+    hasResearch && (
+      <section id="research" class="profile-section">
+        <header class="profile-section-header">
+          <h2 class="profile-section-title">Research</h2>
+        </header>
+
+        {researchAreas.length > 0 && (
+          <div class="profile-subsection">
+            <p class="profile-subsection-label">Research Areas</p>
+            <div class="profile-areas">
+              {researchAreas.map((area) => (
+                <div class="profile-area">
+                  <h3 class="profile-area-name">{area.name}</h3>
+                  <p class="profile-area-desc">{area.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {currentProjects.length > 0 && (
+          <div class="profile-subsection">
+            <p class="profile-subsection-label">Current Projects</p>
+            <div class="profile-projects">
+              {currentProjects.map((proj) => (
+                <div class="profile-project">
+                  <h3 class="profile-project-name">{proj.name}</h3>
+                  <p class="profile-project-desc">{proj.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </section>
+    )
+  }
+
+  <!-- ─── Publications ─── -->
+  {
+    hasPublications && (
+      <section id="publications" class="profile-section">
+        <header class="profile-section-header">
+          <h2 class="profile-section-title">Publications</h2>
+        </header>
+
+        {pubs.length > 0 && (
+          <details class="profile-pub-group" open>
+            <summary class="profile-pub-group-head">
+              <span class="profile-pub-group-chevron" aria-hidden="true">
+                ›
               </span>
-              <span>{item.text}</span>
+              <span class="profile-pub-group-label">
+                IONIAN Group · {pubs.length}
+              </span>
+            </summary>
+            <div class="profile-pub-group-body">
+              <div class="profile-pub-group-inner">
+              <div class="profile-pubs" data-paginate>
+                {pubs.map((pub) => (
+                  <article class="profile-pub">
+                    {pub.year && (
+                      <span class="profile-pub-year">{pub.year}</span>
+                    )}
+                    <h3 class="profile-pub-title">{pub.title}</h3>
+                    <p class="profile-pub-authors">{pub.authors}</p>
+                    {pub.venue && <p class="profile-pub-venue">{pub.venue}</p>}
+                    <div class="profile-pub-actions">
+                      {pub.links.project ? (
+                        <a
+                          href={pub.links.project}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="pub-member-btn pub-member-btn-active"
+                        >
+                          Project
+                        </a>
+                      ) : (
+                        <span class="pub-member-btn pub-member-btn-disabled">
+                          Project
+                        </span>
+                      )}
+                      {pub.links.paper ? (
+                        <a
+                          href={pub.links.paper}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="pub-member-btn pub-member-btn-active"
+                        >
+                          Paper
+                        </a>
+                      ) : (
+                        <span class="pub-member-btn pub-member-btn-disabled">
+                          Paper
+                        </span>
+                      )}
+                      {pub.links.code ? (
+                        <a
+                          href={pub.links.code}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="pub-member-btn pub-member-btn-active"
+                        >
+                          Code
+                        </a>
+                      ) : (
+                        <span class="pub-member-btn pub-member-btn-disabled">
+                          Code
+                        </span>
+                      )}
+                    </div>
+                  </article>
+                ))}
+              </div>
+              <div class="profile-pub-pagination"></div>
+              </div>
+            </div>
+          </details>
+        )}
+
+        {preIonian.length > 0 && (
+          <details class="profile-pub-group">
+            <summary class="profile-pub-group-head">
+              <span class="profile-pub-group-chevron" aria-hidden="true">
+                ›
+              </span>
+              <span class="profile-pub-group-label">
+                Selected Pre-IONIAN Work · {preIonian.length}
+              </span>
+            </summary>
+            <div class="profile-pub-group-body">
+              <div class="profile-pub-group-inner">
+              <div class="profile-pubs" data-paginate>
+                {preIonian.map((pub) => (
+                  <article class="profile-pub">
+                    {pub.year && (
+                      <span class="profile-pub-year">{pub.year}</span>
+                    )}
+                    <h3 class="profile-pub-title">{pub.title}</h3>
+                    <p class="profile-pub-authors">{pub.authors}</p>
+                    {pub.venue && <p class="profile-pub-venue">{pub.venue}</p>}
+                    <div class="profile-pub-actions">
+                      {pub.links?.project ? (
+                        <a
+                          href={pub.links.project}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="pub-member-btn pub-member-btn-active"
+                        >
+                          Project
+                        </a>
+                      ) : (
+                        <span class="pub-member-btn pub-member-btn-disabled">
+                          Project
+                        </span>
+                      )}
+                      {pub.links?.paper ? (
+                        <a
+                          href={pub.links.paper}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="pub-member-btn pub-member-btn-active"
+                        >
+                          Paper
+                        </a>
+                      ) : (
+                        <span class="pub-member-btn pub-member-btn-disabled">
+                          Paper
+                        </span>
+                      )}
+                      {pub.links?.code ? (
+                        <a
+                          href={pub.links.code}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="pub-member-btn pub-member-btn-active"
+                        >
+                          Code
+                        </a>
+                      ) : (
+                        <span class="pub-member-btn pub-member-btn-disabled">
+                          Code
+                        </span>
+                      )}
+                    </div>
+                  </article>
+                ))}
+              </div>
+              <div class="profile-pub-pagination"></div>
+              </div>
+            </div>
+          </details>
+        )}
+      </section>
+    )
+  }
+
+  <!-- ─── CV ─── -->
+  {
+    hasCV && (
+      <section id="cv" class="profile-section">
+        <header class="profile-section-header">
+          <h2 class="profile-section-title">Curriculum Vitae</h2>
+        </header>
+
+        {education.length > 0 && (
+          <div class="profile-subsection">
+            <p class="profile-subsection-label">Education</p>
+            <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
+              {education.map((edu, i) => (
+                <li>
+                  {i > 0 && <hr class="bg-accent" />}
+                  <div class="timeline-middle">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="h-5 w-5 text-accent"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <div
+                    class={`${i % 2 === 0 ? 'timeline-start md:text-end' : 'timeline-end'} mb-10`}
+                  >
+                    <time class="font-mono italic text-sm opacity-60">
+                      {edu.years}
+                    </time>
+                    <div class="text-base font-bold">{edu.degree}</div>
+                    <div class="text-sm">{edu.institution}</div>
+                    <div class="text-sm opacity-60">{edu.location}</div>
+                  </div>
+                  {i < education.length - 1 && <hr class="bg-accent" />}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {experience.length > 0 && (
+          <div class="profile-subsection">
+            <p class="profile-subsection-label">Experience</p>
+            <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
+              {experience.map((exp, i) => (
+                <li>
+                  {i > 0 && <hr class="bg-secondary" />}
+                  <div class="timeline-middle">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="h-5 w-5 text-secondary"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <div
+                    class={`${i % 2 === 0 ? 'timeline-start md:text-end' : 'timeline-end'} mb-10`}
+                  >
+                    <time class="font-mono italic text-sm opacity-60">
+                      {exp.years}
+                    </time>
+                    <div class="text-base font-bold">{exp.title}</div>
+                    <div class="text-sm">{exp.institution}</div>
+                    <div class="text-sm opacity-60">{exp.location}</div>
+                  </div>
+                  {i < experience.length - 1 && <hr class="bg-secondary" />}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {service.length > 0 && (
+          <div class="profile-subsection">
+            <p class="profile-subsection-label">Professional Service</p>
+            <ul class="profile-service">
+              {service.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
+    )
+  }
+
+  <!-- ─── News ─── -->
+  {
+    hasNews && (
+      <section id="news" class="profile-section">
+        <header class="profile-section-header">
+          <h2 class="profile-section-title">News &amp; Highlights</h2>
+        </header>
+        <ul class="profile-news">
+          {news.map((item) => (
+            <li>
+              <span class="profile-news-year">{item.year}</span>
+              <span class="profile-news-text">{item.text}</span>
             </li>
           ))}
         </ul>
@@ -133,12 +453,17 @@ const iconSvgs: Record<string, string> = {
     )
   }
 
-  <!-- Prev / Next -->
-  <nav class="flex justify-between pt-6 border-t border-base-300 gap-4">
+  <!-- Colophon -->
+  <div class="profile-colophon" aria-hidden="true">
+    <span></span><span></span><span></span>
+  </div>
+
+  <!-- Prev / Next member -->
+  <nav class="flex justify-between gap-4 mb-6">
     {
       prev && (
         <a
-          href={`/team/${prev.slug}/`}
+          href={prev.data.website || `/team/${prev.slug}/`}
           class="nav-prev-next flex-1 flex flex-col p-4 rounded-lg border border-base-300 transition-all no-underline"
         >
           <span class="text-xs opacity-50 mb-1">&larr; Previous</span>
@@ -149,7 +474,7 @@ const iconSvgs: Record<string, string> = {
     {
       next && (
         <a
-          href={`/team/${next.slug}/`}
+          href={next.data.website || `/team/${next.slug}/`}
           class="nav-prev-next flex-1 flex flex-col items-end p-4 rounded-lg border border-base-300 transition-all text-right no-underline"
         >
           <span class="text-xs opacity-50 mb-1">Next &rarr;</span>
@@ -159,3 +484,177 @@ const iconSvgs: Record<string, string> = {
     }
   </nav>
 </MemberLayout>
+
+<script>
+  // Smooth height animation for <details class="profile-pub-group">
+  // Uses the Web Animations API — more reliable than CSS transitions for
+  // <details> elements (the browser yanks content out of layout on open
+  // toggle, which trips up transitionend listeners).
+  document
+    .querySelectorAll<HTMLDetailsElement>('details.profile-pub-group')
+    .forEach((details) => {
+      const summary = details.querySelector<HTMLElement>(
+        'summary.profile-pub-group-head',
+      );
+      const body = details.querySelector<HTMLElement>(
+        '.profile-pub-group-body',
+      );
+      if (!summary || !body) return;
+
+      let currentAnim: Animation | null = null;
+      const DURATION = 320;
+      const EASE = 'cubic-bezier(0.2, 0.8, 0.2, 1)';
+
+      function animateOpen() {
+        if (!body || !details) return;
+        details.open = true;
+        const target = body.scrollHeight;
+        body.style.overflow = 'hidden';
+
+        currentAnim?.cancel();
+        currentAnim = body.animate(
+          [{ height: '0px' }, { height: target + 'px' }],
+          { duration: DURATION, easing: EASE },
+        );
+        currentAnim.onfinish = () => {
+          body.style.overflow = '';
+          currentAnim = null;
+        };
+      }
+
+      function animateClose() {
+        if (!body || !details) return;
+        const startHeight = body.offsetHeight;
+        body.style.overflow = 'hidden';
+
+        currentAnim?.cancel();
+        currentAnim = body.animate(
+          [{ height: startHeight + 'px' }, { height: '0px' }],
+          { duration: DURATION, easing: EASE, fill: 'forwards' },
+        );
+        currentAnim.onfinish = () => {
+          // Close the details FIRST (browser hides the body), then cancel
+          // the animation to release the forwards-fill. No flash.
+          details.open = false;
+          currentAnim?.cancel();
+          currentAnim = null;
+          body.style.overflow = '';
+        };
+      }
+
+      summary.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (details.open) animateClose();
+        else animateOpen();
+      });
+    });
+
+  // Pagination for publication lists — 5 per page, scoped per .profile-pubs block
+  const PER_PAGE = 5;
+
+  document
+    .querySelectorAll<HTMLElement>('.profile-pubs[data-paginate]')
+    .forEach((list) => {
+      const items = Array.from(
+        list.querySelectorAll<HTMLElement>('.profile-pub'),
+      );
+      const pagination = list.nextElementSibling as HTMLElement | null;
+      if (
+        items.length === 0 ||
+        !pagination ||
+        !pagination.classList.contains('profile-pub-pagination')
+      ) {
+        return;
+      }
+
+      // No pagination needed if everything fits on one page
+      if (items.length <= PER_PAGE) {
+        pagination.remove();
+        return;
+      }
+
+      const totalPages = Math.ceil(items.length / PER_PAGE);
+      let currentPage = 1;
+
+      function render() {
+        const start = (currentPage - 1) * PER_PAGE;
+        const end = start + PER_PAGE;
+        items.forEach((item, i) => {
+          item.style.display = i >= start && i < end ? '' : 'none';
+        });
+        renderPagination();
+      }
+
+      function makeBtn(
+        label: string,
+        opts: {
+          active?: boolean;
+          disabled?: boolean;
+          onClick?: () => void;
+        } = {},
+      ) {
+        const btn = document.createElement('button');
+        btn.textContent = label;
+        btn.className =
+          'profile-pub-page-btn' + (opts.active ? ' active' : '');
+        btn.disabled = !!opts.disabled;
+        if (opts.onClick) btn.addEventListener('click', opts.onClick);
+        return btn;
+      }
+
+      function goTo(page: number) {
+        // Anchor the pagination buttons to their current viewport position.
+        // When swapping pages, items above can have different total height
+        // (especially the last partial page), which would shift the buttons
+        // out from under the user's cursor. Compensate with a scrollBy.
+        if (!pagination) {
+          currentPage = page;
+          render();
+          return;
+        }
+        const before = pagination.getBoundingClientRect().top;
+        currentPage = page;
+        render();
+        const after = pagination.getBoundingClientRect().top;
+        const delta = after - before;
+        if (delta !== 0) {
+          window.scrollBy({ top: delta, behavior: 'instant' as ScrollBehavior });
+        }
+      }
+
+      function renderPagination() {
+        if (!pagination) return;
+        pagination.innerHTML = '';
+
+        pagination.appendChild(
+          makeBtn('←', {
+            disabled: currentPage <= 1,
+            onClick: () => goTo(currentPage - 1),
+          }),
+        );
+
+        for (let i = 1; i <= totalPages; i++) {
+          pagination.appendChild(
+            makeBtn(String(i), {
+              active: i === currentPage,
+              onClick: () => goTo(i),
+            }),
+          );
+        }
+
+        pagination.appendChild(
+          makeBtn('→', {
+            disabled: currentPage >= totalPages,
+            onClick: () => goTo(currentPage + 1),
+          }),
+        );
+
+        const info = document.createElement('span');
+        info.className = 'profile-pub-page-info';
+        info.textContent = `${(currentPage - 1) * PER_PAGE + 1}–${Math.min(currentPage * PER_PAGE, items.length)} of ${items.length}`;
+        pagination.appendChild(info);
+      }
+
+      render();
+    });
+</script>

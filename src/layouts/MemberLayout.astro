@@ -9,7 +9,7 @@ interface Props {
   memberAffiliation?: string;
   slug: string;
   links?: { title: string; url: string; icon?: string }[];
-  activeTab?: string;
+  sections?: { id: string; label: string; num?: string; icon?: string }[];
 }
 
 const {
@@ -18,19 +18,11 @@ const {
   memberRole,
   memberPic,
   memberAffiliation,
-  slug,
   links,
-  activeTab = 'home',
+  sections = [],
 } = Astro.props;
 const siteTitle = 'IONIAN';
 const pageTitle = `${title} | ${siteTitle}`;
-
-const tabs = [
-  { id: 'home', label: 'Home', href: `/team/${slug}/` },
-  { id: 'research', label: 'Research', href: `/team/${slug}/research/` },
-  { id: 'papers', label: 'Papers', href: `/team/${slug}/papers/` },
-  { id: 'cv', label: 'CV', href: `/team/${slug}/cv/` },
-];
 
 const iconSvgs: Record<string, string> = {
   email:
@@ -55,15 +47,20 @@ const iconSvgs: Record<string, string> = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={`${memberName} — IONIAN, ETRO, VUB`} />
+    <link rel="icon" href="data:," />
     <link
-      rel="icon"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23ccc'/></svg>"
+      rel="preload"
+      href="/fonts/source-sans-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="/fonts/lora-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
 
     <script is:inline>
@@ -111,6 +108,10 @@ const iconSvgs: Record<string, string> = {
           <div>
             <slot />
           </div>
+          <!-- Spacer: ensures any trailing section can be scrolled to the
+               top of the viewport (otherwise scrollIntoView clamps at the
+               document bottom and short sections like News stop short). -->
+          <div aria-hidden="true" style="height: 50vh;"></div>
         </main>
       </div>
 
@@ -173,25 +174,24 @@ const iconSvgs: Record<string, string> = {
                   )
                 }
               </div>
-              <div class="mx-4 mt-12">
-                <ul class="space-y-4 menu grow shrink menu-md overflow-y-auto">
-                  {
-                    tabs.map((tab) => (
-                      <li>
-                        <a
-                          href={tab.href}
-                          class:list={[
-                            'text-lg',
-                            { active: activeTab === tab.id },
-                          ]}
-                        >
-                          {tab.label}
-                        </a>
-                      </li>
-                    ))
-                  }
-                </ul>
-              </div>
+              {
+                sections.length > 0 && (
+                  <div class="mx-4 mt-10">
+                    <p class="text-xs uppercase tracking-wider opacity-40 px-4 mb-3">
+                      On this page
+                    </p>
+                    <ul class="member-nav">
+                      {sections.map((s) => (
+                        <li>
+                          <a href={`#${s.id}`} data-section={s.id}>
+                            <span>{s.label}</span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )
+              }
             </div>
           </div>
         </aside>
@@ -203,8 +203,113 @@ const iconSvgs: Record<string, string> = {
 <script>
   import { themeChange } from 'theme-change';
   themeChange();
+
+  // Scrollspy: highlight the sidebar link for the section currently in view
+  const navLinks = document.querySelectorAll<HTMLAnchorElement>(
+    '.member-nav a[data-section]',
+  );
+  const sectionEls: HTMLElement[] = [];
+  navLinks.forEach((a) => {
+    const id = a.getAttribute('data-section');
+    if (!id) return;
+    const el = document.getElementById(id);
+    if (el) sectionEls.push(el);
+  });
+
+  function setActive(id: string) {
+    navLinks.forEach((a) => {
+      a.classList.toggle('active', a.getAttribute('data-section') === id);
+    });
+  }
+
+  if (sectionEls.length > 0) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Pick the entry whose top is closest to the trigger zone
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort(
+            (a, b) =>
+              a.target.getBoundingClientRect().top -
+              b.target.getBoundingClientRect().top,
+          );
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      { rootMargin: '-25% 0px -65% 0px', threshold: 0 },
+    );
+    sectionEls.forEach((el) => observer.observe(el));
+    // Initial state
+    setActive(sectionEls[0].id);
+  }
+
+  // Smooth-scroll for in-page anchor clicks (closes mobile drawer too)
+  navLinks.forEach((a) => {
+    a.addEventListener('click', (e) => {
+      const id = a.getAttribute('data-section');
+      if (!id) return;
+      const target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.replaceState(null, '', `#${id}`);
+      const drawer = document.getElementById(
+        'member-drawer',
+      ) as HTMLInputElement | null;
+      if (drawer) drawer.checked = false;
+    });
+  });
 </script>
 
 <style is:global>
   @import '../styles/global.css';
+
+  html {
+    scroll-behavior: smooth;
+  }
+  section[id] {
+    scroll-margin-top: 1.5rem;
+  }
+  .member-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .member-nav li {
+    margin: 0;
+  }
+  .member-nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.55rem 0.9rem;
+    border-left: 2px solid transparent;
+    border-radius: 0 8px 8px 0;
+    color: inherit;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+  }
+  .member-nav a:hover {
+    background: oklch(var(--b2));
+    border-left-color: oklch(var(--p) / 0.5);
+    text-decoration: none;
+  }
+  .member-nav a.active {
+    background: oklch(var(--b2));
+    border-left-color: oklch(var(--p));
+    color: oklch(var(--p));
+    font-weight: 600;
+  }
+  [data-theme='dark'] .member-nav a:hover {
+    background: #1f1f1f;
+  }
+  [data-theme='dark'] .member-nav a.active {
+    background: #1f1f1f;
+  }
 </style>

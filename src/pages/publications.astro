@@ -11,9 +11,9 @@ const journalHtml = marked.parse(
 const conferenceHtml = marked.parse(
   fs.readFileSync(path.join(dataDir, 'pub_conference.md'), 'utf-8'),
 );
-const thesesHtml = marked.parse(
-  fs.readFileSync(path.join(dataDir, 'pub_theses.md'), 'utf-8'),
-);
+const thesesMd = fs.readFileSync(path.join(dataDir, 'pub_theses.md'), 'utf-8');
+const thesesHtml = marked.parse(thesesMd);
+const thesesEmpty = thesesMd.trim().length === 0;
 ---
 
 <BaseLayout title="Publications">
@@ -56,6 +56,13 @@ const thesesHtml = marked.parse(
       </div>
       <div class="pub-panel" data-panel="theses">
         <div class="prose max-w-none pub-list" set:html={thesesHtml} />
+        {
+          thesesEmpty && (
+            <div class="pub-empty">
+              No PhD theses to display yet — check back soon.
+            </div>
+          )
+        }
         <div class="pub-pagination" data-pag="theses"></div>
       </div>
     </div>
@@ -399,6 +406,19 @@ const thesesHtml = marked.parse(
     background: oklch(var(--b3, 0.87 0.02 80));
     color: oklch(var(--bc, 0.3 0 0) / 0.35);
     cursor: default;
+  }
+  .pub-empty {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    border: 1px dashed oklch(var(--b3, 0.87 0.02 80));
+    border-radius: 10px;
+    color: oklch(var(--bc, 0.3 0 0) / 0.6);
+    font-size: 0.95rem;
+    font-style: italic;
+  }
+  [data-theme='dark'] .pub-empty {
+    border-color: #444;
+    color: #888;
   }
   .pub-pagination {
     display: flex;

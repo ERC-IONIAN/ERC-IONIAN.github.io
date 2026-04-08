@@ -1,3 +1,33 @@
+/* Self-hosted fonts (latin subset, variable woff2) — no third-party RTT */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/lora-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/lora-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/source-sans-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: italic;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/source-sans-italic.woff2') format('woff2');
+}
+
 :root {
   --max-width: 1100px;
   --font-sans:
@@ -685,4 +715,701 @@ a.news-title:hover {
 }
 [data-theme='dark'] .team-member:hover {
   box-shadow: 0 6px 16px rgba(255, 255, 255, 0.06);
+}
+
+/* ── Member-page publication cards & buttons ── */
+.member-pub-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.member-pub-card {
+  background: oklch(var(--b1, 1 0 0));
+}
+.pub-member-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.pub-member-btn-active {
+  background: oklch(var(--p, 0.5 0.2 260));
+  color: oklch(var(--pc, 1 0 0));
+  cursor: pointer;
+}
+.pub-member-btn-active:hover {
+  opacity: 0.85;
+  text-decoration: none;
+}
+.pub-member-btn-disabled {
+  background: oklch(var(--b3, 0.87 0.02 80));
+  color: oklch(var(--bc, 0.3 0 0) / 0.35);
+  cursor: default;
+}
+
+[data-theme='dark'] .member-pub-card {
+  background: #1a1a1a;
+  border-color: #333;
+}
+[data-theme='dark'] .member-pub-card:hover {
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.06);
+}
+[data-theme='dark'] .pub-member-btn-disabled {
+  background: #2a2a2a;
+  color: #555;
+}
+
+/* ─────────────────────────────────────────────────────────
+   Editorial member profile
+   ───────────────────────────────────────────────────────── */
+
+/* Hero */
+.profile-hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  padding: 0.5rem 0 4rem;
+  align-items: start;
+}
+@media (min-width: 900px) {
+  .profile-hero {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 4.5rem;
+  }
+}
+.profile-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin: 0 0 1.5rem;
+}
+.profile-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 2px;
+  background: oklch(var(--p));
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+.profile-name {
+  font-family: var(--font-serif);
+  font-size: clamp(2.75rem, 6vw, 5rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.85rem;
+}
+.profile-role {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+  color: oklch(var(--s));
+  margin: 0 0 0.35rem;
+}
+.profile-affiliation {
+  font-size: 0.82rem;
+  opacity: 0.5;
+  letter-spacing: 0.01em;
+  margin: 0 0 2.25rem;
+}
+.profile-quote {
+  position: relative;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  padding: 0.2rem 0 0.2rem 1.6rem;
+  border-left: 2px solid oklch(var(--p));
+  margin: 0 0 2rem;
+  max-width: 36rem;
+}
+.profile-quote::before {
+  content: '\201C';
+  position: absolute;
+  left: 0.55rem;
+  top: -1.3rem;
+  font-size: 4rem;
+  color: oklch(var(--p));
+  line-height: 1;
+  font-family: var(--font-serif);
+  opacity: 0.25;
+  pointer-events: none;
+}
+.profile-socials {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.profile-social {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid oklch(var(--b3));
+  border-radius: 50%;
+  color: inherit;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease,
+    border-color 0.25s ease;
+}
+.profile-social:hover {
+  background: oklch(var(--p));
+  color: oklch(var(--pc));
+  border-color: oklch(var(--p));
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+.profile-social svg {
+  width: 18px;
+  height: 18px;
+}
+.profile-photo-frame {
+  flex-shrink: 0;
+  display: none;
+}
+@media (min-width: 900px) {
+  .profile-photo-frame {
+    display: block;
+  }
+}
+.profile-photo {
+  width: 240px;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+  filter: grayscale(0.15);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 12px 32px -8px rgba(0, 0, 0, 0.12);
+  transition:
+    filter 0.4s ease,
+    transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.4s ease;
+}
+.profile-photo:hover {
+  filter: grayscale(0);
+  transform: translateY(-3px);
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.05),
+    0 20px 40px -10px rgba(0, 0, 0, 0.16);
+}
+[data-theme='dark'] .profile-photo {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 12px 32px -8px rgba(0, 0, 0, 0.5);
+}
+[data-theme='dark'] .profile-photo:hover {
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.5),
+    0 20px 40px -10px rgba(0, 0, 0, 0.6);
+}
+
+/* Section header — modern accent bar + serif title */
+.profile-section {
+  padding: 3.5rem 0 0.5rem;
+}
+.profile-section + .profile-section {
+  padding-top: 4rem;
+}
+.profile-section-header {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid oklch(var(--b3));
+}
+.profile-section-header::before {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 3px;
+  background: oklch(var(--p));
+  border-radius: 2px;
+  margin-bottom: 0.85rem;
+}
+.profile-section-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.65rem, 2.6vw, 2rem);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+/* About — drop cap on first paragraph */
+.profile-about {
+  max-width: 40rem;
+  font-size: 1.02rem;
+  line-height: 1.75;
+}
+.profile-about p:first-of-type::first-letter {
+  font-family: var(--font-serif);
+  font-size: 3.6rem;
+  font-weight: 700;
+  float: left;
+  line-height: 0.85;
+  padding: 0.2rem 0.55rem 0 0;
+  color: oklch(var(--p));
+}
+.profile-about a {
+  color: oklch(var(--p));
+  border-bottom: 1px solid oklch(var(--p) / 0.35);
+  transition: border-color 0.2s;
+}
+.profile-about a:hover {
+  border-bottom-color: oklch(var(--p));
+  text-decoration: none;
+}
+
+/* Subsection (e.g. Research Areas, Current Projects) */
+.profile-subsection {
+  margin-bottom: 2.75rem;
+}
+.profile-subsection:last-child {
+  margin-bottom: 0;
+}
+.profile-subsection-label {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin: 0 0 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+.profile-subsection-label::before {
+  content: '';
+  width: 14px;
+  height: 1px;
+  background: currentColor;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* Research areas — square accent + serif heading */
+.profile-areas {
+  display: flex;
+  flex-direction: column;
+  gap: 1.85rem;
+}
+.profile-area {
+  position: relative;
+  padding-left: 1.25rem;
+}
+.profile-area::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+  width: 7px;
+  height: 7px;
+  background: oklch(var(--p));
+  border-radius: 1px;
+}
+.profile-area-name {
+  font-family: var(--font-serif);
+  font-size: 1.18rem;
+  font-weight: 700;
+  margin: 0 0 0.4rem;
+  line-height: 1.3;
+}
+.profile-area-desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0.8;
+  margin: 0;
+}
+
+/* Project cards */
+.profile-projects {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.profile-project {
+  position: relative;
+  padding: 1.2rem 1.5rem 1.2rem 1.75rem;
+  border: 1px solid oklch(var(--b3));
+  border-radius: 4px;
+  background: oklch(var(--b1));
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.profile-project::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: oklch(var(--p));
+  transform: scaleY(0.35);
+  transition: transform 0.25s ease;
+}
+.profile-project:hover {
+  transform: translateX(2px);
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.05);
+}
+.profile-project:hover::before {
+  transform: scaleY(1);
+}
+.profile-project-name {
+  font-family: var(--font-serif);
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin: 0 0 0.3rem;
+}
+.profile-project-desc {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  opacity: 0.78;
+  margin: 0;
+}
+
+/* Publication group — collapsible subsection wrapper */
+.profile-pub-group {
+  margin-bottom: 1rem;
+}
+.profile-pub-group:last-of-type {
+  margin-bottom: 0;
+}
+.profile-pub-group-head {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.9rem 1rem;
+  margin-bottom: 0;
+  border: 1px solid oklch(var(--b3));
+  border-radius: 10px;
+  background: oklch(var(--b1));
+  user-select: none;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+.profile-pub-group-head::-webkit-details-marker {
+  display: none;
+}
+.profile-pub-group-head::marker {
+  display: none;
+}
+.profile-pub-group-head:hover {
+  background: oklch(var(--b2) / 0.6);
+}
+.profile-pub-group[open] .profile-pub-group-head {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-color: transparent;
+}
+.profile-pub-group-chevron {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 1.3rem;
+  line-height: 1;
+  color: oklch(var(--p));
+  opacity: 0.6;
+  transition:
+    transform 0.3s ease,
+    opacity 0.2s ease;
+}
+.profile-pub-group[open] .profile-pub-group-chevron {
+  transform: rotate(90deg);
+  opacity: 1;
+}
+.profile-pub-group-label {
+  flex: 1;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: oklch(var(--bc) / 0.75);
+  letter-spacing: 0;
+  text-transform: none;
+}
+/* Outer body is a pure height animator — no padding/border so it can
+   actually collapse to height: 0 without leaving padding behind. */
+.profile-pub-group-body {
+  overflow: hidden;
+  will-change: height;
+}
+.profile-pub-group-inner {
+  border: 1px solid oklch(var(--b3));
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  padding: 1.25rem 1rem;
+  background: oklch(var(--b1));
+}
+
+/* Publication cards inside a group */
+.profile-pubs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.profile-pub {
+  position: relative;
+  padding: 1.2rem 1.5rem 1.2rem 1.4rem;
+  border: 1px solid oklch(var(--b3));
+  border-radius: 8px;
+  background: oklch(var(--b1));
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+.profile-pub::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  bottom: -1px;
+  width: 3px;
+  background: oklch(var(--p));
+  border-radius: 8px 0 0 8px;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.3s ease;
+}
+.profile-pub:hover::before {
+  transform: scaleY(1);
+}
+.profile-pub:hover {
+  transform: translateX(2px);
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.05);
+  border-color: oklch(var(--p) / 0.3);
+}
+.profile-pub-year {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: oklch(var(--p));
+  opacity: 0.75;
+}
+.profile-pub-title {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0 4rem 0.4rem 0;
+}
+.profile-pub-authors {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  line-height: 1.5;
+  margin: 0 0 0.2rem;
+}
+.profile-pub-venue {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin: 0 0 0.85rem;
+}
+.profile-pub-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+[data-theme='dark'] .profile-pub-group-head,
+[data-theme='dark'] .profile-pub-group-inner,
+[data-theme='dark'] .profile-pub {
+  background: #1a1a1a;
+  border-color: #333;
+}
+[data-theme='dark'] .profile-pub-group-head:hover {
+  background: #222;
+}
+[data-theme='dark'] .profile-pub-group[open] .profile-pub-group-head {
+  border-bottom-color: transparent;
+}
+
+/* Publication pagination */
+.profile-pub-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.75rem;
+  flex-wrap: wrap;
+}
+.profile-pub-page-btn {
+  min-width: 2.1rem;
+  height: 2.1rem;
+  padding: 0 0.65rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  border: 1px solid oklch(var(--b3));
+  border-radius: 8px;
+  background: oklch(var(--b1));
+  color: inherit;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+.profile-pub-page-btn:hover:not(:disabled) {
+  border-color: oklch(var(--p));
+  color: oklch(var(--p));
+  transform: translateY(-1px);
+}
+.profile-pub-page-btn.active {
+  background: oklch(var(--p));
+  border-color: oklch(var(--p));
+  color: oklch(var(--pc));
+}
+.profile-pub-page-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.profile-pub-page-info {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  opacity: 0.5;
+  margin-left: 0.85rem;
+  letter-spacing: 0.02em;
+}
+[data-theme='dark'] .profile-pub-page-btn {
+  background: #1a1a1a;
+  border-color: #333;
+}
+[data-theme='dark'] .profile-pub-page-btn:hover:not(:disabled) {
+  border-color: oklch(var(--p));
+}
+
+/* Service list — small primary square marker */
+.profile-service {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.profile-service li {
+  position: relative;
+  padding-left: 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  opacity: 0.85;
+  margin: 0;
+}
+.profile-service li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+  width: 6px;
+  height: 6px;
+  background: oklch(var(--p));
+  border-radius: 1px;
+}
+
+/* News list */
+.profile-news {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.profile-news li {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  gap: 1.5rem;
+  padding: 0.95rem 0;
+  border-bottom: 1px solid oklch(var(--b3));
+  margin: 0;
+  align-items: baseline;
+}
+.profile-news li:last-child {
+  border-bottom: none;
+}
+.profile-news-year {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: oklch(var(--p));
+  opacity: 0.7;
+}
+.profile-news-text {
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+/* Closing colophon — three primary dots */
+.profile-colophon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 5rem 0 3rem;
+}
+.profile-colophon span {
+  width: 6px;
+  height: 6px;
+  background: oklch(var(--p));
+  border-radius: 50%;
+  opacity: 0.5;
+}
+.profile-colophon span:nth-child(2) {
+  opacity: 0.75;
+}
+.profile-colophon span:nth-child(1),
+.profile-colophon span:nth-child(3) {
+  transform: scale(0.85);
+}
+
+
+/* Dark mode overrides */
+[data-theme='dark'] .profile-photo-frame::before {
+  border-color: oklch(var(--p));
+}
+[data-theme='dark'] .profile-pub,
+[data-theme='dark'] .profile-project {
+  background: #1a1a1a;
+  border-color: #333;
+}
+[data-theme='dark'] .profile-pub:hover,
+[data-theme='dark'] .profile-project:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+[data-theme='dark'] .profile-section-header,
+[data-theme='dark'] .profile-news li {
+  border-color: #2a2a2a;
+  background-color: #2a2a2a;
+}
+[data-theme='dark'] .profile-section-header {
+  background: transparent;
+  border-bottom-color: #2a2a2a;
+}
+[data-theme='dark'] .profile-news li {
+  background: transparent;
+  border-bottom-color: #2a2a2a;
 }

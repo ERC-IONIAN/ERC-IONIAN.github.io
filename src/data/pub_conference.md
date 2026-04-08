@@ -34,11 +34,6 @@
 12. Esther Rodrigo Bonet, Tien Huu Do, Xuening Qin, Jelle Hofman, Valerio Panzica La Manna, Wilfried Philips, and Nikos Deligiannis, **Conditional Variational Graph Autoencoder for Air Pollution Forecasting**, in _Proc. 30th European Signal Process. Conf. (EUSIPCO '22)_, Belgrade, Serbia, Aug. 2022, pp. 1442-1446.
     \[[Paper](https://ieeexplore.ieee.org/document/9909725/)\]
 
-13. Esther Rodrigo Bonet, Duc Minh Nguyen, and Nikos Deligiannis, **Temporal Collaborative Filtering with Graph Convolutional Neural Networks**, in _Proc. 25th Int. Conf. Pattern Recognit. (ICPR '20)_, Milan, Italy, Jan. 2021, pp. 4736-4742.
+13. Esther Rodrigo Bonet, Duc Minh Nguyen, and Nikos Deligiannis, **Temporal Collaborative Filtering with Graph Convolutional Neural Networks**, in _Proc. 25th Int. Conf. Pattern Recognit. (ICPR '20)_, Milan, Italy, 2020, pp. 4736-4742.
     \[[Paper](https://ieeexplore.ieee.org/document/9413200/)\] \[[ArXiv](https://arxiv.org/abs/2010.06425)\]
 
-14. Fawaz Sammani and Luke Melas-Kyriazi, **Show, Edit and Tell: A Framework for Editing Image Captions**, in _Proc. IEEE/CVF Conf. Comput. Vision Pattern Recognit. (CVPR '20)_, 2020.
-    \[[ArXiv](https://arxiv.org/pdf/2003.03107)\] \[[Code](https://github.com/fawazsammani/show-edit-tell)\]
-
-15. Fawaz Sammani and Mahmoud Elsayed, **Look and Modify: Modification Networks for Image Captioning**, in _Proc. British Mach. Vision Conf. (BMVC '19)_, 2019.
-    \[[ArXiv](https://arxiv.org/pdf/1909.03169)\] \[[Code](https://github.com/fawazsammani/look-and-modify)\]

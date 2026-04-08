@@ -20,12 +20,22 @@ const pageTitle = title ? `${title} | ${siteTitle}` : siteTitle;
       name="description"
       content="IONIAN — ETRO, Vrije Universiteit Brussel"
     />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" href="data:," />
     <link
-      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="/fonts/source-sans-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
+    <link
+      rel="preload"
+      href="/fonts/lora-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <slot name="head" />
 
     <script is:inline>
       const theme = localStorage.getItem('theme') || 'light';

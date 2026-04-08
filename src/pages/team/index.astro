@@ -16,6 +16,14 @@ const members = (await getCollection('team')).sort(
 ---
 
 <BaseLayout title="Team">
+  <Fragment slot="head">
+    <link
+      rel="preload"
+      as="image"
+      href="/images/nikos_circle.jpg"
+      fetchpriority="high"
+    />
+  </Fragment>
   <!-- Banner (will be replaced with an image) -->
   <div class="page-banner">
     <div class="page-banner-bg"></div>
@@ -26,8 +34,11 @@ const members = (await getCollection('team')).sort(
   <div class="page-wrapper">
     <div class="team-grid">
       {
-        members.map((m) => {
+        members.map((m, i) => {
           const pic = m.data.image?.thumbnail || m.data.author?.picture;
+          // First row (4 cols on desktop) is above-the-fold — eager-load
+          // and prioritize so the LCP image lands fast.
+          const eager = i < 4;
           return (
             <a class="team-member" href={m.data.website || `/team/${m.slug}/`}>
               {pic && (
@@ -35,7 +46,11 @@ const members = (await getCollection('team')).sort(
                   class="team-pic"
                   src={pic}
                   alt={m.data.title}
-                  loading="lazy"
+                  width="240"
+                  height="300"
+                  loading={eager ? 'eager' : 'lazy'}
+                  fetchpriority={eager ? 'high' : 'auto'}
+                  decoding="async"
                 />
               )}
               <span class="team-name">{m.data.title}</span>

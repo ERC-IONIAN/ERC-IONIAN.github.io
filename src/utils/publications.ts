@@ -39,12 +39,16 @@ function parseMarkdownPubs(
     const titleMatch = text.match(/\*\*(.+?)\*\*/);
     const title = titleMatch ? titleMatch[1] : '';
 
-    // Extract authors (everything before the first **)
+    // Extract authors (everything before the first **). Strip markdown
+    // escapes (e.g. "\*" → "*") so equal-contribution markers render right.
     const authorsRaw = text.split('**')[0].replace(/,\s*$/, '').trim();
-    const authors = authorsRaw;
+    const authors = authorsRaw.replace(/\\([*_])/g, '$1');
 
-    // Extract year (last 4-digit year matching 19xx or 20xx)
-    const yearMatches = text.match(/\b((?:19|20)\d{2})\b/g);
+    // Extract year (last 4-digit year matching 19xx or 20xx) — strip URL
+    // contents first, otherwise arXiv ids like "2010.06425" get matched as
+    // year 2010.
+    const textNoUrls = text.replace(/\(https?:\/\/[^\s)]+\)/g, '');
+    const yearMatches = textNoUrls.match(/\b((?:19|20)\d{2})\b/g);
     const year = yearMatches ? yearMatches[yearMatches.length - 1] : '';
 
     // Extract venue (text between title and year, roughly)

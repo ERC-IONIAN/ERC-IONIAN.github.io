@@ -80,6 +80,23 @@ const team = defineCollection({
         }),
       )
       .optional(),
+    pre_ionian_work: z
+      .array(
+        z.object({
+          title: z.string(),
+          authors: z.string(),
+          venue: z.string(),
+          year: z.string(),
+          links: z
+            .object({
+              paper: z.string().optional(),
+              code: z.string().optional(),
+              project: z.string().optional(),
+            })
+            .optional(),
+        }),
+      )
+      .optional(),
   }),
 });
 
