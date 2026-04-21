@@ -29,7 +29,7 @@ affiliation: 'Vrije Universiteit Brussel — ETRO · Office PL9.2.34'
 bio: 'My research focuses on developing intelligent learning methods for data attribution, computer vision, and physics-informed neural networks.'
 research_areas:
   - name: 'Data Attribution'
-    description: 'Studying which training samples contribute to an AI model''s predictions and characterizing how they influence its outputs.'
+    description: "Studying which training samples contribute to an AI model's predictions and characterizing how they influence its outputs."
   - name: 'Computer Vision with Event Cameras'
     description: 'Developing and applying AI architectures using event cameras for visual understanding tasks such as image classification, segmentation, and representation learning.'
   - name: 'Physics-Informed Neural Networks (PINNs)'

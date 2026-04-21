@@ -36,4 +36,3 @@
 
 13. Esther Rodrigo Bonet, Duc Minh Nguyen, and Nikos Deligiannis, **Temporal Collaborative Filtering with Graph Convolutional Neural Networks**, in _Proc. 25th Int. Conf. Pattern Recognit. (ICPR '20)_, Milan, Italy, 2020, pp. 4736-4742.
     \[[Paper](https://ieeexplore.ieee.org/document/9413200/)\] \[[ArXiv](https://arxiv.org/abs/2010.06425)\]
-

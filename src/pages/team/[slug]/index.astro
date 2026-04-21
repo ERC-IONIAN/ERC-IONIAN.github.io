@@ -82,9 +82,7 @@ const iconSvgs: Record<string, string> = {
       <h1 class="profile-name">{member.data.title}</h1>
       {
         member.data.role && (
-          <p class="profile-role">
-            {member.data.role}, IONIAN — ETRO, VUB
-          </p>
+          <p class="profile-role">{member.data.role}, IONIAN — ETRO, VUB</p>
         )
       }
       {
@@ -197,63 +195,65 @@ const iconSvgs: Record<string, string> = {
             </summary>
             <div class="profile-pub-group-body">
               <div class="profile-pub-group-inner">
-              <div class="profile-pubs" data-paginate>
-                {pubs.map((pub) => (
-                  <article class="profile-pub">
-                    {pub.year && (
-                      <span class="profile-pub-year">{pub.year}</span>
-                    )}
-                    <h3 class="profile-pub-title">{pub.title}</h3>
-                    <p class="profile-pub-authors">{pub.authors}</p>
-                    {pub.venue && <p class="profile-pub-venue">{pub.venue}</p>}
-                    <div class="profile-pub-actions">
-                      {pub.links.project ? (
-                        <a
-                          href={pub.links.project}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="pub-member-btn pub-member-btn-active"
-                        >
-                          Project
-                        </a>
-                      ) : (
-                        <span class="pub-member-btn pub-member-btn-disabled">
-                          Project
-                        </span>
+                <div class="profile-pubs" data-paginate>
+                  {pubs.map((pub) => (
+                    <article class="profile-pub">
+                      {pub.year && (
+                        <span class="profile-pub-year">{pub.year}</span>
                       )}
-                      {pub.links.paper ? (
-                        <a
-                          href={pub.links.paper}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="pub-member-btn pub-member-btn-active"
-                        >
-                          Paper
-                        </a>
-                      ) : (
-                        <span class="pub-member-btn pub-member-btn-disabled">
-                          Paper
-                        </span>
+                      <h3 class="profile-pub-title">{pub.title}</h3>
+                      <p class="profile-pub-authors">{pub.authors}</p>
+                      {pub.venue && (
+                        <p class="profile-pub-venue">{pub.venue}</p>
                       )}
-                      {pub.links.code ? (
-                        <a
-                          href={pub.links.code}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="pub-member-btn pub-member-btn-active"
-                        >
-                          Code
-                        </a>
-                      ) : (
-                        <span class="pub-member-btn pub-member-btn-disabled">
-                          Code
-                        </span>
-                      )}
-                    </div>
-                  </article>
-                ))}
-              </div>
-              <div class="profile-pub-pagination"></div>
+                      <div class="profile-pub-actions">
+                        {pub.links.project ? (
+                          <a
+                            href={pub.links.project}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="pub-member-btn pub-member-btn-active"
+                          >
+                            Project
+                          </a>
+                        ) : (
+                          <span class="pub-member-btn pub-member-btn-disabled">
+                            Project
+                          </span>
+                        )}
+                        {pub.links.paper ? (
+                          <a
+                            href={pub.links.paper}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="pub-member-btn pub-member-btn-active"
+                          >
+                            Paper
+                          </a>
+                        ) : (
+                          <span class="pub-member-btn pub-member-btn-disabled">
+                            Paper
+                          </span>
+                        )}
+                        {pub.links.code ? (
+                          <a
+                            href={pub.links.code}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="pub-member-btn pub-member-btn-active"
+                          >
+                            Code
+                          </a>
+                        ) : (
+                          <span class="pub-member-btn pub-member-btn-disabled">
+                            Code
+                          </span>
+                        )}
+                      </div>
+                    </article>
+                  ))}
+                </div>
+                <div class="profile-pub-pagination" />
               </div>
             </div>
           </details>
@@ -271,63 +271,65 @@ const iconSvgs: Record<string, string> = {
             </summary>
             <div class="profile-pub-group-body">
               <div class="profile-pub-group-inner">
-              <div class="profile-pubs" data-paginate>
-                {preIonian.map((pub) => (
-                  <article class="profile-pub">
-                    {pub.year && (
-                      <span class="profile-pub-year">{pub.year}</span>
-                    )}
-                    <h3 class="profile-pub-title">{pub.title}</h3>
-                    <p class="profile-pub-authors">{pub.authors}</p>
-                    {pub.venue && <p class="profile-pub-venue">{pub.venue}</p>}
-                    <div class="profile-pub-actions">
-                      {pub.links?.project ? (
-                        <a
-                          href={pub.links.project}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="pub-member-btn pub-member-btn-active"
-                        >
-                          Project
-                        </a>
-                      ) : (
-                        <span class="pub-member-btn pub-member-btn-disabled">
-                          Project
-                        </span>
+                <div class="profile-pubs" data-paginate>
+                  {preIonian.map((pub) => (
+                    <article class="profile-pub">
+                      {pub.year && (
+                        <span class="profile-pub-year">{pub.year}</span>
                       )}
-                      {pub.links?.paper ? (
-                        <a
-                          href={pub.links.paper}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="pub-member-btn pub-member-btn-active"
-                        >
-                          Paper
-                        </a>
-                      ) : (
-                        <span class="pub-member-btn pub-member-btn-disabled">
-                          Paper
-                        </span>
+                      <h3 class="profile-pub-title">{pub.title}</h3>
+                      <p class="profile-pub-authors">{pub.authors}</p>
+                      {pub.venue && (
+                        <p class="profile-pub-venue">{pub.venue}</p>
                       )}
-                      {pub.links?.code ? (
-                        <a
-                          href={pub.links.code}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="pub-member-btn pub-member-btn-active"
-                        >
-                          Code
-                        </a>
-                      ) : (
-                        <span class="pub-member-btn pub-member-btn-disabled">
-                          Code
-                        </span>
-                      )}
-                    </div>
-                  </article>
-                ))}
-              </div>
-              <div class="profile-pub-pagination"></div>
+                      <div class="profile-pub-actions">
+                        {pub.links?.project ? (
+                          <a
+                            href={pub.links.project}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="pub-member-btn pub-member-btn-active"
+                          >
+                            Project
+                          </a>
+                        ) : (
+                          <span class="pub-member-btn pub-member-btn-disabled">
+                            Project
+                          </span>
+                        )}
+                        {pub.links?.paper ? (
+                          <a
+                            href={pub.links.paper}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="pub-member-btn pub-member-btn-active"
+                          >
+                            Paper
+                          </a>
+                        ) : (
+                          <span class="pub-member-btn pub-member-btn-disabled">
+                            Paper
+                          </span>
+                        )}
+                        {pub.links?.code ? (
+                          <a
+                            href={pub.links.code}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="pub-member-btn pub-member-btn-active"
+                          >
+                            Code
+                          </a>
+                        ) : (
+                          <span class="pub-member-btn pub-member-btn-disabled">
+                            Code
+                          </span>
+                        )}
+                      </div>
+                    </article>
+                  ))}
+                </div>
+                <div class="profile-pub-pagination" />
               </div>
             </div>
           </details>
@@ -595,8 +597,7 @@ const iconSvgs: Record<string, string> = {
       ) {
         const btn = document.createElement('button');
         btn.textContent = label;
-        btn.className =
-          'profile-pub-page-btn' + (opts.active ? ' active' : '');
+        btn.className = 'profile-pub-page-btn' + (opts.active ? ' active' : '');
         btn.disabled = !!opts.disabled;
         if (opts.onClick) btn.addEventListener('click', opts.onClick);
         return btn;
@@ -618,7 +619,10 @@ const iconSvgs: Record<string, string> = {
         const after = pagination.getBoundingClientRect().top;
         const delta = after - before;
         if (delta !== 0) {
-          window.scrollBy({ top: delta, behavior: 'instant' as ScrollBehavior });
+          window.scrollBy({
+            top: delta,
+            behavior: 'instant' as ScrollBehavior,
+          });
         }
       }
 

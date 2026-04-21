@@ -1386,7 +1386,6 @@ a.news-title:hover {
   transform: scale(0.85);
 }
 
-
 /* Dark mode overrides */
 [data-theme='dark'] .profile-photo-frame::before {
   border-color: oklch(var(--p));
