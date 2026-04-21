@@ -13,6 +13,9 @@ author:
     - title: Email
       url: mailto:William.Arthur.Martis@vub.be
       icon: email
+    - title: GitHub
+      url: https://github.com/willmartis
+      icon: github
 affiliation: 'Vrije Universiteit Brussel — ETRO · Office Pl9.1.01'
 ---
 

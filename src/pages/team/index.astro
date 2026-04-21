@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { iconSvgs } from '../../utils/icons';
 
 const roleOrder: Record<string, number> = {
   Professor: 0,
@@ -13,6 +14,8 @@ const members = (await getCollection('team')).sort(
   (a, b) =>
     (roleOrder[a.data.role ?? ''] ?? 99) - (roleOrder[b.data.role ?? ''] ?? 99),
 );
+
+const ALLOWED_ICONS = new Set(['scholar', 'linkedin', 'github']);
 ---
 
 <BaseLayout title="Team">
@@ -24,7 +27,7 @@ const members = (await getCollection('team')).sort(
       fetchpriority="high"
     />
   </Fragment>
-  <!-- Banner (will be replaced with an image) -->
+  <!-- Banner -->
   <div class="page-banner">
     <div class="page-banner-bg"></div>
     <div class="page-banner-overlay"></div>
@@ -36,11 +39,13 @@ const members = (await getCollection('team')).sort(
       {
         members.map((m, i) => {
           const pic = m.data.image?.thumbnail || m.data.author?.picture;
-          // First row (4 cols on desktop) is above-the-fold — eager-load
-          // and prioritize so the LCP image lands fast.
           const eager = i < 4;
+          const socialLinks = (m.data.author?.links ?? []).filter(
+            (l) => l.icon && ALLOWED_ICONS.has(l.icon),
+          );
+          const website = m.data.website;
           return (
-            <a class="team-member" href={m.data.website || `/team/${m.slug}/`}>
+            <div class="team-member">
               {pic && (
                 <img
                   class="team-pic"
@@ -55,7 +60,37 @@ const members = (await getCollection('team')).sort(
               )}
               <span class="team-name">{m.data.title}</span>
               {m.data.role && <span class="team-role">{m.data.role}</span>}
-            </a>
+              {(socialLinks.length > 0 || website) && (
+                <div class="team-icons">
+                  {website && (
+                    <a
+                      href={website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={`${m.data.title} — Personal website`}
+                      aria-label={`${m.data.title} — Personal website`}
+                      class="team-icon"
+                    >
+                      <Fragment set:html={iconSvgs.website} />
+                    </a>
+                  )}
+                  {socialLinks.map((link) => (
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={link.title}
+                      aria-label={`${m.data.title} — ${link.title}`}
+                      class="team-icon"
+                    >
+                      {link.icon && iconSvgs[link.icon] && (
+                        <Fragment set:html={iconSvgs[link.icon]} />
+                      )}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
           );
         })
       }

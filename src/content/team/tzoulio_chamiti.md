@@ -13,6 +13,9 @@ author:
     - title: Email
       url: mailto:tzoulio.chamiti@vub.be
       icon: email
+    - title: GitHub
+      url: https://github.com/Tzoulio
+      icon: github
 affiliation: 'Vrije Universiteit Brussel — ETRO · Office PL9.2.27'
 ---
 

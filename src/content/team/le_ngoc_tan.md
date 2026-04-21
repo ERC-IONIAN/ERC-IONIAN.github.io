@@ -13,6 +13,9 @@ author:
     - title: Email
       url: mailto:Ngoc.Tan.Le2@vub.be
       icon: email
+    - title: GitHub
+      url: https://github.com/tannyle289
+      icon: github
 affiliation: 'Vrije Universiteit Brussel — ETRO · Office PL9.2.28'
 ---
 

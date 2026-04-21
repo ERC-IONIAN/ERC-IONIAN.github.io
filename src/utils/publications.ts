@@ -58,9 +58,9 @@ function parseMarkdownPubs(
     const cleanAfter = afterTitle
       .replace(/\\\[?\[?(?:ArXiv|Paper|Project|Code|GitHub)\]\([^)]+\)/gi, '')
       .trim();
-    // Extract italic venue *...*
-    const venueMatch = cleanAfter.match(/\*(.+?)\*/);
-    if (venueMatch) venue = venueMatch[1];
+    // Extract italic venue — handle both *...* and _..._ markdown syntax.
+    const venueMatch = cleanAfter.match(/([*_])(.+?)\1/);
+    if (venueMatch) venue = venueMatch[2];
 
     if (title) {
       pubs.push({ authors, title, venue, year, links, type });

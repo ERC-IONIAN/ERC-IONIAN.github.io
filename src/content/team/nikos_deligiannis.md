@@ -28,6 +28,9 @@ author:
     - title: ORCID
       url: https://orcid.org/0000-0001-9300-5860
       icon: orcid
+    - title: GitHub
+      url: https://github.com/ndeligia
+      icon: github
 affiliation: 'Vrije Universiteit Brussel — ETRO · Office PL9.2.29'
 bio: 'My current research focuses on interpretable and explainable AI, multidimensional signal processing, computer vision, and distributed/federated AI for automotive and healthcare applications.'
 research_areas:

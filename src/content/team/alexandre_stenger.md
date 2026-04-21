@@ -13,6 +13,9 @@ author:
     - title: Email
       url: mailto:Alexandre.Stenger@vub.be
       icon: email
+    - title: GitHub
+      url: https://github.com/alex-stenger
+      icon: github
 affiliation: 'Vrije Universiteit Brussel — ETRO · Office PL9.1.01'
 ---
 
