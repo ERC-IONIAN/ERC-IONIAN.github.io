@@ -121,7 +121,7 @@ for (const y of sortedYears) {
                   ) : (
                     <span class="pub-btn pub-btn-disabled">Paper</span>
                   )}
-                  {p.links.code ? (
+                  {p.links.code && (
                     <a
                       href={p.links.code}
                       target="_blank"
@@ -130,8 +130,6 @@ for (const y of sortedYears) {
                     >
                       Code
                     </a>
-                  ) : (
-                    <span class="pub-btn pub-btn-disabled">Code</span>
                   )}
                 </div>
               </article>
