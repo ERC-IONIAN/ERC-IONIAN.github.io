@@ -83,8 +83,8 @@ export function getAllPublications(): Publication[] {
   const theses = fs.readFileSync(path.join(dataDir, 'pub_theses.md'), 'utf-8');
 
   return [
-    ...parseMarkdownPubs(conference, 'conference'),
     ...parseMarkdownPubs(journal, 'journal'),
+    ...parseMarkdownPubs(conference, 'conference'),
     ...parseMarkdownPubs(theses, 'thesis'),
   ];
 }
