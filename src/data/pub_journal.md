@@ -1,5 +1,5 @@
 1. Brent De Weerdt and Nikos Deligiannis, **Neural Rate-Adaptive LDPC Decoding for the Slepian-Wolf Problem**, _IEEE Open J. Signal Process._, 2026.
-   \[[Paper](https://ieeexplore.ieee.org/document/11482822)\]
+   \[[Paper](https://ieeexplore.ieee.org/document/11482822)\] \[[Code](https://codeocean.com/capsule/7034976/tree/v1)\]
 
 2. Esther Rodrigo Bonet and Nikos Deligiannis, **GF-LRP: A Method for Explaining Predictions Made by Variational Graph Auto-Encoders**, _IEEE Trans. Emerg. Topics Comput. Intell._, vol. 9, no. 1, pp. 281-291, Feb. 2025.
 
