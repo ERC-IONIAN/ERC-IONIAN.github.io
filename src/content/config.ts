@@ -128,4 +128,22 @@ const topics = defineCollection({
   }),
 });
 
-export const collections = { team, projects, labs, topics };
+const blog = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    description: z.string().optional(),
+    video: z.string().optional(),
+    authors: z
+      .array(
+        z.object({
+          name: z.string(),
+          url: z.string().optional(),
+        }),
+      )
+      .optional(),
+  }),
+});
+
+export const collections = { team, projects, labs, topics, blog };

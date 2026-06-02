@@ -13,6 +13,12 @@ author:
     - title: Email
       url: mailto:Ngoc.Tan.Le2@vub.be
       icon: email
+    - title: Google Scholar
+      url: https://scholar.google.com/citations?user=ONfpzkMAAAAJ&hl=en
+      icon: scholar
+    - title: LinkedIn
+      url: https://www.linkedin.com/in/tannyle28/
+      icon: linkedin
     - title: GitHub
       url: https://github.com/tannyle289
       icon: github

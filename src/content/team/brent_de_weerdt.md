@@ -14,7 +14,7 @@ author:
       url: mailto:Brent.De.Weerdt@vub.be
       icon: email
     - title: Google Scholar
-      url: https://scholar.google.com/citations?user=XeNH99QAAAAJ
+      url: https://scholar.google.com/citations?user=XeNH99QAAAAJ&hl=en
       icon: scholar
     - title: ORCID
       url: https://orcid.org/0000-0001-9240-2370

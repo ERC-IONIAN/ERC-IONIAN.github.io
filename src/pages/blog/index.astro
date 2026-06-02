@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+
+function formatDate(d: Date) {
+  return d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+}
+---
+
+<BaseLayout title="Blog">
+  <div class="page-wrapper">
+    <h1 class="page-title">Blog</h1>
+    <div class="blog-list">
+      {
+        posts.map((post) => (
+          <a href={`/blog/${post.slug}/`} class="blog-card">
+            <span class="blog-card-date">{formatDate(post.data.date)}</span>
+            <h2 class="blog-card-title">{post.data.title}</h2>
+            {post.data.description && (
+              <p class="blog-card-desc">{post.data.description}</p>
+            )}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

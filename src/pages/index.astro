@@ -3,6 +3,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const newsItems = [
   {
+    date: 'May 2026',
+    tag: 'Publication',
+    title: 'Paper accepted at ICIP 2026',
+    description:
+      'Ngoc Tan Le, Tzoulio Chamiti, Eirini Papagiannopoulou, and Nikos Deligiannis — "GATA2Floor: Graph Attention for Floor Counting in Street-View Facades" accepted at IEEE ICIP 2026.',
+    link: '/blog/gata2floor-icip-2026/',
+  },
+  {
+    date: 'Apr 2026',
+    tag: 'Publication',
+    title: 'Journal paper accepted',
+    description:
+      'Brent De Weerdt and Nikos Deligiannis — "Neural Rate-Adaptive LDPC Decoding for the Slepian-Wolf Problem" accepted in IEEE Open Journal of Signal Processing.',
+    link: '/blog/neural-ldpc-slepian-wolf/',
+  },
+  {
     date: 'Mar 2025',
     tag: 'Publication',
     title: '2 papers accepted at CVPR 2025',
@@ -51,9 +67,18 @@ const author = {
 ---
 
 <BaseLayout>
-  <!-- Banner (will be replaced with a gif) -->
+  <!-- Banner video carousel -->
   <div class="banner-wrapper">
-    <div class="banner-placeholder"></div>
+    <div class="banner-video-carousel" id="bannerCarousel">
+      <video class="banner-video banner-video-low-res" src="/videos/GATA2FloorClip.mp4" muted playsinline></video>
+      <video class="banner-video" src="/videos/v2v_demo_1080p.mp4" muted playsinline loop></video>
+      <video class="banner-video" src="/videos/v2v_demo_intersection_1080p.mp4" muted playsinline loop></video>
+      <div class="banner-carousel-dots" id="bannerDots">
+        <button class="banner-dot" aria-label="Slide 1"></button>
+        <button class="banner-dot" aria-label="Slide 2"></button>
+        <button class="banner-dot" aria-label="Slide 3"></button>
+      </div>
+    </div>
     <!-- Dark Gradient Overlay -->
     <div class="banner-overlay"></div>
     <!-- Content -->
@@ -371,6 +396,85 @@ const author = {
 </BaseLayout>
 
 <script>
+  // Video carousel
+  (() => {
+    const carousel = document.getElementById('bannerCarousel');
+    if (!carousel) return;
+    const videos = carousel.querySelectorAll<HTMLVideoElement>('.banner-video');
+    const dots = carousel.querySelectorAll<HTMLButtonElement>('.banner-dot');
+    const FULL_PLAY_INDEX = 0; // GATA2 plays to end
+    let current = 0;
+    let autoTimer: ReturnType<typeof setInterval>;
+
+    function onVideoEnded() {
+      goTo(current + 1, 1);
+    }
+
+    function scheduleNext() {
+      clearInterval(autoTimer);
+      videos[FULL_PLAY_INDEX].removeEventListener('ended', onVideoEnded);
+      if (current === FULL_PLAY_INDEX) {
+        videos[FULL_PLAY_INDEX].addEventListener('ended', onVideoEnded);
+      } else {
+        autoTimer = setInterval(() => goTo(current + 1, 1), 8000);
+      }
+    }
+
+    function goTo(next: number, dir: 1 | -1 = 1) {
+      const prev = current;
+      current = ((next % videos.length) + videos.length) % videos.length;
+      if (prev === current) return;
+
+      const enterFrom = dir > 0 ? '100%' : '-100%';
+      const exitTo = dir > 0 ? '-100%' : '100%';
+
+      videos[current].style.transition = 'none';
+      videos[current].style.transform = `translateX(${enterFrom})`;
+      void videos[current].offsetWidth;
+      videos[current].style.transition = '';
+      videos[current].style.transform = 'translateX(0)';
+      videos[prev].style.transform = `translateX(${exitTo})`;
+
+      videos[prev].pause();
+      videos[current].currentTime = 0;
+      videos[current].play();
+
+      dots[prev].classList.remove('active');
+      dots[current].classList.add('active');
+
+      scheduleNext();
+    }
+
+    // Init
+    videos.forEach((v, i) => {
+      v.style.transition = 'none';
+      v.style.transform = i === 0 ? 'translateX(0)' : 'translateX(100%)';
+    });
+    videos[0].play();
+    dots[0].classList.add('active');
+    requestAnimationFrame(() => {
+      videos.forEach(v => { v.style.transition = ''; });
+    });
+    scheduleNext();
+
+    // Dot clicks
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        goTo(i, i > current ? 1 : -1);
+      });
+    });
+
+    // Touch swipe
+    let touchX = 0;
+    carousel.addEventListener('touchstart', (e: TouchEvent) => { touchX = e.touches[0].clientX; }, { passive: true });
+    carousel.addEventListener('touchend', (e: TouchEvent) => {
+      const dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 50) {
+        goTo(current + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+      }
+    });
+  })();
+
   const PER_PAGE = 3;
   let currentPage = 1;
   const items = document.querySelectorAll('.news-item');

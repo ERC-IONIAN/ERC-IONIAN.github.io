@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+function formatDate(d: Date) {
+  return d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+}
+---
+
+<BaseLayout title={post.data.title}>
+  <div class="page-wrapper">
+    <a href="/blog/" class="blog-back-btn">← Blog</a>
+    <p class="blog-post-date">{formatDate(post.data.date)}</p>
+    <h1 class="page-title">{post.data.title}</h1>
+
+    {
+      post.data.authors && post.data.authors.length > 0 && (
+        <div class="blog-authors">
+          {post.data.authors.map((a, i) => (
+            <>
+              {a.url ? (
+                <a href={a.url} target="_blank" rel="noopener noreferrer" class="blog-author-link">
+                  {a.name}
+                </a>
+              ) : (
+                <span class="blog-author-plain">{a.name}</span>
+              )}
+              {i < post.data.authors!.length - 1 && (
+                <span class="blog-author-sep">,</span>
+              )}
+            </>
+          ))}
+        </div>
+      )
+    }
+
+    {
+      post.data.video && (
+        <div class="blog-video-wrapper">
+          <video
+            src={post.data.video}
+            autoplay
+            muted
+            loop
+            playsinline
+            class="blog-video"
+          />
+        </div>
+      )
+    }
+
+    <div class="prose max-w-none mt-8">
+      <Content />
+    </div>
+  </div>
+</BaseLayout>

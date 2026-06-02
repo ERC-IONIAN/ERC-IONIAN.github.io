@@ -25,7 +25,7 @@ function parseMarkdownPubs(
     // Extract links like [ArXiv](url), [Paper](url), [Project](url), [Code](url), [GitHub](url)
     const links: Publication['links'] = {};
     const linkRegex =
-      /\\\[?\[?(ArXiv|Paper|Project|Code|GitHub)\]\((https?:\/\/[^\s)]+)\)/gi;
+      /\\\[?\[?(ArXiv|Paper|Project|Code|GitHub)\]\(((?:https?:\/\/|\/)[^\s)]+)\)/gi;
     let linkMatch;
     while ((linkMatch = linkRegex.exec(text)) !== null) {
       const label = linkMatch[1].toLowerCase();

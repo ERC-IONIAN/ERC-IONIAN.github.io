@@ -13,6 +13,9 @@ author:
     - title: Email
       url: mailto:tzoulio.chamiti@vub.be
       icon: email
+    - title: Google Scholar
+      url: https://scholar.google.com/citations?user=Jn5SnMihQ-YC&hl=en
+      icon: scholar
     - title: GitHub
       url: https://github.com/Tzoulio
       icon: github

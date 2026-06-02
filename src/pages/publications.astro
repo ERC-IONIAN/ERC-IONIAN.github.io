@@ -133,6 +133,16 @@ for (const y of sortedYears) {
                   ) : (
                     <span class="pub-btn pub-btn-disabled">Code</span>
                   )}
+                  {p.links.project && (
+                    <a
+                      href={p.links.project}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="pub-btn pub-btn-active"
+                    >
+                      Project
+                    </a>
+                  )}
                 </div>
               </article>
             </>

@@ -13,6 +13,9 @@ author:
     - title: Email
       url: mailto:Esther.Rodrigo.Bonet@vub.be
       icon: email
+    - title: Google Scholar
+      url: https://scholar.google.com/citations?user=nBJuTYUAAAAJ&hl=en
+      icon: scholar
 affiliation: 'Vrije Universiteit Brussel — ETRO · Office PL9.2.27'
 bio: 'My research focuses on developing interpretable and robust machine learning models, combining explainable AI, physics-guided deep learning, and graph neural networks for environmental and health applications.'
 research_areas:

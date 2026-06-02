@@ -13,6 +13,9 @@ author:
     - title: Email
       url: mailto:Rebecca.Leygonie@vub.be
       icon: email
+    - title: Google Scholar
+      url: https://scholar.google.com/citations?user=wS4eqAsAAAAJ&hl=en
+      icon: scholar
 affiliation: 'Vrije Universiteit Brussel — ETRO · Office PL9.2.27'
 ---
 

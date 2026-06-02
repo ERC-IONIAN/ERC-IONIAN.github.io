@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { iconSvgs } from '../../utils/icons';
+import { getPublicationsForMember } from '../../utils/publications';
+
+export async function getStaticPaths() {
+  const members = await getCollection('team');
+  return members.map((m) => ({
+    params: { slug: m.slug },
+    props: { member: m },
+  }));
+}
+
+const { member } = Astro.props;
+const { Content } = await member.render();
+const pic = member.data.image?.thumbnail || member.data.author?.picture;
+const links = member.data.author?.links ?? [];
+const pubs = getPublicationsForMember(member.data.title);
+
+const ALLOWED_ICONS = new Set(['email', 'scholar', 'linkedin', 'github', 'twitter', 'orcid', 'website']);
+---
+
+<BaseLayout title={member.data.title}>
+  <div class="page-wrapper">
+    <div class="profile-header">
+      {pic && (
+        <img class="profile-pic" src={pic} alt={member.data.title} />
+      )}
+      <div class="profile-meta">
+        <h1 class="profile-name">{member.data.title}</h1>
+        {member.data.role && <p class="profile-role">{member.data.role}</p>}
+        {member.data.affiliation && (
+          <p class="profile-affil">{member.data.affiliation}</p>
+        )}
+        {links.length > 0 && (
+          <div class="profile-icons">
+            {links.filter(l => l.icon && ALLOWED_ICONS.has(l.icon)).map((link) => (
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={link.title}
+                class="team-icon"
+              >
+                <Fragment set:html={iconSvgs[link.icon!]} />
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+
+    <div class="prose max-w-none mt-6">
+      <Content />
+    </div>
+
+    {member.data.research_areas && member.data.research_areas.length > 0 && (
+      <div class="profile-section">
+        <h2 class="profile-section-title">Research Areas</h2>
+        <ul class="profile-areas">
+          {member.data.research_areas.map((area) => (
+            <li>
+              <strong>{area.name}</strong>
+              {area.description && <span> — {area.description}</span>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {pubs.length > 0 && (
+      <div class="profile-section">
+        <h2 class="profile-section-title">Publications</h2>
+        <ul class="profile-pubs">
+          {pubs.map((p) => (
+            <li>
+              <span class="profile-pub-title">
+                {p.links.paper ? (
+                  <a href={p.links.paper} target="_blank" rel="noopener noreferrer">
+                    {p.title}
+                  </a>
+                ) : (
+                  p.title
+                )}
+              </span>
+              <span class="profile-pub-venue"> — {p.venue}, {p.year}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {member.data.news && member.data.news.length > 0 && (
+      <div class="profile-section">
+        <h2 class="profile-section-title">News</h2>
+        <ul class="profile-news">
+          {member.data.news.map((n) => (
+            <li><strong>{n.year}</strong> — {n.text}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
+</BaseLayout>

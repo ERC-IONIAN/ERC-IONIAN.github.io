@@ -13,6 +13,9 @@ author:
     - title: Email
       url: mailto:Alexandre.Stenger@vub.be
       icon: email
+    - title: Google Scholar
+      url: https://scholar.google.com/citations?user=MX3yWoYAAAAJ&hl=en
+      icon: scholar
     - title: GitHub
       url: https://github.com/alex-stenger
       icon: github

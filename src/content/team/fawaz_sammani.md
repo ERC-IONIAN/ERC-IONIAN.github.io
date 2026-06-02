@@ -13,6 +13,9 @@ author:
     - title: Email
       url: mailto:Fawaz.Sammani@vub.be
       icon: email
+    - title: Google Scholar
+      url: https://scholar.google.com/citations?user=xxlAF58AAAAJ&hl=en
+      icon: scholar
 affiliation: 'Vrije Universiteit Brussel — ETRO'
 website: 'https://fawazsammani.github.io/fsammani.github.io/'
 pre_ionian_work:
