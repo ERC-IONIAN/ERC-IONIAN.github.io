@@ -3,11 +3,11 @@ title: 'William Martis'
 role: 'PhD Candidate'
 date: 2001-03-06
 image:
-  path: /images/empty_banner.png
-  thumbnail: /images/empty_banner.png
+  path: /images/wmartis_circle.jpg
+  thumbnail: /images/wmartis_circle.jpg
 author:
   name: William Martis
-  picture: /images/empty_banner.png
+  picture: /images/wmartis_circle.jpg
   email: William.Arthur.Martis@vub.be
   links:
     - title: Email
