@@ -3,11 +3,11 @@ title: 'Le Ngoc Tan'
 role: 'Research Scientist'
 date: 2001-02-02
 image:
-  path: /images/empty_banner.png
-  thumbnail: /images/empty_banner.png
+  path: /images/tannyle_circle.jpg
+  thumbnail: /images/tannyle_circle.jpg
 author:
   name: Le Ngoc Tan
-  picture: /images/empty_banner.png
+  picture: /images/tannyle_circle.jpg
   email: Ngoc.Tan.Le2@vub.be
   links:
     - title: Email
