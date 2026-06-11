@@ -146,4 +146,27 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { team, projects, labs, topics, blog };
+const positions = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    // e.g. "PhD Position", "Postdoc", "Internship"
+    kind: z.string().optional(),
+    location: z.string().optional(),
+    // Optional application deadline; shown on the card if present
+    deadline: z.coerce.date().optional(),
+    // Short blurb shown on the card
+    description: z.string().optional(),
+    // Path to the downloadable description, e.g. "/docs/phd-position.pdf"
+    pdf: z.string().optional(),
+    // Where to apply: an email (mailto added automatically) or a full URL
+    apply_email: z.string().optional(),
+    apply_url: z.string().optional(),
+    // 'open' (default) or 'closed' — closed roles are hidden from the list
+    status: z.enum(['open', 'closed']).default('open'),
+    // Lower numbers sort first; ties fall back to title
+    order: z.number().optional(),
+  }),
+});
+
+export const collections = { team, projects, labs, topics, blog, positions };

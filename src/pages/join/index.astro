@@ -1,0 +1,160 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const CONTACT_EMAIL = 'Nikos.Deligiannis@vub.be';
+
+const positions = (await getCollection('positions'))
+  .filter((p) => p.data.status !== 'closed')
+  .sort((a, b) => {
+    const oa = a.data.order ?? 999;
+    const ob = b.data.order ?? 999;
+    if (oa !== ob) return oa - ob;
+    return a.data.title.localeCompare(b.data.title);
+  });
+
+function formatDeadline(d: Date) {
+  return d.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
+---
+
+<BaseLayout title="Join Us">
+  <div class="page-wrapper">
+    <header class="join-intro">
+      <p class="join-eyebrow">Join Us</p>
+      <h1 class="join-title">Build the future of Explainable AI with IONIAN!</h1>
+      <p class="join-lead">
+        We are a research group at <strong>ETRO, Vrije Universiteit Brussel</strong>,
+        working at the intersection of machine learning, signal processing, and
+        information theory within the ERC project <strong>IONIAN</strong>. We are
+        always looking for curious, rigorous people — PhD candidates, postdocs,
+        and interns — to join us.
+      </p>
+    </header>
+
+    <section class="join-section">
+      <h2 class="join-section-title">Open positions</h2>
+
+      {
+        positions.length > 0 ? (
+          <div class="position-list">
+            {positions.map((p) => (
+              <article class="position-card">
+                <div class="position-card-head">
+                  <h3 class="position-card-title">{p.data.title}</h3>
+                  {p.data.kind && (
+                    <span class="position-badge">{p.data.kind}</span>
+                  )}
+                </div>
+
+                <div class="position-meta">
+                  {p.data.location && (
+                    <span class="position-meta-item">{p.data.location}</span>
+                  )}
+                  {p.data.deadline && (
+                    <span class="position-meta-item position-deadline">
+                      Apply by {formatDeadline(p.data.deadline)}
+                    </span>
+                  )}
+                </div>
+
+                {p.data.description && (
+                  <p class="position-desc">{p.data.description}</p>
+                )}
+
+                <div class="position-actions">
+                  {p.data.pdf && (
+                    <>
+                      <a
+                        class="position-btn position-btn-primary"
+                        href={p.data.pdf}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                        View details (PDF)
+                      </a>
+                      <a
+                        class="position-btn position-btn-ghost"
+                        href={p.data.pdf}
+                        download
+                      >
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                          <polyline points="7 10 12 15 17 10" />
+                          <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        Download
+                      </a>
+                    </>
+                  )}
+                  {p.data.apply_url ? (
+                    <a
+                      class="position-btn position-btn-ghost"
+                      href={p.data.apply_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Apply
+                    </a>
+                  ) : (
+                    p.data.apply_email && (
+                      <a
+                        class="position-btn position-btn-ghost"
+                        href={`mailto:${p.data.apply_email}?subject=${encodeURIComponent(
+                          'Application — ' + p.data.title,
+                        )}`}
+                      >
+                        Apply by email
+                      </a>
+                    )
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p class="position-empty">
+            We have no formal openings listed right now — but strong candidates
+            are always welcome. See below to send a spontaneous application.
+          </p>
+        )
+      }
+    </section>
+
+    <section class="join-section">
+      <h2 class="join-section-title">Spontaneous applications</h2>
+      <p class="join-lead">
+        Don't see a role that fits but think you'd be a great match? Reach out.
+        Send a short motivation, your CV, and (for PhD/postdoc) a list of
+        publications or a transcript to{' '}
+        <a class="join-link" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+      </p>
+    </section>
+  </div>
+</BaseLayout>
