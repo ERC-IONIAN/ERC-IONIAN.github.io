@@ -1,6 +1,6 @@
 ---
 title: 'Le Ngoc Tan'
-role: 'Research Scientist'
+role: 'PhD Candidate'
 date: 2001-02-02
 image:
   path: /images/tannyle_circle.jpg
@@ -25,4 +25,4 @@ author:
 affiliation: 'Vrije Universiteit Brussel — ETRO · Office PL9.2.28'
 ---
 
-Le Ngoc Tan is a **Research Scientist** in the IONIAN group, supervised by [Nikos Deligiannis](/team/nikos_deligiannis/).
+Le Ngoc Tan is a **PhD Candidate** in the IONIAN group, supervised by [Nikos Deligiannis](/team/nikos_deligiannis/).

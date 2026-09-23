@@ -32,6 +32,7 @@ const team = defineCollection({
     date: z.coerce.date().optional(),
     image: imageSchema,
     author: authorSchema,
+    order: z.number().optional(),
     affiliation: z.string().optional(),
     bio: z.string().optional(),
     website: z.string().optional(),

@@ -706,6 +706,20 @@ a.news-title:hover {
   line-height: 1.5;
   margin: 0;
 }
+.news-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+}
+.news-links a {
+  color: oklch(var(--p, 0.5 0.2 260));
+  text-decoration: none;
+}
+.news-links a:hover {
+  text-decoration: underline;
+}
 /* News pagination */
 .news-pagination {
   display: flex;

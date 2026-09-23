@@ -12,7 +12,8 @@ const roleOrder: Record<string, number> = {
 
 const members = (await getCollection('team')).sort(
   (a, b) =>
-    (roleOrder[a.data.role ?? ''] ?? 99) - (roleOrder[b.data.role ?? ''] ?? 99),
+    (roleOrder[a.data.role ?? ''] ?? 99) - (roleOrder[b.data.role ?? ''] ?? 99) ||
+    (a.data.order ?? 0) - (b.data.order ?? 0),
 );
 
 const ALLOWED_ICONS = new Set(['scholar', 'linkedin', 'github']);
