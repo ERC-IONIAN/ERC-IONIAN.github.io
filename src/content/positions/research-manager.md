@@ -12,7 +12,7 @@ description: >-
   start 1 October 2026.
 pdf: '/docs/research-manager.pdf'
 apply_email: 'nikos.deligiannis@vub.be'
-status: 'open'
+status: 'closed'
 order: 2
 ---
 

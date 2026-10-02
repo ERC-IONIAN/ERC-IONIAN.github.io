@@ -16,6 +16,11 @@ const members = (await getCollection('team')).sort(
     (a.data.order ?? 0) - (b.data.order ?? 0),
 );
 
+const groups = [
+  { title: null, members: members.filter((m) => !m.data.alumni) },
+  { title: 'Alumni', members: members.filter((m) => m.data.alumni) },
+].filter((g) => g.members.length > 0);
+
 const ALLOWED_ICONS = new Set(['scholar', 'linkedin', 'github']);
 ---
 
@@ -36,11 +41,14 @@ const ALLOWED_ICONS = new Set(['scholar', 'linkedin', 'github']);
   </div>
 
   <div class="page-wrapper">
-    <div class="team-grid">
-      {
-        members.map((m, i) => {
+    {
+      groups.map((g, gi) => (
+        <>
+          {g.title && <h2 class="team-section-title">{g.title}</h2>}
+          <div class={`team-grid${g.title === 'Alumni' ? ' team-grid--alumni' : ''}`}>
+            {g.members.map((m, i) => {
           const pic = m.data.image?.thumbnail || m.data.author?.picture;
-          const eager = i < 4;
+          const eager = gi === 0 && i < 4;
           const socialLinks = (m.data.author?.links ?? []).filter(
             (l) => l.icon && ALLOWED_ICONS.has(l.icon),
           );
@@ -93,8 +101,10 @@ const ALLOWED_ICONS = new Set(['scholar', 'linkedin', 'github']);
               )}
             </div>
           );
-        })
-      }
-    </div>
+            })}
+          </div>
+        </>
+      ))
+    }
   </div>
 </BaseLayout>

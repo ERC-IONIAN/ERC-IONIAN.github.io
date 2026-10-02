@@ -101,7 +101,7 @@ const author = {
   <!-- Banner video carousel -->
   <div class="banner-wrapper">
     <div class="banner-video-carousel" id="bannerCarousel">
-      <video class="banner-video banner-video-low-res" src="/videos/GATA2FloorClip.mp4" muted playsinline></video>
+      <img class="banner-video" src="/images/ECCV_group_pic.jpeg" alt="The IONIAN team at ECCV 2026" fetchpriority="high" />
       <video class="banner-video" src="/videos/v2v_demo_noQA_1080p.mp4" muted playsinline loop></video>
       <video class="banner-video" src="/videos/v2v_demo_intersection_noQA.mp4" muted playsinline loop></video>
       <div class="banner-carousel-dots" id="bannerDots">
@@ -114,7 +114,7 @@ const author = {
     <div class="banner-overlay"></div>
     <!-- Content -->
     <div class="banner-content">
-      <h1 class="banner-title">Interpretable & Explainable AI Research</h1>
+      <h1 class="banner-title">Multimodal, Agentic & Trustworthy AI</h1>
       <p class="banner-subtitle">We are IONIAN Group at VUB-ETRO</p>
       <div class="banner-actions">
         <a href="/team/" class="banner-btn">Meet the Team</a>
@@ -438,23 +438,21 @@ const author = {
   (() => {
     const carousel = document.getElementById('bannerCarousel');
     if (!carousel) return;
-    const videos = carousel.querySelectorAll<HTMLVideoElement>('.banner-video');
+    const videos = carousel.querySelectorAll<HTMLElement>('.banner-video');
     const dots = carousel.querySelectorAll<HTMLButtonElement>('.banner-dot');
-    const FULL_PLAY_INDEX = 0; // GATA2 plays to end
     let current = 0;
     let autoTimer: ReturnType<typeof setInterval>;
 
-    function onVideoEnded() {
-      goTo(current + 1, 1);
-    }
-
     function scheduleNext() {
       clearInterval(autoTimer);
-      videos[FULL_PLAY_INDEX].removeEventListener('ended', onVideoEnded);
-      if (current === FULL_PLAY_INDEX) {
-        videos[FULL_PLAY_INDEX].addEventListener('ended', onVideoEnded);
-      } else {
-        autoTimer = setInterval(() => goTo(current + 1, 1), 8000);
+      autoTimer = setInterval(() => goTo(current + 1, 1), 8000);
+    }
+
+    // Slides may be images or videos; only videos need play/pause
+    function play(el: HTMLElement) {
+      if (el instanceof HTMLVideoElement) {
+        el.currentTime = 0;
+        el.play();
       }
     }
 
@@ -473,9 +471,8 @@ const author = {
       videos[current].style.transform = 'translateX(0)';
       videos[prev].style.transform = `translateX(${exitTo})`;
 
-      videos[prev].pause();
-      videos[current].currentTime = 0;
-      videos[current].play();
+      if (videos[prev] instanceof HTMLVideoElement) videos[prev].pause();
+      play(videos[current]);
 
       dots[prev].classList.remove('active');
       dots[current].classList.add('active');
@@ -488,7 +485,7 @@ const author = {
       v.style.transition = 'none';
       v.style.transform = i === 0 ? 'translateX(0)' : 'translateX(100%)';
     });
-    videos[0].play();
+    play(videos[0]);
     dots[0].classList.add('active');
     requestAnimationFrame(() => {
       videos.forEach(v => { v.style.transition = ''; });

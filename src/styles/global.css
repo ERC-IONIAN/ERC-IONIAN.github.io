@@ -305,6 +305,13 @@ img {
 }
 
 /* team grid */
+.team-section-title {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 2rem 0 1.5rem;
+}
 .team-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -320,6 +327,29 @@ img {
   .team-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+.team-grid--alumni {
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+}
+@media (max-width: 900px) {
+  .team-grid--alumni {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .team-grid--alumni {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.team-grid--alumni .team-member {
+  padding: 0.75rem 0.6rem;
+}
+.team-grid--alumni .team-name {
+  font-size: 0.85rem;
+}
+.team-grid--alumni .team-role {
+  font-size: 0.75rem;
 }
 .team-member {
   display: flex;

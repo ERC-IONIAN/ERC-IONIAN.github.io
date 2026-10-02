@@ -11,7 +11,7 @@ description: >-
   possible).
 pdf: '/docs/ai-engineer-multi-agent-edge.pdf'
 apply_email: 'nikos.deligiannis@vub.be'
-status: 'open'
+status: 'closed'
 order: 1
 ---
 
