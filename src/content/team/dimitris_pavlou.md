@@ -14,6 +14,15 @@ author:
     - title: Email
       url: mailto:Dimitris.Pavlou@vub.be
       icon: email
+    - title: Google Scholar
+      url: https://scholar.google.com/citations?user=34mE-2gAAAAJ&hl=en
+      icon: scholar
+    - title: GitHub
+      url: https://github.com/DimitrisPavlou
+      icon: github
+    - title: LinkedIn
+      url: https://www.linkedin.com/in/dimitrispavlou/
+      icon: linkedin
 affiliation: 'Vrije Universiteit Brussel — ETRO'
 ---
 
