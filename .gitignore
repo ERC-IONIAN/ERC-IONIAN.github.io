@@ -6,3 +6,7 @@ dist
 *.key
 *.pem
 credentials*.json
+
+# Original iPhone media (web versions live in images/testbed and videos/testbed_hero_erc.mp4)
+public/images/*_erc.HEIC
+public/videos/*_erc.MOV

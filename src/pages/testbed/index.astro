@@ -1,0 +1,541 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const slides: {
+  type: 'video' | 'image';
+  src: string;
+  poster?: string;
+  caption: string;
+}[] = [
+  {
+    type: 'video',
+    src: '/videos/testbed_hero_erc.mp4',
+    poster: '/images/testbed/hero_poster_erc.jpg',
+    caption: 'Unboxing and assembling the sensing hardware',
+  },
+  {
+    type: 'image',
+    src: '/images/testbed/auto_car_erc.jpg',
+    caption: 'The instrumented vehicle and its on-board compute rack',
+  },
+  {
+    type: 'image',
+    src: '/images/testbed/team_image_erc.jpg',
+    caption: 'The team with the first sensors and a live LiDAR point cloud',
+  },
+];
+
+const partner = {
+  name: 'Hellenic Autonomous Vehicle (HAV)',
+  short: 'HAV, DUTH',
+  institution: 'Democritus University of Thrace (DUTH), Greece',
+  url: 'https://hav.ee.duth.gr/',
+};
+
+const stats = [
+  { value: 3, label: 'Platforms' },
+  { value: 9, label: 'RGB cameras' },
+  { value: 3, label: 'LiDARs' },
+  { value: 1, label: 'Event camera' },
+  { value: 3, label: 'Jetson edge nodes' },
+];
+
+type Item = {
+  qty?: number;
+  name: string;
+  detail?: string;
+  on?: string;
+  image?: string;
+};
+
+const platforms: {
+  name: string;
+  description: string;
+  icon: string;
+  sensing: Item[];
+  support: Item[];
+}[] = [
+  {
+    name: 'Instrumented Vehicle',
+    description:
+      'A car with multi-view cameras, a spinning LiDAR and an automotive-grade inertial unit, processing everything on board.',
+    icon: 'M-18 6v-8l6 -10h24l6 10v8zM-12 6v5M12 6v5M-18 -2h36',
+    sensing: [
+      {
+        qty: 4,
+        name: 'Basler ace acA1920-50gc',
+        detail: 'RGB cameras',
+        image: '/images/equipment/basler-ace.jpg',
+      },
+      {
+        name: 'RoboSense RS-Helios 5515',
+        detail: '32-beam spinning LiDAR',
+        image: '/images/equipment/robosense-helios.png',
+      },
+      {
+        name: 'Xsens MTi-30-2A8G4',
+        detail: 'automotive-grade AHRS/IMU',
+        image: '/images/equipment/xsens-imu.jpg',
+      },
+    ],
+    support: [{ name: 'Dedicated power supply' }],
+  },
+  {
+    name: 'Roadside Unit',
+    description:
+      'A fixed multimodal sensing station that complements the vehicle with an infrastructure viewpoint and edge processing.',
+    icon: 'M0 18v-30M-10 -12h20v-8h-20zM-14 18h28M-9 -26a12 12 0 0 1 18 0',
+    sensing: [
+      {
+        qty: 4,
+        name: 'Basler ace acA1920-40gc',
+        detail: 'with C11-0824-12M-P lenses',
+        image: '/images/equipment/basler-ace.jpg',
+      },
+      {
+        name: 'Ouster OS1-64 Gen 2',
+        detail: 'LiDAR',
+        image: '/images/equipment/ouster-os1.jpg',
+      },
+      {
+        name: 'Prophesee EVK4 HD',
+        detail: 'event camera',
+        image: '/images/equipment/prophesee-evk4.jpg',
+      },
+    ],
+    support: [{ name: 'Outdoor mounting, cabinet and power' }],
+  },
+  {
+    name: 'Aerial Node',
+    description:
+      'A T650 drone platform adding a bird’s-eye view, with its own sensing, RTK positioning and on-board compute.',
+    icon: 'M-14 -4h28M-20 -10a6 6 0 1 0 0.1 0M20 -10a6 6 0 1 0 0.1 0M-8 -4v10h16v-10',
+    sensing: [
+      {
+        name: 'Ouster OS0-32 Rev7',
+        detail: 'LiDAR',
+        image: '/images/equipment/ouster-os0.png',
+      },
+      {
+        name: 'Blackfly S 3.2 MP',
+        detail: 'PoE GigE color camera, 3.5 / 4.5 mm lenses',
+        image: '/images/equipment/blackfly-s.png',
+      },
+      { name: 'RTK module + base station', detail: 'with LoRa' },
+    ],
+    support: [
+      {
+        name: 'Pixhawk 6C',
+        detail: 'flight controller',
+        image: '/images/equipment/pixhawk-6c.jpg',
+      },
+      { name: 'FPV, remote control, dual 6S 15 Ah Li-ion batteries' },
+    ],
+  },
+];
+
+const compute: Item[] = [
+  {
+    qty: 2,
+    name: 'NVIDIA Jetson Thor',
+    detail: 'development kit',
+    on: 'Vehicle · RSU',
+    image: '/images/equipment/jetson-thor.jpg',
+  },
+  {
+    qty: 1,
+    name: 'NVIDIA Jetson AGX Orin',
+    detail: '32 GB, 1 TB SSD',
+    on: 'Drone',
+    image: '/images/equipment/jetson-orin.jpg',
+  },
+];
+---
+
+<BaseLayout title="Testbed">
+  <!-- Hero media slider -->
+  <section
+    class="tb-hero"
+    aria-roledescription="carousel"
+    aria-label="Testbed media"
+  >
+    <div class="tb-stage">
+      {
+        slides.map((s, i) => (
+          <figure
+            class:list={['tb-slide', { 'is-active': i === 0 }]}
+            data-type={s.type}
+            aria-hidden={i === 0 ? 'false' : 'true'}
+          >
+            <div
+              class="tb-slide-bg"
+              style={`background-image: url(${s.poster ?? s.src})`}
+            />
+            {s.type === 'video' ? (
+              <video
+                src={s.src}
+                poster={s.poster}
+                muted
+                playsinline
+                preload="auto"
+              />
+            ) : (
+              <img
+                src={s.src}
+                alt={s.caption}
+                loading={i === 0 ? 'eager' : 'lazy'}
+              />
+            )}
+            <figcaption class="tb-slide-caption">
+              {s.caption}
+              <span class="tb-credit"> · with {partner.short}</span>
+            </figcaption>
+          </figure>
+        ))
+      }
+
+      <button class="tb-nav tb-prev" type="button" aria-label="Previous slide">
+        <svg
+          viewBox="0 0 24 24"
+          width="22"
+          height="22"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          ><path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 18l-6-6 6-6"></path></svg
+        >
+      </button>
+      <button class="tb-nav tb-next" type="button" aria-label="Next slide">
+        <svg
+          viewBox="0 0 24 24"
+          width="22"
+          height="22"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          ><path stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"
+          ></path></svg
+        >
+      </button>
+
+      <div class="tb-dots" role="tablist">
+        {
+          slides.map((_, i) => (
+            <button
+              class:list={['tb-dot', { 'is-active': i === 0 }]}
+              type="button"
+              role="tab"
+              aria-label={`Go to slide ${i + 1}`}
+              data-index={i}
+            />
+          ))
+        }
+      </div>
+      <div class="tb-progress"><span></span></div>
+    </div>
+
+    <div class="tb-hero-overlay">
+      <h1 class="tb-hero-title">IONIAN Testbed</h1>
+      <p class="tb-hero-sub">
+        Cooperative perception across a vehicle, a roadside unit and a drone
+      </p>
+    </div>
+  </section>
+
+  <!-- Stats strip -->
+  <section class="tb-stats">
+    {
+      stats.map((s) => (
+        <div class="tb-stat">
+          <span class="tb-stat-value" data-count={s.value}>
+            {s.value}
+          </span>
+          <span class="tb-stat-label">{s.label}</span>
+        </div>
+      ))
+    }
+  </section>
+
+  <div class="page-wrapper">
+    <!-- Overview -->
+    <section class="tb-section tb-overview">
+      <div>
+        <h2 class="tb-h2">Overview</h2>
+        <p>
+          The ERC IONIAN testbed is being developed as a <strong
+            >cooperative perception platform</strong
+          > that combines an instrumented vehicle, a roadside unit (RSU), and an aerial
+          drone node.
+        </p>
+        <p>
+          It is built in collaboration with the
+          <a class="tb-link" href={partner.url} target="_blank" rel="noopener"
+            >{partner.name}</a
+          > team at the {partner.institution}.
+        </p>
+        <p>
+          Altogether, this multi-platform setup will support synchronized
+          sensing and distributed real-time perception across mobile, static,
+          and aerial agents, providing a realistic experimental environment for
+          research on cooperative sensing, multimodal fusion, and intelligent
+          machine perception.
+        </p>
+      </div>
+
+      <svg
+        class="tb-diagram"
+        viewBox="0 -14 360 314"
+        role="img"
+        aria-label="Vehicle, roadside unit and drone sharing perception data"
+      >
+        <g class="tb-links">
+          <line x1="180" y1="62" x2="72" y2="226"></line>
+          <line x1="180" y1="62" x2="288" y2="226"></line>
+          <line x1="72" y1="226" x2="288" y2="226"></line>
+        </g>
+        <text class="tb-diagram-center" x="180" y="170" text-anchor="middle"
+          >Cooperative</text
+        >
+        <text class="tb-diagram-center" x="180" y="188" text-anchor="middle"
+          >perception</text
+        >
+
+        <g class="tb-node" transform="translate(180 62)">
+          <circle r="40"></circle>
+          <path
+            class="tb-node-icon"
+            d="M-14 -4h28M-20 -10a6 6 0 1 0 0.1 0M20 -10a6 6 0 1 0 0.1 0M-8 -4v10h16v-10"
+          ></path>
+          <text y="-52" text-anchor="middle" class="tb-node-label"
+            >Aerial node</text
+          >
+        </g>
+        <g class="tb-node" transform="translate(72 226)">
+          <circle r="40"></circle>
+          <path
+            class="tb-node-icon"
+            d="M-18 6v-8l6 -10h24l6 10v8zM-12 6v5M12 6v5M-18 -2h36"></path>
+          <text y="62" text-anchor="middle" class="tb-node-label">Vehicle</text>
+        </g>
+        <g class="tb-node" transform="translate(288 226)">
+          <circle r="40"></circle>
+          <path
+            class="tb-node-icon"
+            d="M0 18v-30M-10 -12h20v-8h-20zM-14 18h28M-9 -26a12 12 0 0 1 18 0"
+          ></path>
+          <text y="62" text-anchor="middle" class="tb-node-label"
+            >Roadside unit</text
+          >
+        </g>
+      </svg>
+    </section>
+
+    <!-- Platforms -->
+    <section class="tb-section">
+      <h2 class="tb-h2">Platforms</h2>
+      <p class="tb-lead">
+        A multimodal suite spanning visual, event-based, 3D ranging, inertial,
+        and positioning sensors, distributed over three platforms.
+        <span class="tb-hint">Hover an underlined item to see it.</span>
+      </p>
+      <div class="tb-platforms">
+        {
+          platforms.map((p) => (
+            <article class="tb-platform">
+              <svg
+                class="tb-platform-icon"
+                viewBox="-23 -23 46 46"
+                aria-hidden="true"
+              >
+                <path d={p.icon} />
+              </svg>
+              <h3>{p.name}</h3>
+              <p>{p.description}</p>
+              {[
+                { title: 'Sensing', items: p.sensing },
+                { title: 'Support', items: p.support },
+              ].map((block) => (
+                <div class="tb-platform-block">
+                  <h4 class="tb-platform-sub">{block.title}</h4>
+                  <ul>
+                    {block.items.map((it) => (
+                      <li>
+                        {it.qty && <span class="tb-qty">{it.qty}×</span>}
+                        {it.image ? (
+                          <span class="tb-hover" tabindex="0">
+                            {it.name}
+                            <span class="tb-preview">
+                              <img
+                                src={it.image}
+                                alt={it.name}
+                                loading="lazy"
+                              />
+                            </span>
+                          </span>
+                        ) : (
+                          <span class="tb-name">{it.name}</span>
+                        )}
+                        {it.detail && (
+                          <span class="tb-muted">— {it.detail}</span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Edge AI compute -->
+    <section class="tb-section">
+      <h2 class="tb-h2">Edge AI Compute</h2>
+      <p class="tb-lead">
+        Embedded NVIDIA Jetson platforms for real-time on-site processing,
+        supported by PoE++ networking and local NVMe storage. This enables
+        low-latency execution of AI workloads such as multimodal perception,
+        sensor fusion, and distributed inference directly at the edge.
+      </p>
+      <ul class="tb-list">
+        {
+          compute.map((it) => (
+            <li>
+              <span class="tb-qty">{it.qty}×</span>
+              <div>
+                {it.image ? (
+                  <span class="tb-hover" tabindex="0">
+                    {it.name}
+                    <span class="tb-preview">
+                      <img src={it.image} alt={it.name} loading="lazy" />
+                    </span>
+                  </span>
+                ) : (
+                  <span class="tb-name">{it.name}</span>
+                )}
+                {it.detail && <span class="tb-muted">— {it.detail}</span>}
+                {it.on && <span class="tb-on">{it.on}</span>}
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- Collaboration credit -->
+    <p class="tb-partner">
+      In collaboration with
+      <a class="tb-link" href={partner.url} target="_blank" rel="noopener"
+        >{partner.name}</a
+      >, {partner.institution}
+    </p>
+  </div>
+</BaseLayout>
+
+<script>
+  // Hero slider: the video plays once, then images rotate on a timer.
+  const IMAGE_MS = 6000;
+  const hero = document.querySelector<HTMLElement>('.tb-hero');
+
+  if (hero) {
+    const slides = [...hero.querySelectorAll<HTMLElement>('.tb-slide')];
+    const dots = [...hero.querySelectorAll<HTMLButtonElement>('.tb-dot')];
+    const bar = hero.querySelector<HTMLElement>('.tb-progress span')!;
+    let current = 0;
+    let timer: number | undefined;
+
+    const setProgress = (pct: number, ms = 0) => {
+      bar.style.transition = ms ? `width ${ms}ms linear` : 'none';
+      bar.style.width = `${pct}%`;
+    };
+
+    const show = (index: number) => {
+      window.clearTimeout(timer);
+      current = (index + slides.length) % slides.length;
+
+      slides.forEach((s, i) => {
+        const active = i === current;
+        s.classList.toggle('is-active', active);
+        s.setAttribute('aria-hidden', String(!active));
+        const v = s.querySelector('video');
+        if (v && !active) v.pause();
+      });
+      dots.forEach((d, i) => d.classList.toggle('is-active', i === current));
+
+      const video = slides[current].querySelector('video');
+      setProgress(0);
+      if (video) {
+        video.currentTime = 0;
+        video.play().catch(() => {
+          // Autoplay blocked: fall back to the image timer
+          timer = window.setTimeout(() => show(current + 1), IMAGE_MS);
+        });
+      } else {
+        // Force a reflow so the bar restarts from 0
+        void bar.offsetWidth;
+        setProgress(100, IMAGE_MS);
+        timer = window.setTimeout(() => show(current + 1), IMAGE_MS);
+      }
+    };
+
+    hero.querySelectorAll('video').forEach((v) => {
+      v.addEventListener('ended', () => show(current + 1));
+      v.addEventListener('timeupdate', () => {
+        if (v.duration) setProgress((v.currentTime / v.duration) * 100);
+      });
+    });
+
+    hero
+      .querySelector('.tb-prev')
+      ?.addEventListener('click', () => show(current - 1));
+    hero
+      .querySelector('.tb-next')
+      ?.addEventListener('click', () => show(current + 1));
+    dots.forEach((d, i) => d.addEventListener('click', () => show(i)));
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.target as HTMLElement).closest('input, textarea')) return;
+      if (e.key === 'ArrowLeft') show(current - 1);
+      if (e.key === 'ArrowRight') show(current + 1);
+    });
+
+    let touchX = 0;
+    hero.addEventListener(
+      'touchstart',
+      (e) => (touchX = e.touches[0].clientX),
+      { passive: true },
+    );
+    hero.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 50) show(current + (dx < 0 ? 1 : -1));
+    });
+
+    show(0);
+  }
+
+  // Count-up stats when the strip scrolls into view
+  const counters = document.querySelectorAll<HTMLElement>('[data-count]');
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target as HTMLElement;
+        const target = Number(el.dataset.count);
+        const start = performance.now();
+        const step = (now: number) => {
+          const t = Math.min((now - start) / 900, 1);
+          el.textContent = String(Math.round(target * t));
+          if (t < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+        observer.unobserve(el);
+      });
+    },
+    { threshold: 0.6 },
+  );
+  counters.forEach((c) => observer.observe(c));
+</script>
