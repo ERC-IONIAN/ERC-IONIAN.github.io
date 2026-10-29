@@ -33,7 +33,7 @@ const partner = {
 };
 
 const stats = [
-  { value: 3, label: 'Platforms' },
+  { value: 4, label: 'Platforms' },
   { value: 9, label: 'RGB cameras' },
   { value: 3, label: 'LiDARs' },
   { value: 1, label: 'Event camera' },
@@ -240,7 +240,7 @@ const compute: Item[] = [
     <div class="tb-hero-overlay">
       <h1 class="tb-hero-title">IONIAN Testbed</h1>
       <p class="tb-hero-sub">
-        Cooperative perception across a vehicle, a roadside unit and a drone
+        Cooperative perception across two vehicles, a roadside unit and a drone
       </p>
     </div>
   </section>
@@ -267,8 +267,8 @@ const compute: Item[] = [
         <p>
           The ERC IONIAN testbed is being developed as a <strong
             >cooperative perception platform</strong
-          > that combines an instrumented vehicle, a roadside unit (RSU), and an aerial
-          drone node.
+          > that combines two vehicles (the HAV vehicle and the IONIAN vehicle), a
+          roadside unit (RSU), and an aerial drone node.
         </p>
         <p>
           It is built in collaboration with the
@@ -287,46 +287,55 @@ const compute: Item[] = [
 
       <svg
         class="tb-diagram"
-        viewBox="0 -14 360 314"
+        viewBox="0 0 440 360"
         role="img"
-        aria-label="Vehicle, roadside unit and drone sharing perception data"
+        aria-label="HAV vehicle, IONIAN vehicle, roadside unit and aerial node sharing perception data"
       >
+        <text class="tb-diagram-title" x="220" y="24" text-anchor="middle"
+          >Cooperative perception</text
+        >
         <g class="tb-links">
-          <line x1="180" y1="62" x2="72" y2="226"></line>
-          <line x1="180" y1="62" x2="288" y2="226"></line>
-          <line x1="72" y1="226" x2="288" y2="226"></line>
+          <line x1="220" y1="95" x2="70" y2="200"></line>
+          <line x1="220" y1="95" x2="370" y2="200"></line>
+          <line x1="220" y1="95" x2="220" y2="290"></line>
+          <line x1="70" y1="200" x2="370" y2="200"></line>
+          <line x1="70" y1="200" x2="220" y2="290"></line>
+          <line x1="370" y1="200" x2="220" y2="290"></line>
         </g>
-        <text class="tb-diagram-center" x="180" y="170" text-anchor="middle"
-          >Cooperative</text
-        >
-        <text class="tb-diagram-center" x="180" y="188" text-anchor="middle"
-          >perception</text
-        >
 
-        <g class="tb-node" transform="translate(180 62)">
-          <circle r="40"></circle>
+        <g class="tb-node" transform="translate(220 95)">
+          <circle r="36"></circle>
           <path
             class="tb-node-icon"
             d="M-14 -4h28M-20 -10a6 6 0 1 0 0.1 0M20 -10a6 6 0 1 0 0.1 0M-8 -4v10h16v-10"
           ></path>
-          <text y="-52" text-anchor="middle" class="tb-node-label"
-            >Aerial node</text
-          >
+          <text x="46" y="5" class="tb-node-label">Aerial node</text>
         </g>
-        <g class="tb-node" transform="translate(72 226)">
-          <circle r="40"></circle>
+        <g class="tb-node" transform="translate(70 200)">
+          <circle r="36"></circle>
           <path
             class="tb-node-icon"
             d="M-18 6v-8l6 -10h24l6 10v8zM-12 6v5M12 6v5M-18 -2h36"></path>
-          <text y="62" text-anchor="middle" class="tb-node-label">Vehicle</text>
+          <text y="56" text-anchor="middle" class="tb-node-label"
+            >HAV vehicle</text
+          >
         </g>
-        <g class="tb-node" transform="translate(288 226)">
-          <circle r="40"></circle>
+        <g class="tb-node" transform="translate(370 200)">
+          <circle r="36"></circle>
+          <path
+            class="tb-node-icon"
+            d="M-18 6v-8l6 -10h24l6 10v8zM-12 6v5M12 6v5M-18 -2h36"></path>
+          <text y="56" text-anchor="middle" class="tb-node-label"
+            >IONIAN vehicle</text
+          >
+        </g>
+        <g class="tb-node" transform="translate(220 290)">
+          <circle r="36"></circle>
           <path
             class="tb-node-icon"
             d="M0 18v-30M-10 -12h20v-8h-20zM-14 18h28M-9 -26a12 12 0 0 1 18 0"
           ></path>
-          <text y="62" text-anchor="middle" class="tb-node-label"
+          <text y="56" text-anchor="middle" class="tb-node-label"
             >Roadside unit</text
           >
         </g>
@@ -338,7 +347,7 @@ const compute: Item[] = [
       <h2 class="tb-h2">Platforms</h2>
       <p class="tb-lead">
         A multimodal suite spanning visual, event-based, 3D ranging, inertial,
-        and positioning sensors, distributed over three platforms.
+        and positioning sensors, distributed across the testbed platforms.
         <span class="tb-hint">Hover an underlined item to see it.</span>
       </p>
       <div class="tb-platforms">

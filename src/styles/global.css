@@ -2126,7 +2126,7 @@ a.news-title:hover {
 .tb-hero-sub {
   font-size: clamp(1rem, 2.2vw, 1.3rem);
   opacity: 0.9;
-  max-width: 40rem;
+  max-width: 48rem;
 }
 .tb-credit {
   opacity: 0.75;
@@ -2274,7 +2274,7 @@ a.news-title:hover {
 /* overview diagram */
 .tb-diagram {
   width: 100%;
-  max-width: 400px;
+  max-width: 440px;
   justify-self: center;
 }
 .tb-links line {
@@ -2305,10 +2305,11 @@ a.news-title:hover {
   font-size: 15px;
   font-weight: 600;
 }
-.tb-diagram-center {
-  fill: oklch(var(--bc) / 0.6);
-  font-size: 13px;
-  font-style: italic;
+.tb-diagram-title {
+  fill: oklch(var(--p));
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 700;
 }
 @media (prefers-reduced-motion: reduce) {
   .tb-links line {
